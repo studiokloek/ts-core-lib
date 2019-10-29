@@ -12,7 +12,7 @@
     "sourceMap": true,
     "composite": true,
     "target": "esnext",
-    "module": "esnext",
+    "module": "commonjs",
 
     "noImplicitThis": true,
     "alwaysStrict": true,
