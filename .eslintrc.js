@@ -5,7 +5,7 @@ module.exports = {
     sourceType: 'module', // Allows for the use of imports
   },
   plugins: [
-    '@typescript-eslint',
+    '@typescript-eslint/plugin',
     'eslint-comments',
     'promise',
     // "prettier",
@@ -58,7 +58,6 @@ module.exports = {
         paths: ['src'],
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
-      typescript: {},
     },
   },
 };

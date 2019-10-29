@@ -22,7 +22,9 @@ export * from './ui';
 export * from './util';
 
 import { initNetworkStatusDetection, getDeviceInfo } from './device';
+import { initScreen } from './screen';
 
 export async function initCoreLibrary(): Promise<void> {
   await Promise.all([initNetworkStatusDetection(), getDeviceInfo()]);
+  initScreen();
 }

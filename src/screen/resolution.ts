@@ -7,7 +7,6 @@ import { getViewportSize } from './viewport';
 
 const Logger = getLogger('core > resolution');
 
-console.log(1);
 export const determineResolution = memoize((): { screen: number; texture: number } => {
   const pixelRatio = getPixelRatio(),
     viewportSize = Math.floor(getViewportSize() * pixelRatio);
@@ -22,8 +21,7 @@ export const determineResolution = memoize((): { screen: number; texture: number
   let screenResolution = ResolutionMode.NORMAL,
     textureResolution = ResolutionMode.NORMAL;
 
-  Logger.info('pixelRatio', pixelRatio);
-  Logger.info('viewportSize', viewportSize);
+  Logger.info('pixelRatio[', pixelRatio, '] viewportSize[', viewportSize, ']');
 
   if (isMobile()) {
     if (isPlatform(Platform.IOS) && viewportSize > 1024) {

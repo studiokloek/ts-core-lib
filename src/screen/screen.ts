@@ -16,7 +16,7 @@ export class Screen {
   public init(): void {
     this.calculateDimension();
 
-    // resolutie wordt maar 1 keer geupdate, omdat we geen het pixicanvas
+    // resolutie wordt maar 1 keer geupdate, omdat het pixicanvas
     // niet dynamisch kan wisselen van resolutie
     ({ screen: this._resolution } = determineResolution());
 

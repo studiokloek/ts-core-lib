@@ -93,10 +93,10 @@ export class SoundsLoader implements AssetLoaderInterface {
     this.isLoaded = false;
     this.isLoading = true;
 
-    Logger.debug(`Start loading '${this.numberToLoad}' sounds for '${this.options.assetName}'`);
+    Logger.debug(`Start loading #${this.numberToLoad} sounds for '${this.options.assetName}'`);
 
-    // max 4 tegelijkertijd inladen?
-    for (let i = 0; i < 4; i++) {
+    // max 8 tegelijkertijd inladen?
+    for (let i = 0; i < 8; i++) {
       this.preloadNextSoundAsset();
     }
   }
@@ -115,7 +115,7 @@ export class SoundsLoader implements AssetLoaderInterface {
     if (this.numberDoneLoading < this.numberToLoad) {
       this.preloadNextSoundAsset();
     } else {
-      Logger.debug(`Done loading '${this.options.assetName}'`);
+      Logger.info(`Loaded '${this.options.assetName}'`);
       this.loadedResolver(this.data);
     }
   }
@@ -143,12 +143,16 @@ export class SoundsLoader implements AssetLoaderInterface {
   public unload(): void {
     const sounds = this.getSoundsToLoad(this.options.assets);
 
+    Logger.debug(`Un-loading #${sounds.length} sounds for '${this.options.assetName}'`);
+
     for (const item of sounds) {
       SoundLibrary.unload(item, this.options.assetName);
     }
 
     this.isLoaded = false;
     this.isLoading = false;
+
+    Logger.info(`Un-loaded '${this.options.assetName}'`);
   }
 
   public get data(): SoundLibraryItem[] {

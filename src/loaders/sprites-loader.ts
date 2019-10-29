@@ -135,7 +135,7 @@ export class SpriteLoader implements AssetLoaderInterface {
         this.isLoaded = true;
         this.isLoading = false;
 
-        Logger.info(`Loaded '${this.options.assetName}'`);
+        Logger.info(`Loaded '${this.options.assetName}'`, this.textures);
 
         this.loadedResolver(this.textures);
 
@@ -162,6 +162,8 @@ export class SpriteLoader implements AssetLoaderInterface {
     this.textures = {};
     this.textureIndex = [];
     this.loadUrlIndex = [];
+
+    Logger.info(`Un-loaded '${this.options.assetName}'`);
   }
 
   private removeTextureFromCache(textureId: string): void {
