@@ -10,5 +10,9 @@ export interface StageInfo {
 export const Screen = new ScreenClass();
 export const Stage = new StageClass();
 
+export function initScreen(): void {
+  Screen.init();
+}
+
 export * from './constants';
 export * from './resolution';

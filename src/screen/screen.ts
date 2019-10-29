@@ -13,7 +13,7 @@ export class Screen {
   public resized = new AsyncEvent<{ width: number; height: number }>();
   public orientationChanged = new AsyncEvent<string>();
 
-  public constructor() {
+  public init(): void {
     this.calculateDimension();
 
     // resolutie wordt maar 1 keer geupdate, omdat we geen het pixicanvas

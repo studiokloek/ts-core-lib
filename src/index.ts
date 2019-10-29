@@ -1,5 +1,5 @@
-export * from './core-debug';
 export * from './logger';
+export * from './core-debug';
 export * from './eventtypes';
 export * from './events';
 
@@ -24,3 +24,9 @@ export * from './math';
 export * from './random';
 export * from './tween';
 export * from './type';
+
+import { initNetworkStatusDetection, getDeviceInfo } from './device';
+
+export async function initCoreLibrary(): Promise<void> {
+  await Promise.all([initNetworkStatusDetection(), getDeviceInfo()]);
+}

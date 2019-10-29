@@ -47,6 +47,5 @@ export async function initNetworkStatusDetection(): Promise<void> {
 }
 
 export async function isOnline(): Promise<boolean> {
-  await initNetworkStatusDetection();
   return currentStatus.connected;
 }
