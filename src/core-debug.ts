@@ -6,7 +6,7 @@ import { settings } from 'pixi.js-legacy';
 const parameters = new URLSearchParams(location.search);
 
 export interface CoreDebugSettings {
-  minLogLevel: string;
+  minLogLevel: number;
   globalTimescale: number;
   showStats: boolean;
   forceLowResolution: boolean;
