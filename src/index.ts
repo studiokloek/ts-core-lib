@@ -1,5 +1,5 @@
-export * from './logger';
 export * from './core-debug';
+export * from './logger';
 export * from './eventtypes';
 export * from './events';
 
