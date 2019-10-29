@@ -1,5 +1,5 @@
 import { Plugins } from '@capacitor/core';
-import { getLogger } from '@studiokloek/kloek-ts-core/logger';
+import { getLogger } from '@studiokloek/kloek-ts-core';
 import { getValueFromJSON } from './util';
 const { Storage } = Plugins;
 

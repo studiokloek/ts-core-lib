@@ -1,5 +1,5 @@
 import { memoize } from 'lodash-es';
-import { isMobile } from '@studiokloek/kloek-ts-core/device';
+import { isMobile } from '@studiokloek/kloek-ts-core';
 
 export const supportsTouch = memoize((): boolean => {
   const isTouch =

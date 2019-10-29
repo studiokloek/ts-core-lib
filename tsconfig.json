@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     "rootDir": "./src/",
-    "baseUrl": "./src/",
+    "baseUrl": "./src",
     "paths": {
+      "@studiokloek/kloek-ts-core": ["index"],
+      // "@studiokloek/kloek-ts-core/*": ["*"],
       "*": ["@types/*"]
     },
     "outDir": "./lib/",
@@ -32,6 +34,6 @@
     "esModuleInterop": true
     // "declarationDir": "dist/types"
   },
-  "exclude": ["node_modules", "lib"],
-  "include": ["src"]
+  "exclude": ["node_modules", "lib"]
+  // "include": ["src"]
 }

@@ -1,9 +1,9 @@
 import { merge } from 'lodash-es';
 import { isObject } from 'util';
-import { getLogger } from '@studiokloek/kloek-ts-core/logger';
-import { SoundLibrary, SoundLibraryItem } from '@studiokloek/kloek-ts-core/media/sounds';
+import { getLogger } from '@studiokloek/kloek-ts-core';
+import { SoundLibrary, SoundLibraryItem } from '@studiokloek/kloek-ts-core';
 import { AssetLoaderInterface } from '.';
-import { CoreDebug } from '@studiokloek/kloek-ts-core/core-debug';
+import { CoreDebug } from '@studiokloek/kloek-ts-core';
 
 const Logger = getLogger('loader > sounds ');
 

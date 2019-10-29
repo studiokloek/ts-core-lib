@@ -1,9 +1,9 @@
 import { memoize } from 'lodash-es';
-import { CoreDebug } from '@studiokloek/kloek-ts-core/core-debug';
-import { getPixelRatio, isMobile, isObsoleteBrowser, isPlatform, Platform } from '@studiokloek/kloek-ts-core/device';
+import { CoreDebug } from '@studiokloek/kloek-ts-core';
+import { getPixelRatio, isMobile, isObsoleteBrowser, isPlatform, Platform } from '@studiokloek/kloek-ts-core';
 import { ResolutionMode } from './constants';
 import { getViewportSize } from './viewport';
-// import { getLogger } from '@studiokloek/kloek-ts-core/logger';
+// import { getLogger } from '@studiokloek/kloek-ts-core';
 
 // const Logger = getLogger('core > resolution');
 

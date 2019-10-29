@@ -1,5 +1,5 @@
 import { Capacitor, Plugins, StatusBarStyle } from '@capacitor/core';
-import { getLogger } from '@studiokloek/kloek-ts-core/logger';
+import { getLogger } from '@studiokloek/kloek-ts-core';
 const { StatusBar } = Plugins;
 
 const Logger = getLogger('core > chrome');

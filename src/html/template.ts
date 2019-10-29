@@ -1,4 +1,4 @@
-import { Logger } from '@studiokloek/kloek-ts-core/logger';
+import { Logger } from '@studiokloek/kloek-ts-core';
 
 export function getElementFromTemplate(_id: string): HTMLElement | undefined {
   const template = document.querySelector(_id) as HTMLElement;

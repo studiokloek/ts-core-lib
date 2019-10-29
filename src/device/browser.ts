@@ -1,5 +1,5 @@
 import { getParser, Parser } from 'bowser';
-import { isApp } from '@studiokloek/kloek-ts-core/device';
+import { isApp } from '@studiokloek/kloek-ts-core';
 import { memoize } from 'lodash-es';
 import { Platform, isPlatform } from './device';
 import { supportsTouch } from './interaction';

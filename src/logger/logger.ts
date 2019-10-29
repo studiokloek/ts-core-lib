@@ -2,7 +2,7 @@
 
 import { trim, noop } from 'lodash-es';
 import { calculateLoggerColor, getNextLoggerColor } from './colors';
-import { CoreDebug } from '@studiokloek/kloek-ts-core/core-debug';
+import { CoreDebug } from '@studiokloek/kloek-ts-core';
 import { LogLevels } from './levels';
 
 class LoggerClass {

@@ -1,4 +1,4 @@
-import { LogLevels } from '@studiokloek/kloek-ts-core/logger/levels';
+import { LogLevels } from '@studiokloek/kloek-ts-core';
 import { assign } from 'lodash-es';
 import { settings } from 'pixi.js-legacy';
 

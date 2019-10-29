@@ -1,7 +1,7 @@
 import * as request from 'superagent';
-import { getLogger } from '@studiokloek/kloek-ts-core/logger';
+import { getLogger } from '@studiokloek/kloek-ts-core';
 import { stringSizeInKb } from './util';
-import { isOnline } from '@studiokloek/kloek-ts-core/device';
+import { isOnline } from '@studiokloek/kloek-ts-core';
 
 const Logger = getLogger('core > request');
 
