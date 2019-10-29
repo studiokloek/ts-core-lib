@@ -1,8 +1,8 @@
-import { SoundLibraryItem } from './../media/sounds';
-import { getLogger } from 'logger';
 import { filter, find, isNil, round } from 'lodash-es';
 import { Texture } from 'pixi.js-legacy';
 import { SyncEvent } from 'ts-events';
+import { getLogger } from '../logger';
+import { SoundLibraryItem } from '../media';
 import { createFontLoader, FontAsset, FontAssetInfo } from './font-loader';
 import { createSoundsLoader, SoundsAssetInfo } from './sounds-loader';
 import { createSpineLoader, SpineAsset, SpineAssetInfo } from './spine-loader';
@@ -49,6 +49,11 @@ const DefaultLoaderOptions: LoaderOptions = {
   maxConcurrent: 10,
   id: 'default',
 };
+
+export * from './font-loader';
+export * from './sounds-loader';
+export * from './spine-loader';
+export * from './sprites-loader';
 
 export class AssetLoader {
   protected assets: LoaderAssets;

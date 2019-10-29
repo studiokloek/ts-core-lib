@@ -1,7 +1,6 @@
-import { PubSub } from './../events';
-import { getLogger } from 'logger';
-import { AppEvent } from './../eventtypes';
+import { PubSub, AppEvent } from '../events';
 import { NetworkStatus, Plugins } from '@capacitor/core';
+import { getLogger } from '../logger';
 
 const Logger = getLogger('core > network');
 const { Network } = Plugins;

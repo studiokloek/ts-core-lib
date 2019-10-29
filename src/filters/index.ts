@@ -1,5 +1,5 @@
 import { filters } from 'pixi.js-legacy';
-import { determineResolution } from './../screen';
+import { determineResolution } from '../screen';
 
 export function getColorMatrixFilter(matrix: number[]): filters.ColorMatrixFilter {
   const filter = new filters.ColorMatrixFilter();

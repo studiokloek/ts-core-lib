@@ -1,8 +1,8 @@
 /* eslint no-console: "off" */
 import { noop, trim } from 'lodash-es';
+import { CoreDebug } from '../debug/core';
 import { calculateLoggerColor, getNextLoggerColor } from './colors';
 import { LogLevels } from './levels';
-import { CoreDebug } from 'core-debug';
 
 class LoggerClass {
   private prefix: string = '';
@@ -142,12 +142,4 @@ export function getLogger(prefix: string = 'default'): LoggerClass {
   }
 
   return logger;
-}
-
-export function squashForLog(_value?: {}): {} {
-  if (_value) {
-    return JSON.stringify(_value);
-  } else {
-    return '';
-  }
 }

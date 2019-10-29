@@ -1,4 +1,4 @@
-import { LogLevels } from './logger/levels';
+import { LogLevels } from '../logger/levels';
 import { assign } from 'lodash-es';
 import { settings } from 'pixi.js-legacy';
 

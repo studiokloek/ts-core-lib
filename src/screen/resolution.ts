@@ -1,12 +1,11 @@
 import { memoize } from 'lodash-es';
-// import { getLogger } from '../logger';
+import { CoreDebug } from '../debug';
+import { getPixelRatio, isMobile, isObsoleteBrowser, isPlatform, Platform } from '../device';
+import { getLogger } from '../logger';
 import { ResolutionMode } from './constants';
 import { getViewportSize } from './viewport';
-import { getPixelRatio, isMobile, isPlatform, Platform, isObsoleteBrowser } from '../device';
-import { CoreDebug } from '../core-debug';
 
-// import { getLogger } from '@studiokloek/ts-core-lib';
-// const Logger = getLogger('core > resolution');
+const Logger = getLogger('core > resolution');
 
 console.log(1);
 export const determineResolution = memoize((): { screen: number; texture: number } => {
@@ -23,11 +22,8 @@ export const determineResolution = memoize((): { screen: number; texture: number
   let screenResolution = ResolutionMode.NORMAL,
     textureResolution = ResolutionMode.NORMAL;
 
-  // Logger.info('pixelRatio', pixelRatio);
-  // Logger.info('viewportSize', viewportSize);
-  // Logger.info('isMobile()', isMobile());
-  // Logger.info('isObsoleteBrowser()', isObsoleteBrowser());
-  // Logger.info('isPlatform(Platform.IOS)', isPlatform(Platform.IOS));
+  Logger.info('pixelRatio', pixelRatio);
+  Logger.info('viewportSize', viewportSize);
 
   if (isMobile()) {
     if (isPlatform(Platform.IOS) && viewportSize > 1024) {

@@ -1,8 +1,6 @@
-import { PubSub } from 'events/pubsub';
 import { TweenMax } from 'gsap';
 import { Bind } from 'lodash-decorators';
 import { ceil, round } from 'lodash-es';
-import { getLogger } from 'logger';
 import {
   autoDetectRenderer,
   CanvasRenderer,
@@ -22,15 +20,17 @@ import {
 } from 'pixi.js-legacy';
 import Stats from 'stats.js';
 import { Screen } from '.';
-import { CoreDebug } from './../core-debug';
-import { getGPUInfo, GPUInfo } from './../device';
-import { AppEvent } from './../eventtypes';
-import { constrainNumber } from './../math';
-import { Delayed, restoreTickerTimeAfterSleep, setTickerGlobalTimeScale, storeTickerTimeBeforeSleep } from './../ticker';
-import { Tween } from './../tween';
+import { getGPUInfo, GPUInfo } from '../device';
+import { restoreTickerTimeAfterSleep, setTickerGlobalTimeScale, storeTickerTimeBeforeSleep } from '../ticker';
+import { Tween } from '../tween';
 import { ResolutionMode } from './constants';
 import { determineResolution } from './resolution';
 import { StageInfo } from './stageinfo';
+import { getLogger } from '../logger';
+import { CoreDebug } from '../debug';
+import { constrainNumber } from '../util/math';
+import { PubSub, AppEvent } from '../events';
+import { Delayed } from '../delay';
 
 const Logger = getLogger('core > stage');
 

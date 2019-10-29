@@ -1,5 +1,5 @@
 import { interaction } from 'pixi.js-legacy';
-import { fixEventNames } from './events';
+import { fixEventNames } from './util';
 
 // TOUCH EVENTS
 export const TouchEvent: { [key: string]: interaction.InteractionEventTypes } = {
@@ -27,12 +27,3 @@ export const AppEvent = {
   NETWORK_OFFLINE: 'network_offline',
 };
 fixEventNames(AppEvent, 'app');
-
-// INFO OVERLAY EVENTS
-export const InfoOverlayEvent = {
-  SHOW: 'show',
-  SHOWN: 'shown',
-  HIDE: 'hide',
-  HIDDEN: 'hidden',
-};
-fixEventNames(AppEvent, 'info-overlay');

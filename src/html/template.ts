@@ -1,4 +1,4 @@
-import { Logger } from './../logger';
+import { Logger } from '../logger';
 
 export function getElementFromTemplate(_id: string): HTMLElement | undefined {
   const template = document.querySelector(_id) as HTMLElement;

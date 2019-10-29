@@ -1,14 +1,14 @@
-import { SoundAsset } from './../loaders/sounds-loader';
-import { Stage } from './../screen/index';
-import { Random } from './../random';
-import { Linear, Tween } from './../tween';
-import { getLogger } from 'logger';
-import { Delayed } from './../ticker';
 import { Howl } from 'howler';
 import { Bind } from 'lodash-decorators';
 import { filter, find, pull, round } from 'lodash-es';
+import { Delayed } from '../delay';
+import { SoundAsset } from '../loaders/sounds-loader';
+import { getLogger } from '../logger';
+import { Stage } from '../screen/index';
+import { Linear, Tween } from '../tween';
+import { Random } from '../util/random';
 
-const Logger = getLogger('sounds');
+const Logger = getLogger('core > sounds');
 
 export class SoundLibraryItem {
   private asset: SoundAsset;

@@ -1,12 +1,10 @@
-import { CoreDebug } from './../core-debug';
-// import { CoreDebug, getLogger } from '@studiokloek/ts-core-lib';
 import { TweenMax } from 'gsap';
 import { Bind } from 'lodash-decorators';
-import { get, round } from 'lodash-es';
-import { getLogger } from 'logger';
-import { getTicker } from 'ticker';
+import { round } from 'lodash-es';
+import { CoreDebug } from '../debug';
+import { getLogger } from '../logger';
 
-const Logger = getLogger('core');
+const Logger = getLogger('core > ticker');
 
 interface TickerItem {
   callback: TickerCallback;
@@ -14,7 +12,7 @@ interface TickerItem {
   active: boolean;
 }
 
-interface TickerCallback extends Function {
+export interface TickerCallback extends Function {
   __tickerid__?: number;
 }
 
@@ -216,57 +214,5 @@ export class ConcreteTicker {
 
   public set globalTimeScale(_value: number) {
     this._globalTimeScale = _value;
-  }
-}
-
-// MIXIN
-let MIXIN_UUID = 0;
-export class TickerMixin {
-  private __ticker?: ConcreteTicker;
-
-  protected addTicker(callback: Function): number {
-    if (typeof callback !== 'function') {
-      Logger.error('addTicker', 'Could not add callback. No valid callback provided.');
-      return -1;
-    }
-
-    if (!this.__ticker) {
-      const name = get(this, 'name') || get(this, 'id') || `mixin-ticker-${++MIXIN_UUID}`;
-      this.__ticker = getTicker(name);
-    }
-
-    return this.__ticker.add(callback);
-  }
-
-  protected removeTicker(callback: TickerCallback | TickerCallback[]): void {
-    if (this.__ticker) {
-      return this.__ticker.remove(callback);
-    }
-  }
-
-  protected removeTickers(): void {
-    if (this.__ticker) {
-      this.__ticker.removeAll();
-    }
-  }
-
-  protected pauseTickers(): void {
-    if (this.__ticker) {
-      this.__ticker.sleep();
-    }
-  }
-
-  protected resumeTickers(): void {
-    if (this.__ticker) {
-      this.__ticker.wake();
-    }
-  }
-
-  public get tickerTime(): number {
-    if (this.__ticker) {
-      return this.__ticker.time;
-    } else {
-      return 0;
-    }
   }
 }

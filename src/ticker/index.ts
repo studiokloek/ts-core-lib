@@ -1,17 +1,15 @@
-export * from './delay';
-
-import { ConcreteTicker as TickerClass } from './ticker';
+import { ConcreteTicker } from './ticker';
 import { values } from 'lodash-es';
 
-const table: { [key: string]: TickerClass } = {};
+const table: { [key: string]: ConcreteTicker } = {};
 
 let globalTimeScale = 1;
 
-export function getTicker(name: string = 'default'): TickerClass {
-  let ticker = table[name] as TickerClass;
+export function getTicker(name: string = 'default'): ConcreteTicker {
+  let ticker = table[name] as ConcreteTicker;
 
   if (!ticker) {
-    ticker = table[name] = new TickerClass(name);
+    ticker = table[name] = new ConcreteTicker(name);
   }
 
   ticker.globalTimeScale = globalTimeScale;
@@ -46,4 +44,4 @@ export function restoreTickerTimeAfterSleep(): void {
 
 export const Ticker = getTicker();
 
-export { TickerMixin } from './ticker';
+export * from './mixin';

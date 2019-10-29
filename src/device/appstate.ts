@@ -1,11 +1,10 @@
-import { isReloadedPage } from './../app';
-import { PubSub } from './../events';
-import { getLogger } from 'logger';
-import { AppEvent } from './../eventtypes';
 import { AppState, Plugins } from '@capacitor/core';
+import { isReloadedPage } from '../app';
+import { AppEvent, PubSub } from '../events';
+import { getLogger } from '../logger';
 import { isApp } from './device';
 
-const Logger = getLogger('core > app state');
+const Logger = getLogger('core > device > app state');
 const { App } = Plugins;
 
 function handleAppState(state: AppState): void {

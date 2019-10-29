@@ -2,17 +2,15 @@ import { Plugins } from '@capacitor/core';
 import { Sine } from 'gsap';
 import { Bind } from 'lodash-decorators';
 import { round } from 'lodash-es';
-import { AppEvent } from 'eventtypes';
-import { constrainNumber, mapNumber, randomBetween } from 'math';
-import { CoreDebug } from 'core-debug';
-import { Delayed } from 'ticker';
-import { deviceNeedsMediaTrigger, isApp } from 'device';
-import { getElement } from 'html';
-import { Logger } from 'logger';
-import { Stage } from 'screen';
-import { Tween } from 'tween';
-import { PubSub } from 'events/pubsub';
-
+import { CoreDebug } from '../debug';
+import { Delayed } from '../delay';
+import { deviceNeedsMediaTrigger, isApp } from '../device';
+import { AppEvent, PubSub } from '../events';
+import { getElement } from '../html';
+import { Logger } from '../logger';
+import { Stage } from '../screen';
+import { Tween } from '../tween';
+import { constrainNumber, mapNumber, randomBetween } from '../util/math';
 const { SplashScreen } = Plugins;
 
 class MediaTriggerScreen {

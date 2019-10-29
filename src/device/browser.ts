@@ -1,6 +1,6 @@
 import { getParser, Parser } from 'bowser';
 import { memoize } from 'lodash-es';
-import { Platform, isPlatform, isApp } from './device';
+import { isApp, isPlatform, Platform } from './device';
 import { supportsTouch } from './interaction';
 
 export const browserInfoParser = getParser(navigator.userAgent);

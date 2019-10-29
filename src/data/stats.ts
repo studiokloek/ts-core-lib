@@ -1,6 +1,6 @@
-import { isApp, isPlatform, Platform } from './../device';
-import { getLogger } from 'logger';
-import { CoreDebug } from './../core-debug';
+import { getLogger } from '../logger';
+import { CoreDebug } from '../debug';
+import { isApp, isPlatform, Platform } from '../device';
 
 const Logger = getLogger('core > data > stats');
 

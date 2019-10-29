@@ -3,34 +3,45 @@
     "rootDir": "./src/",
     "baseUrl": "./src",
     "paths": {
-      "*": ["*", "@types/*"]
+      "*": ["@types/*"]
     },
     "outDir": "./lib/",
 
     "declaration": true,
-    "sourceMap": true,
-    "composite": true,
-    "target": "esnext",
-    "module": "commonjs",
-
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "strictBindCallApply": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
+    "downlevelIteration": false,
     "experimentalDecorators": true,
+    "importHelpers": false,
+    "inlineSources": true,
+    "lib": ["dom", "es5", "es2015.core", "es2015.iterable", "es2015.promise", "es2015.symbol", "es2015.symbol.wellknown", "es2015.proxy"],
+    "moduleResolution": "node",
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "plugins": [],
+    "removeComments": false,
+    "sourceMap": true,
+    "strict": true,
+    "target": "esnext",
+    "module": "esnext",
 
-    "pretty": true,
-    "noErrorTruncation": false,
+    "composite": true,
 
-    "allowSyntheticDefaultImports": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    // "moduleResolution": "node",
-    "esModuleInterop": true
+    // "noImplicitThis": true,
+    // "alwaysStrict": true,
+    // "strictBindCallApply": true,
+    // "strictNullChecks": true,
+    // "strictFunctionTypes": true,
+    // "experimentalDecorators": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+
+    // "pretty": true,
+    // "noErrorTruncation": false,
+
+    "allowSyntheticDefaultImports": true
+    // "noFallthroughCasesInSwitch": true,
+    // "noImplicitReturns": true,
+    // // "moduleResolution": "node",
+    // "esModuleInterop": true
   },
   "exclude": ["node_modules", "lib"],
-  "include": ["src"]
+  "include": ["src/**/*.ts"]
 }

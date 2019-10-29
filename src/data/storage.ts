@@ -1,6 +1,6 @@
-import { getLogger } from 'logger';
 import { Plugins } from '@capacitor/core';
 import { getValueFromJSON } from './util';
+import { getLogger } from '../logger';
 
 const { Storage } = Plugins;
 

@@ -1,8 +1,8 @@
-import { getLogger } from 'logger';
-import { determineResolution } from './../screen';
 import { concat, last, merge, split } from 'lodash-es';
 import { Loader, LoaderResource, Texture } from 'pixi.js-legacy';
 import { AssetLoaderInterface } from '.';
+import { getLogger } from '../logger';
+import { determineResolution } from '../screen';
 
 const Logger = getLogger('loader > sprite');
 

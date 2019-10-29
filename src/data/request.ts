@@ -1,7 +1,7 @@
 import * as request from 'superagent';
-import { stringSizeInKb } from './util';
+import { isOnline } from '../device';
 import { getLogger } from '../logger';
-import { isOnline } from 'device';
+import { stringSizeInKb } from './util';
 
 const Logger = getLogger('core > request');
 
