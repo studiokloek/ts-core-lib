@@ -1,0 +1,20 @@
+/.eslintcache
+/www
+/node_modules
+
+# Webstorm User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# VSCode settings
+.vscode/*
+
+src/assets/sprites/*
+src/assets/sounds/*
+
+src/script/app/**/sprites-*.ts
+src/script/app/**/sounds-*.ts
+compilation-stats.json
