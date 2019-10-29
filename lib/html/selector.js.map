@@ -1,1 +1,0 @@
-{"version":3,"file":"selector.js","sourceRoot":"","sources":["../../src/html/selector.ts"],"names":[],"mappings":"AAAA,MAAM,UAAU,UAAU,CAAC,OAA6B;IACtD,gBAAgB;IAChB,IAAI,OAAO,OAAO,KAAK,QAAQ,EAAE;QAC/B,OAAO,QAAQ,CAAC,aAAa,CAAC,OAAiB,CAAC,CAAC;KAClD;SAAM,IAAI,OAAO,YAAY,WAAW,EAAE;QACzC,OAAO,OAAsB,CAAC;KAC/B;IAED,OAAO,IAAI,CAAC;AACd,CAAC"}

@@ -1,17 +1,3 @@
-// PIXI
-import 'pixi.js-legacy';
-import 'pixi-spine';
-
-// GSAP & TWEEN
-import 'gsap';
-import 'gsap-then';
-import { ColorPropsPlugin } from 'gsap/ColorPropsPlugin';
-import { PixiPlugin } from 'gsap/PixiPlugin';
-
-// "onzin" regel om er voor te zorgen dat de plugins ge-include worden tijdens een build
-[PixiPlugin, ColorPropsPlugin];
-PixiPlugin.registerPIXI(PIXI);
-
 export * from './data';
 export * from './device';
 export * from './events';
