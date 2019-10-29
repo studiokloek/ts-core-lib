@@ -3,7 +3,6 @@
     "rootDir": "./src/",
     "baseUrl": "./src",
     "paths": {
-      "@studiokloek/ts-core-lib/*": ["*"],
       "@studiokloek/ts-core-lib": ["index"],
       "*": ["@types/*"]
     },
