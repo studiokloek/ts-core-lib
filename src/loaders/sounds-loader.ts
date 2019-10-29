@@ -115,7 +115,7 @@ export class SoundsLoader implements AssetLoaderInterface {
     if (this.numberDoneLoading < this.numberToLoad) {
       this.preloadNextSoundAsset();
     } else {
-      Logger.info(`Loaded '${this.options.assetName}'`);
+      Logger.info(`Loaded '${this.options.assetName}' sounds`);
       this.loadedResolver(this.data);
     }
   }
