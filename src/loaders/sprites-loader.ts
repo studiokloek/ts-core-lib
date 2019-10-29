@@ -1,7 +1,6 @@
+import { determineResolution, getLogger } from '@studiokloek/ts-core-lib';
 import { concat, last, merge, split } from 'lodash-es';
-import { Loader, Texture, LoaderResource } from 'pixi.js-legacy';
-import { getLogger } from '@studiokloek/ts-core-lib';
-import { determineResolution } from '@studiokloek/ts-core-lib';
+import { Loader, LoaderResource, Texture } from 'pixi.js-legacy';
 import { AssetLoaderInterface } from '.';
 
 const Logger = getLogger('loader > sprite');

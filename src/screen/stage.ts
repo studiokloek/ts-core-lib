@@ -1,33 +1,38 @@
+import {
+  AppEvent,
+  constrainNumber,
+  CoreDebug,
+  Delayed,
+  getGPUInfo,
+  getLogger,
+  GPUInfo,
+  PubSub,
+  restoreTickerTimeAfterSleep,
+  setTickerGlobalTimeScale,
+  storeTickerTimeBeforeSleep,
+  Tween,
+} from '@studiokloek/ts-core-lib';
 import { TweenMax } from 'gsap';
 import { Bind } from 'lodash-decorators';
 import { ceil, round } from 'lodash-es';
 import {
   autoDetectRenderer,
+  CanvasRenderer,
   Container,
   DisplayObject,
+  Graphics,
   interaction,
   Point,
   Rectangle,
+  Renderer,
   settings,
   Sprite,
-  Texture,
   systems,
+  Texture,
   Ticker as PixiTicker,
   utils,
-  Renderer,
-  Graphics,
-  CanvasRenderer,
 } from 'pixi.js-legacy';
 import Stats from 'stats.js';
-import { CoreDebug } from '@studiokloek/ts-core-lib';
-import { getGPUInfo, GPUInfo } from '@studiokloek/ts-core-lib';
-import { PubSub } from '@studiokloek/ts-core-lib';
-import { AppEvent } from '@studiokloek/ts-core-lib';
-import { getLogger } from '@studiokloek/ts-core-lib';
-import { constrainNumber } from '@studiokloek/ts-core-lib';
-import { Delayed, restoreTickerTimeAfterSleep, setTickerGlobalTimeScale, storeTickerTimeBeforeSleep } from '@studiokloek/ts-core-lib';
-import { Tween } from '@studiokloek/ts-core-lib';
-
 import { determineResolution, ResolutionMode, Screen, StageInfo } from '.';
 
 const Logger = getLogger('core > stage');

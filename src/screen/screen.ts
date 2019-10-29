@@ -1,6 +1,6 @@
+import { isMobile } from '@studiokloek/ts-core-lib';
 import { Bind, Debounce } from 'lodash-decorators';
 import { AsyncEvent } from 'ts-events';
-import { isMobile } from '@studiokloek/ts-core-lib';
 import { OrientationMode, ResolutionMode } from './constants';
 import { determineResolution } from './resolution';
 

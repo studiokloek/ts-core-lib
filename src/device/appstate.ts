@@ -1,9 +1,6 @@
 import { AppState, Plugins } from '@capacitor/core';
-import { PubSub } from '@studiokloek/ts-core-lib';
-import { AppEvent } from '@studiokloek/ts-core-lib';
-import { getLogger } from '@studiokloek/ts-core-lib';
+import { AppEvent, getLogger, isReloadedPage, PubSub } from '@studiokloek/ts-core-lib';
 import { isApp } from './device';
-import { isReloadedPage } from '@studiokloek/ts-core-lib';
 
 const Logger = getLogger('core > app state');
 const { App } = Plugins;

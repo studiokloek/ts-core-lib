@@ -1,8 +1,8 @@
 /* eslint no-console: "off" */
 
-import { trim, noop } from 'lodash-es';
-import { calculateLoggerColor, getNextLoggerColor } from './colors';
 import { CoreDebug } from '@studiokloek/ts-core-lib';
+import { noop, trim } from 'lodash-es';
+import { calculateLoggerColor, getNextLoggerColor } from './colors';
 import { LogLevels } from './levels';
 
 class LoggerClass {

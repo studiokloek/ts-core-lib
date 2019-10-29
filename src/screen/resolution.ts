@@ -1,6 +1,5 @@
+import { CoreDebug, getPixelRatio, isMobile, isObsoleteBrowser, isPlatform, Platform } from '@studiokloek/ts-core-lib';
 import { memoize } from 'lodash-es';
-import { CoreDebug } from '@studiokloek/ts-core-lib';
-import { getPixelRatio, isMobile, isObsoleteBrowser, isPlatform, Platform } from '@studiokloek/ts-core-lib';
 import { ResolutionMode } from './constants';
 import { getViewportSize } from './viewport';
 // import { getLogger } from '@studiokloek/ts-core-lib';

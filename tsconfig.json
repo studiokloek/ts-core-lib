@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "rootDir": "./src/",
-    "baseUrl": "./src",
+    "baseUrl": "./src/",
     "paths": {
       "@studiokloek/ts-core-lib": ["index"],
       "*": ["@types/*"]
@@ -34,5 +34,6 @@
     // "declarationDir": "dist/types"
   },
   "exclude": ["node_modules", "lib"],
-  "include": ["src"]
+  "include": ["src"],
+  "files": ["src/index"]
 }

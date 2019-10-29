@@ -1,12 +1,18 @@
+import {
+  createSoundsLoader,
+  createSpineLoader,
+  createSpriteLoader,
+  getLogger,
+  SoundLibraryItem,
+  SoundsAssetInfo,
+  SpineAsset,
+  SpineAssetInfo,
+  SpriteAssetInfo,
+} from '@studiokloek/ts-core-lib';
 import { filter, find, isNil, round } from 'lodash-es';
 import { Texture } from 'pixi.js-legacy';
 import { SyncEvent } from 'ts-events';
-import { createSpineLoader, SpineAsset, SpineAssetInfo } from '@studiokloek/ts-core-lib';
-import { createSpriteLoader, SpriteAssetInfo } from '@studiokloek/ts-core-lib';
-import { createSoundsLoader, SoundsAssetInfo } from '@studiokloek/ts-core-lib';
-import { getLogger } from '@studiokloek/ts-core-lib';
 import { createFontLoader, FontAsset, FontAssetInfo } from './font-loader';
-import { SoundLibraryItem } from '@studiokloek/ts-core-lib';
 
 const Logger = getLogger('loader');
 

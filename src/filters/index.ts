@@ -1,5 +1,5 @@
-import { filters } from 'pixi.js-legacy';
 import { determineResolution } from '@studiokloek/ts-core-lib';
+import { filters } from 'pixi.js-legacy';
 
 export function getColorMatrixFilter(matrix: number[]): filters.ColorMatrixFilter {
   const filter = new filters.ColorMatrixFilter();

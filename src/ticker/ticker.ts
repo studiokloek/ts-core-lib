@@ -1,8 +1,7 @@
+import { CoreDebug, getLogger } from '@studiokloek/ts-core-lib';
 import { TweenMax } from 'gsap';
 import { Bind } from 'lodash-decorators';
 import { get, round } from 'lodash-es';
-import { CoreDebug } from '@studiokloek/ts-core-lib';
-import { getLogger } from '@studiokloek/ts-core-lib';
 import { getTicker } from '.';
 
 const Logger = getLogger('core');

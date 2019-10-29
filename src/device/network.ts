@@ -1,7 +1,5 @@
 import { NetworkStatus, Plugins } from '@capacitor/core';
-import { PubSub } from '@studiokloek/ts-core-lib';
-import { AppEvent } from '@studiokloek/ts-core-lib';
-import { getLogger } from '@studiokloek/ts-core-lib';
+import { AppEvent, getLogger, PubSub } from '@studiokloek/ts-core-lib';
 
 const Logger = getLogger('core > network');
 const { Network } = Plugins;

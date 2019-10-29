@@ -1,7 +1,6 @@
+import { determineResolution, getLogger } from '@studiokloek/ts-core-lib';
 import { last, split } from 'lodash-es';
-import { spine, Texture, Loader } from 'pixi.js-legacy';
-import { getLogger } from '@studiokloek/ts-core-lib';
-import { determineResolution } from '@studiokloek/ts-core-lib';
+import { Loader, spine, Texture } from 'pixi.js-legacy';
 import { AssetLoaderInterface } from '.';
 
 const Logger = getLogger('loader > spine');
