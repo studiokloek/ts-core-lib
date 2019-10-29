@@ -1,17 +1,17 @@
 import { Plugins } from '@capacitor/core';
 import { Bind } from 'lodash-decorators';
 import { round } from 'lodash-es';
-import { deviceNeedsMediaTrigger, isApp } from '@studiokloek/kloek-ts-core';
-import { PubSub } from '@studiokloek/kloek-ts-core';
-import { AppEvent } from '@studiokloek/kloek-ts-core';
-import { Logger } from '@studiokloek/kloek-ts-core';
-import { constrainNumber, mapNumber, randomBetween } from '@studiokloek/kloek-ts-core';
-import { Stage } from '@studiokloek/kloek-ts-core';
-import { Delayed } from '@studiokloek/kloek-ts-core';
-import { Tween } from '@studiokloek/kloek-ts-core';
-import { getElement } from '@studiokloek/kloek-ts-core';
+import { deviceNeedsMediaTrigger, isApp } from '@studiokloek/ts-core-lib';
+import { PubSub } from '@studiokloek/ts-core-lib';
+import { AppEvent } from '@studiokloek/ts-core-lib';
+import { Logger } from '@studiokloek/ts-core-lib';
+import { constrainNumber, mapNumber, randomBetween } from '@studiokloek/ts-core-lib';
+import { Stage } from '@studiokloek/ts-core-lib';
+import { Delayed } from '@studiokloek/ts-core-lib';
+import { Tween } from '@studiokloek/ts-core-lib';
+import { getElement } from '@studiokloek/ts-core-lib';
 import { Sine } from 'gsap';
-import { CoreDebug } from '@studiokloek/kloek-ts-core';
+import { CoreDebug } from '@studiokloek/ts-core-lib';
 
 const { SplashScreen } = Plugins;
 

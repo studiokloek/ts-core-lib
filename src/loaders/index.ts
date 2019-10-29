@@ -1,12 +1,12 @@
 import { filter, find, isNil, round } from 'lodash-es';
 import { Texture } from 'pixi.js-legacy';
 import { SyncEvent } from 'ts-events';
-import { createSpineLoader, SpineAsset, SpineAssetInfo } from '@studiokloek/kloek-ts-core';
-import { createSpriteLoader, SpriteAssetInfo } from '@studiokloek/kloek-ts-core';
-import { createSoundsLoader, SoundsAssetInfo } from '@studiokloek/kloek-ts-core';
-import { getLogger } from '@studiokloek/kloek-ts-core';
+import { createSpineLoader, SpineAsset, SpineAssetInfo } from '@studiokloek/ts-core-lib';
+import { createSpriteLoader, SpriteAssetInfo } from '@studiokloek/ts-core-lib';
+import { createSoundsLoader, SoundsAssetInfo } from '@studiokloek/ts-core-lib';
+import { getLogger } from '@studiokloek/ts-core-lib';
 import { createFontLoader, FontAsset, FontAssetInfo } from './font-loader';
-import { SoundLibraryItem } from '@studiokloek/kloek-ts-core';
+import { SoundLibraryItem } from '@studiokloek/ts-core-lib';
 
 const Logger = getLogger('loader');
 

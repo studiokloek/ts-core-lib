@@ -1,5 +1,5 @@
 import { get, memoize } from 'lodash-es';
-import { isMobile } from '@studiokloek/kloek-ts-core';
+import { isMobile } from '@studiokloek/ts-core-lib';
 
 export const getViewportSize = memoize(() => {
   let viewportSize = 0;

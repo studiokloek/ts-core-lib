@@ -1,5 +1,5 @@
 {
-  "name": "@studiokloek/kloek-ts-core",
+  "name": "@studiokloek/ts-core-lib",
   "version": "1.0.0",
   "description": "Core TypeScript lib for our projects.",
   "author": "Martijn Swart <opensource@studiokloek.nl> (https://studiokloek.nl)",
@@ -9,9 +9,9 @@
   "typescript": {
     "definition": "lib/index"
   },
-  "repository": "github:studiokloek/kloek-ts-core",
+  "repository": "github:studiokloek/ts-core-lib",
   "bugs": {
-    "url": "https://github.com/studiokloek/kloek-ts-core/issues"
+    "url": "https://github.com/studiokloek/ts-core-lib/issues"
   },
   "scripts": {
     "check": "tsc --noEmit",

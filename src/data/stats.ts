@@ -1,6 +1,6 @@
-import { CoreDebug } from '@studiokloek/kloek-ts-core';
-import { getLogger } from '@studiokloek/kloek-ts-core';
-import { isPlatform, isApp, Platform } from '@studiokloek/kloek-ts-core';
+import { CoreDebug } from '@studiokloek/ts-core-lib';
+import { getLogger } from '@studiokloek/ts-core-lib';
+import { isPlatform, isApp, Platform } from '@studiokloek/ts-core-lib';
 
 const Logger = getLogger('core > data > stats');
 

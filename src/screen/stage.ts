@@ -19,14 +19,14 @@ import {
   CanvasRenderer,
 } from 'pixi.js-legacy';
 import Stats from 'stats.js';
-import { CoreDebug } from '@studiokloek/kloek-ts-core';
-import { getGPUInfo, GPUInfo } from '@studiokloek/kloek-ts-core';
-import { PubSub } from '@studiokloek/kloek-ts-core';
-import { AppEvent } from '@studiokloek/kloek-ts-core';
-import { getLogger } from '@studiokloek/kloek-ts-core';
-import { constrainNumber } from '@studiokloek/kloek-ts-core';
-import { Delayed, restoreTickerTimeAfterSleep, setTickerGlobalTimeScale, storeTickerTimeBeforeSleep } from '@studiokloek/kloek-ts-core';
-import { Tween } from '@studiokloek/kloek-ts-core';
+import { CoreDebug } from '@studiokloek/ts-core-lib';
+import { getGPUInfo, GPUInfo } from '@studiokloek/ts-core-lib';
+import { PubSub } from '@studiokloek/ts-core-lib';
+import { AppEvent } from '@studiokloek/ts-core-lib';
+import { getLogger } from '@studiokloek/ts-core-lib';
+import { constrainNumber } from '@studiokloek/ts-core-lib';
+import { Delayed, restoreTickerTimeAfterSleep, setTickerGlobalTimeScale, storeTickerTimeBeforeSleep } from '@studiokloek/ts-core-lib';
+import { Tween } from '@studiokloek/ts-core-lib';
 
 import { determineResolution, ResolutionMode, Screen, StageInfo } from '.';
 

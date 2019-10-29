@@ -1,8 +1,8 @@
 import { isArrayLikeObject, isEmpty } from 'lodash-es';
 import ConcretePubSubJS from 'pubsub-js';
-import { getLogger } from '@studiokloek/kloek-ts-core';
-import { Delayed } from '@studiokloek/kloek-ts-core';
-import { CoreDebug } from '@studiokloek/kloek-ts-core';
+import { getLogger } from '@studiokloek/ts-core-lib';
+import { Delayed } from '@studiokloek/ts-core-lib';
+import { CoreDebug } from '@studiokloek/ts-core-lib';
 
 // directe errors in pubsub in de debug modus
 ConcretePubSubJS.immediateExceptions = CoreDebug.isEnabled();

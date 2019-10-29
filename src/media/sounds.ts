@@ -1,12 +1,12 @@
 import { Howl } from 'howler';
 import { Bind } from 'lodash-decorators';
 import { filter, find, pull, round } from 'lodash-es';
-import { SoundAsset } from '@studiokloek/kloek-ts-core';
-import { getLogger } from '@studiokloek/kloek-ts-core';
-import { Random } from '@studiokloek/kloek-ts-core';
-import { Stage } from '@studiokloek/kloek-ts-core';
-import { Delayed } from '@studiokloek/kloek-ts-core';
-import { Linear, Tween } from '@studiokloek/kloek-ts-core';
+import { SoundAsset } from '@studiokloek/ts-core-lib';
+import { getLogger } from '@studiokloek/ts-core-lib';
+import { Random } from '@studiokloek/ts-core-lib';
+import { Stage } from '@studiokloek/ts-core-lib';
+import { Delayed } from '@studiokloek/ts-core-lib';
+import { Linear, Tween } from '@studiokloek/ts-core-lib';
 
 const Logger = getLogger('sounds');
 
