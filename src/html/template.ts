@@ -1,4 +1,4 @@
-import { Logger } from '@studiokloek/ts-core-lib';
+import { Logger } from './../logger';
 
 export function getElementFromTemplate(_id: string): HTMLElement | undefined {
   const template = document.querySelector(_id) as HTMLElement;

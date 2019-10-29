@@ -1,6 +1,7 @@
-import { getLogger, isOnline } from '@studiokloek/ts-core-lib';
 import * as request from 'superagent';
 import { stringSizeInKb } from './util';
+import { getLogger } from '../logger';
+import { isOnline } from 'device';
 
 const Logger = getLogger('core > request');
 

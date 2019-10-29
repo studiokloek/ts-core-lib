@@ -1,4 +1,4 @@
-import { isMobile } from '@studiokloek/ts-core-lib';
+import { isMobile } from './browser';
 import { memoize } from 'lodash-es';
 
 export const supportsTouch = memoize((): boolean => {

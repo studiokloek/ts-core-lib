@@ -1,6 +1,6 @@
 import FontFaceObserver from 'fontfaceobserver';
-import { getLogger, squashForLog } from '@studiokloek/ts-core-lib';
 import { AssetLoaderInterface } from '.';
+import { getLogger, squashForLog } from '../logger';
 
 const Logger = getLogger('loader > font');
 

@@ -1,4 +1,6 @@
-import { CoreDebug, getLogger, isApp, isPlatform, Platform } from '@studiokloek/ts-core-lib';
+import { isApp, isPlatform, Platform } from './../device';
+import { getLogger } from 'logger';
+import { CoreDebug } from './../core-debug';
 
 const Logger = getLogger('core > data > stats');
 

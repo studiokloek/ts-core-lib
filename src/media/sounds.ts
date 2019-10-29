@@ -1,4 +1,9 @@
-import { Delayed, getLogger, Linear, Random, SoundAsset, Stage, Tween } from '@studiokloek/ts-core-lib';
+import { SoundAsset } from './../loaders/sounds-loader';
+import { Stage } from './../screen/index';
+import { Random } from './../random';
+import { Linear, Tween } from './../tween';
+import { getLogger } from 'logger';
+import { Delayed } from './../ticker';
 import { Howl } from 'howler';
 import { Bind } from 'lodash-decorators';
 import { filter, find, pull, round } from 'lodash-es';

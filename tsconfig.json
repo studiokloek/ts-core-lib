@@ -3,8 +3,7 @@
     "rootDir": "./src/",
     "baseUrl": "./src",
     "paths": {
-      "@studiokloek/ts-core-lib": ["index"],
-      "*": ["@types/*"]
+      "*": ["*", "@types/*"]
     },
     "outDir": "./lib/",
 
@@ -29,9 +28,8 @@
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
-    "moduleResolution": "node",
+    // "moduleResolution": "node",
     "esModuleInterop": true
-    // "declarationDir": "dist/types"
   },
   "exclude": ["node_modules", "lib"],
   "include": ["src"]

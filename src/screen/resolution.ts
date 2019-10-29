@@ -1,11 +1,14 @@
-import { CoreDebug, getPixelRatio, isMobile, isObsoleteBrowser, isPlatform, Platform } from '@studiokloek/ts-core-lib';
 import { memoize } from 'lodash-es';
+// import { getLogger } from '../logger';
 import { ResolutionMode } from './constants';
 import { getViewportSize } from './viewport';
-// import { getLogger } from '@studiokloek/ts-core-lib';
+import { getPixelRatio, isMobile, isPlatform, Platform, isObsoleteBrowser } from '../device';
+import { CoreDebug } from '../core-debug';
 
+// import { getLogger } from '@studiokloek/ts-core-lib';
 // const Logger = getLogger('core > resolution');
 
+console.log(1);
 export const determineResolution = memoize((): { screen: number; texture: number } => {
   const pixelRatio = getPixelRatio(),
     viewportSize = Math.floor(getViewportSize() * pixelRatio);

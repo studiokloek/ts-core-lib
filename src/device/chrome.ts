@@ -1,5 +1,6 @@
+import { getLogger } from 'logger';
 import { Capacitor, Plugins, StatusBarStyle } from '@capacitor/core';
-import { getLogger } from '@studiokloek/ts-core-lib';
+
 const { StatusBar } = Plugins;
 
 const Logger = getLogger('core > chrome');

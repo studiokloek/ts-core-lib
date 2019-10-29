@@ -1,6 +1,6 @@
+import { getLogger } from 'logger';
 import { Tween, TweenMax } from 'gsap';
 import { find, remove } from 'lodash-es';
-import { getLogger } from '@studiokloek/ts-core-lib';
 
 const Logger = getLogger('core > delayed');
 

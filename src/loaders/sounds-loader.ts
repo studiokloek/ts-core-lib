@@ -1,6 +1,10 @@
-import { CoreDebug, getLogger, SoundLibrary, SoundLibraryItem } from '@studiokloek/ts-core-lib';
-import { merge } from 'lodash-es';
-import { isObject } from 'util';
+import { SoundLibrary, SoundLibraryItem } from './../media/sounds';
+import { getLogger } from 'logger';
+import { CoreDebug } from './../core-debug';
+
+SoundLibraryItem;
+
+import { merge, isObject } from 'lodash-es';
 import { AssetLoaderInterface } from '.';
 
 const Logger = getLogger('loader > sounds ');

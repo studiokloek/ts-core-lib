@@ -1,20 +1,8 @@
-import {
-  AppEvent,
-  constrainNumber,
-  CoreDebug,
-  Delayed,
-  getGPUInfo,
-  getLogger,
-  GPUInfo,
-  PubSub,
-  restoreTickerTimeAfterSleep,
-  setTickerGlobalTimeScale,
-  storeTickerTimeBeforeSleep,
-  Tween,
-} from '@studiokloek/ts-core-lib';
+import { PubSub } from 'events/pubsub';
 import { TweenMax } from 'gsap';
 import { Bind } from 'lodash-decorators';
 import { ceil, round } from 'lodash-es';
+import { getLogger } from 'logger';
 import {
   autoDetectRenderer,
   CanvasRenderer,
@@ -33,7 +21,16 @@ import {
   utils,
 } from 'pixi.js-legacy';
 import Stats from 'stats.js';
-import { determineResolution, ResolutionMode, Screen, StageInfo } from '.';
+import { Screen } from '.';
+import { CoreDebug } from './../core-debug';
+import { getGPUInfo, GPUInfo } from './../device';
+import { AppEvent } from './../eventtypes';
+import { constrainNumber } from './../math';
+import { Delayed, restoreTickerTimeAfterSleep, setTickerGlobalTimeScale, storeTickerTimeBeforeSleep } from './../ticker';
+import { Tween } from './../tween';
+import { ResolutionMode } from './constants';
+import { determineResolution } from './resolution';
+import { StageInfo } from './stageinfo';
 
 const Logger = getLogger('core > stage');
 

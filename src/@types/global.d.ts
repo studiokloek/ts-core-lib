@@ -10,5 +10,7 @@ declare module '*.jpg' {
   export default content;
 }
 
-declare module 'app' {}
-declare module 'core' {}
+// declare module 'app' {}
+// declare module 'core' {}
+
+// declare var global: any;
