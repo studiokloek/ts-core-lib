@@ -11,9 +11,11 @@
     "url": "https://github.com/studiokloek/ts-core-lib/issues"
   },
   "scripts": {
+    "clean": "rimraf ./lib",
     "check": "tsc --noEmit",
     "check:watch": "npm run check -- --watch",
-    "build": "tsc -b",
+    "build": "npm run clean && tsc -b",
+    "build:watch": "npm run build -- --watch",
     "release": "np"
   },
   "engines": {
@@ -46,7 +48,8 @@
     "lodash-decorators": "^6.0.1",
     "np": "^5.0.3",
     "prettier": "^1.18.2",
-    "prettier-package-json": "^2.1.0"
+    "prettier-package-json": "^2.1.0",
+    "rimraf": "^3.0.0"
   },
   "dependencies": {
     "@capacitor/core": "^1.2.1",
