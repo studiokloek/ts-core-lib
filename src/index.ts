@@ -16,6 +16,7 @@ export * from './media';
 export * from './app';
 export * from './filters';
 
+export * from './patterns';
 export * from './html';
 export * from './ui';
 
