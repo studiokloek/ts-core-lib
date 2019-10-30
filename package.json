@@ -65,6 +65,7 @@
     "random-js": "^2.1.0",
     "stats.js": "^0.17.0",
     "superagent": "^5.1.0",
-    "ts-events": "^3.3.1"
+    "ts-events": "^3.3.1",
+    "ts-mixer": "^4.0.0"
   }
 }
