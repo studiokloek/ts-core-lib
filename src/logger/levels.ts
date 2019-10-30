@@ -1,4 +1,5 @@
 export const LogLevels = {
+  VERBOSE: -1,
   DEBUG: 0,
   INFO: 1,
   WARN: 2,

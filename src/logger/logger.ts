@@ -10,6 +10,7 @@ class LoggerClass {
   private logLevel: number = LogLevels.DEBUG;
   private _color: string = '';
 
+  private _verbose: Function;
   private _debug: Function;
   private _info: Function;
   private _warn: Function;
@@ -23,6 +24,7 @@ class LoggerClass {
     }
 
     this._color = color || getNextLoggerColor();
+    this._verbose = this.getBoundMethod(console.log);
     this._debug = this.getBoundMethod(console.log);
     this._info = this.getBoundMethod(console.info);
     this._warn = this.getBoundMethod(console.warn);
@@ -33,6 +35,10 @@ class LoggerClass {
 
   private getBoundMethod(method: Function): Function {
     return method.bind(console, `%c${this.prefix}`, `background:${this._color};color:#ffffff; font-size: 10px;padding:2px 4px 1px 4px; `);
+  }
+
+  public get verbose(): Function {
+    return this.shouldLog(LogLevels.VERBOSE) ? this._verbose : noop;
   }
 
   public get debug(): Function {
