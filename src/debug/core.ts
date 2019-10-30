@@ -1,6 +1,5 @@
 import { LogLevels } from '../logger/levels';
 import { assign } from 'lodash-es';
-import { settings } from 'pixi.js-legacy';
 
 // als er een get parameter ?debug aanwezig is, zetten we debug aan
 const parameters = new URLSearchParams(location.search);
@@ -25,7 +24,7 @@ const values = {
 };
 
 export function setCoreDebugSettings(_settings: CoreDebugSettings): void {
-  assign(values, settings);
+  assign(values, _settings);
 }
 
 export const CoreDebug = {
