@@ -3,7 +3,7 @@ import { getTicker } from '.';
 import { getLogger } from '../logger';
 import { ConcreteTicker, TickerCallback } from './ticker';
 
-const Logger = getLogger('core > ticker > mixin');
+const Logger = getLogger('ticker > mixin');
 
 // MIXIN
 let MIXIN_UUID = 0;

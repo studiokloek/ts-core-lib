@@ -1,7 +1,7 @@
 import { TweenMax } from 'gsap';
 import { getLogger } from '../logger';
 
-const Logger = getLogger('core > ticker > delay');
+const Logger = getLogger('delay');
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function addDelay(_callback: (...args: any[]) => void, _delay: number, _params?: any[]): TweenMax | undefined {

@@ -3,7 +3,7 @@ import { find, remove } from 'lodash-es';
 import { getLogger } from '../logger';
 import { Delayed } from './delay';
 
-const Logger = getLogger('core > ticker > delay > mixin');
+const Logger = getLogger('delay > mixin');
 
 export class DelayedMixin {
   private __delayed: Tween[] = [];

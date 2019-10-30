@@ -3,7 +3,7 @@ import { get, set } from 'lodash-es';
 import { DisplayObject } from 'pixi.js-legacy';
 import { getLogger } from '../logger';
 
-const Logger = getLogger('core > tween');
+const Logger = getLogger('tween');
 
 export const Tween = {
   to: async (target: {}, duration: number = 0, properties: gsap.TweenConfig, settings?: gsap.TweenConfig): Promise<gsap.TweenMax> => {

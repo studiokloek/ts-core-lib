@@ -4,7 +4,7 @@ import { AppEvent, PubSub } from '../events';
 import { getLogger } from '../logger';
 import { isApp } from './device';
 
-const Logger = getLogger('core > device > app state');
+const Logger = getLogger('device > app state');
 const { App } = Plugins;
 
 function handleAppState(state: AppState): void {

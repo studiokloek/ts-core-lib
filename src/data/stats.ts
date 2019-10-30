@@ -2,7 +2,7 @@ import { getLogger } from '../logger';
 import { CoreDebug } from '../debug';
 import { isApp, isPlatform, Platform } from '../device';
 
-const Logger = getLogger('core > data > stats');
+const Logger = getLogger('data > stats');
 
 declare global {
   interface Window {

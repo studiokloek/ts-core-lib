@@ -3,7 +3,7 @@ import { getLogger } from '../logger';
 
 const { StatusBar } = Plugins;
 
-const Logger = getLogger('core > device > chrome');
+const Logger = getLogger('device > chrome');
 
 export async function initDeviceChrome(): Promise<void> {
   if (Capacitor.isPluginAvailable('StatusBar')) {

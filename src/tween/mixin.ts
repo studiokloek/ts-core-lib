@@ -3,7 +3,7 @@ import { get, isNumber, pull, set } from 'lodash-es';
 import { DisplayObject } from 'pixi.js-legacy';
 import { getLogger } from '../logger';
 
-const Logger = getLogger('core > tween > mixin');
+const Logger = getLogger('tween > mixin');
 
 export class TweenMixin {
   private __tweens: gsap.TweenMax[] = [];

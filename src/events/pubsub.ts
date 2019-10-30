@@ -7,7 +7,7 @@ import { getLogger } from '../logger';
 // directe errors in pubsub in de debug modus
 ConcretePubSubJS.immediateExceptions = CoreDebug.isEnabled();
 
-const Logger = getLogger('core > pubsub');
+const Logger = getLogger('events > pubsub');
 
 const table = new Map();
 function subscribe(message: string, func: Function): string | undefined {
@@ -80,6 +80,8 @@ function publish(message: string, data?: any, report: boolean = false): boolean 
 
   if (report === true) {
     Logger.debug(`publish() ${message.toUpperCase()} ->`, data);
+  } else {
+    Logger.verbose(`publish() ${message.toUpperCase()} ->`, data);
   }
 
   return ConcretePubSubJS.publish(message, data);
@@ -93,6 +95,8 @@ function publishSync(message: string, data?: any, report: boolean = false): bool
 
   if (report === true) {
     Logger.debug(`publish() ${message.toUpperCase()} ->`, data);
+  } else {
+    Logger.verbose(`publish() ${message.toUpperCase()} ->`, data);
   }
 
   return ConcretePubSubJS.publishSync(message, data);

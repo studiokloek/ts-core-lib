@@ -32,7 +32,7 @@ import { constrainNumber } from '../util/math';
 import { PubSub, AppEvent } from '../events';
 import { Delayed } from '../delay';
 
-const Logger = getLogger('core > stage');
+const Logger = getLogger('device > stage');
 
 // geen pixi bericht
 utils.skipHello();

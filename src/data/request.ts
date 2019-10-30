@@ -3,7 +3,7 @@ import { isOnline } from '../device';
 import { getLogger } from '../logger';
 import { stringSizeInKb } from './util';
 
-const Logger = getLogger('core > request');
+const Logger = getLogger('data > request');
 
 export const ResponseErrorTypes = {
   DEFAULT: 'default',

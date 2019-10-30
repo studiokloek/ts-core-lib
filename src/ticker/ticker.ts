@@ -4,7 +4,7 @@ import { round } from 'lodash-es';
 import { CoreDebug } from '../debug';
 import { getLogger } from '../logger';
 
-const Logger = getLogger('core > ticker');
+const Logger = getLogger('ticker');
 
 interface TickerItem {
   callback: TickerCallback;

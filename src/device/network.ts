@@ -2,7 +2,7 @@ import { PubSub, AppEvent } from '../events';
 import { NetworkStatus, Plugins } from '@capacitor/core';
 import { getLogger } from '../logger';
 
-const Logger = getLogger('core > network');
+const Logger = getLogger('device > network');
 const { Network } = Plugins;
 
 Network.addListener('networkStatusChange', reportStatus);

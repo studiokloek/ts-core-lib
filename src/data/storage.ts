@@ -4,7 +4,7 @@ import { getLogger } from '../logger';
 
 const { Storage } = Plugins;
 
-const Logger = getLogger('core > data > localstorage');
+const Logger = getLogger('data > localstorage');
 
 class ConcreteStorage {
   public constructor() {}
@@ -23,7 +23,7 @@ class ConcreteStorage {
 
     await Storage.set({ key, value });
 
-    Logger.debug('set', `${key}`, value);
+    Logger.verbose('set', `${key}`, value);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,7 +41,7 @@ class ConcreteStorage {
       value = getValueFromJSON(returnValue.value);
     }
 
-    Logger.debug('get', `${key}`, value);
+    Logger.verbose('get', `${key}`, value);
 
     return value;
   }
@@ -54,7 +54,7 @@ class ConcreteStorage {
 
     await Storage.remove({ key });
 
-    Logger.debug('remove', `${key}`);
+    Logger.verbose('remove', `${key}`);
   }
 
   public async keys(): Promise<string[]> {
@@ -69,7 +69,7 @@ class ConcreteStorage {
 
   public async clear(): Promise<void> {
     await Storage.clear();
-    Logger.debug('cleared all storage!');
+    Logger.verbose('cleared all storage!');
   }
 }
 

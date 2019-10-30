@@ -5,7 +5,7 @@ import { getLogger } from '../logger';
 import { ResolutionMode } from './constants';
 import { getViewportSize } from './viewport';
 
-const Logger = getLogger('core > resolution');
+const Logger = getLogger('device > resolution');
 
 export const determineResolution = memoize((): { screen: number; texture: number } => {
   const pixelRatio = getPixelRatio(),
