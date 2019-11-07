@@ -4,7 +4,7 @@ import { Delayed } from '../../delay';
 import { SoundAsset } from '../../loaders';
 import { Stage } from '../../screen';
 import { Linear, Tween } from '../../tween';
-import { Random } from '../../util';
+import { KloekRandom } from '../../util';
 import { SoundLibrary } from './library';
 
 export interface AudioFXOptions {
@@ -50,7 +50,7 @@ class ConcreteSoundsPlayer {
       player.rate(rate, id);
 
       if (options.randomStart === true) {
-        const postition = round(Random.real(0, player.duration() * 0.9), 2);
+        const postition = round(KloekRandom.real(0, player.duration() * 0.9), 2);
         player.seek(postition, id);
       }
 
