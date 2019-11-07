@@ -17,6 +17,7 @@ import {
   Texture,
   Ticker as PixiTicker,
   utils,
+  IPoint,
 } from 'pixi.js-legacy';
 import Stats from 'stats.js';
 import { Screen } from '.';
@@ -208,7 +209,7 @@ export class ConcreteStage {
     }
 
     this.stats = new Stats();
-    this.stats.dom.style.top = null;
+    delete this.stats.dom.style.top;
     this.stats.dom.style.bottom = '0';
     document.body.append(this.stats.dom);
     this.stats.showPanel(0);
@@ -517,7 +518,7 @@ export class ConcreteStage {
     }
   }
 
-  public getGlobalPosition(source: Container, position: Point = new Point(0, 0)): Point {
+  public getGlobalPosition(source: Container, position: Point = new Point(0, 0)): IPoint {
     const pos = this.view.toLocal(source.toGlobal(position));
     pos.x = pos.x / this.scale.x;
     pos.y = pos.y / this.scale.y;
