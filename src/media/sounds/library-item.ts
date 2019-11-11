@@ -1,6 +1,7 @@
 import { Howl } from 'howler';
 import { pull } from 'lodash-es';
 import { SoundAsset } from '../../loaders';
+import { isApp } from '../../device';
 
 // const Logger = getLogger('core > sounds > library > item');
 
@@ -42,7 +43,7 @@ export class SoundLibraryItem {
 
   private createPlayer(): Howl {
     const file = `./assets/sounds/${this.asset.id}`,
-      source = [`${file}.mp3`]; //, `${file}.ogg`
+      source = isApp() ? [`${file}.mp3`] : [`${file}.ogg`, `${file}.m4a`, `${file}.mp3`]; // app gebruikt alleen mp3
 
     // opties
     const options = {
@@ -50,7 +51,7 @@ export class SoundLibraryItem {
       src: source,
       autoplay: false,
       preload: false,
-      loop: false,
+      loop: true,
       volume: 0.5,
     };
 
