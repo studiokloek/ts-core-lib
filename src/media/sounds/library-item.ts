@@ -51,7 +51,7 @@ export class SoundLibraryItem {
       src: source,
       autoplay: false,
       preload: false,
-      loop: true,
+      loop: false,
       volume: 0.5,
     };
 
