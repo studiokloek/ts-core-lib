@@ -20,6 +20,7 @@ export * from './patterns';
 export * from './html';
 export * from './ui';
 
+export * from './input';
 export * from './util';
 
 import { initNetworkStatusDetection, getDeviceInfo } from './device';
