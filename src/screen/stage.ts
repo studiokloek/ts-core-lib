@@ -24,7 +24,7 @@ import { Screen } from '.';
 import { getGPUInfo, GPUInfo } from '../device';
 import { restoreTickerTimeAfterSleep, setTickerGlobalTimeScale, storeTickerTimeBeforeSleep } from '../ticker';
 import { Tween } from '../tween';
-import { ResolutionMode } from './constants';
+import { ResolutionMode, OrientationMode } from './constants';
 import { determineResolution } from './resolution';
 import { StageInfo } from './stageinfo';
 import { getLogger } from '../logger';
@@ -61,6 +61,7 @@ interface StageOptions {
 }
 
 interface SizeOptions {
+  orientation: string;
   size: {
     default: {
       width: number;
@@ -88,6 +89,7 @@ const DefaultStageOptions: StageOptions = {
 };
 
 const DefaultSizeOptions: SizeOptions = {
+  orientation: OrientationMode.LANDSCAPE,
   size: {
     default: {
       width: 1024,
@@ -370,7 +372,7 @@ export class ConcreteStage {
     this.position.x = round(Screen.width - this.width) * 0.5;
     this.position.y = round(Screen.height - this.height) * 0.5;
 
-    this._aspect = round(this.scale.y / this.scale.x, 5);
+    this._aspect = this.sizeOptions.orientation === OrientationMode.LANDSCAPE ? round(this.scale.y / this.scale.x, 5) : round(this.scale.x / this.scale.y, 5);
 
     if (this.target) {
       Tween.set(this.target, {
