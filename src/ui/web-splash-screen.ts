@@ -11,11 +11,13 @@ import { Logger } from '../logger';
 import { Stage } from '../screen';
 import { Tween } from '../tween';
 import { constrainNumber, mapNumber, randomBetween } from '../util/math';
+import { SyncEvent } from 'ts-events';
 const { SplashScreen } = Plugins;
 
 class MediaTriggerScreen {
   private parent!: HTMLElement;
   private element!: HTMLElement | null;
+  public trigger: SyncEvent<void> = new SyncEvent();
   private loadedResolver!: (value?: any) => void;
   private isReady: boolean = false;
 
@@ -37,16 +39,20 @@ class MediaTriggerScreen {
     this.element.addEventListener('click', this.onClicked);
 
     // Screen size change?
-    PubSub.subscribe(AppEvent.RESIZED, this.handleAppResized);
+    PubSub.subscribe(AppEvent.RESIZED, this.layout);
 
     // tonen
-    Tween.to(this.element, 0.5, { autoAlpha: 1 }, { delay: 1 });
+    Tween.to(this.element, 1, { autoAlpha: 1 }, { delay: 0.5 });
   }
 
-  public async triggered(): Promise<void> {
+  public async checkTriggered(): Promise<void> {
     return new Promise(resolve => {
-      this.loadedResolver = resolve;
-      this.checkReady();
+      if (this.isReady) {
+        return resolve();
+      } else {
+        this.loadedResolver = resolve;
+        this.checkReady();
+      }
     });
   }
 
@@ -64,43 +70,37 @@ class MediaTriggerScreen {
   }
 
   private checkReady(): void {
-    if (!this.element || (!CoreDebug.skipMediaTrigger() && (!this.isReady || !this.loadedResolver))) {
+    if (!this.element || (!CoreDebug.skipMediaTrigger() && !this.isReady)) {
       return;
     }
 
-    this.loadedResolver();
-
     Tween.to(this.element, 0.5, { autoAlpha: 0 });
 
-    PubSub.unsubscribe(this.handleAppResized);
+    PubSub.unsubscribe(this.layout);
+    this.element.removeEventListener('click', this.onClicked);
+
+    this.trigger.post();
+
+    if (this.loadedResolver) {
+      this.loadedResolver();
+    }
   }
 
+  @Bind
   private layout(): void {
     if (!this.element) {
       return;
     }
 
-    // const offset = this.element.getBoundingClientRect();
-    // const coords = this.parent.getBoundingClientRect();
-    // Tween.set(this.closeButton, {
-    //   x: coords.right - offset.left - 40,
-    //   y: coords.top - offset.top - 20,
-    // });
-
     Tween.set(this.element, {
       transformOrigin: '0 0',
       x: 0,
-      y: Stage.position.y,
+      y: Stage.position.y - 40,
       width: Stage.width,
       height: Stage.height,
-      backgroundSize: `${mapNumber(Stage.scale.x, 0.5, 1, 40, 80, true)}px`,
+      backgroundSize: `${mapNumber(Stage.scale.x, 0.5, 1, 80, 160, true)}px`,
       backgroundPosition: `center ${mapNumber(Stage.scale.x, 0.5, 1, 90, 98, true)}%`,
     });
-  }
-
-  @Bind
-  protected handleAppResized(): void {
-    this.layout();
   }
 }
 
@@ -172,6 +172,14 @@ class WebLoaderScreen {
     Delayed.kill(this.trickle);
   }
 
+  public showLoader(): void {
+    if (!this.bar) {
+      return;
+    }
+
+    Tween.to(this.bar, 0.5, { autoAlpha: 1 });
+  }
+
   public hide(): void {
     if (!this.element) {
       return;
@@ -209,12 +217,24 @@ class ConcreteWebSplashScreen {
   private initMediaTriggerScreen(): void {
     if (this.loader && deviceNeedsMediaTrigger()) {
       this.mediatrigger = new MediaTriggerScreen(this.loader.target);
+      this.mediatrigger.trigger.attach(this.onMediaTriggered);
+    } else {
+      if (this.loader) {
+        this.loader.showLoader();
+      }
+    }
+  }
+
+  @Bind
+  private onMediaTriggered(): void {
+    if (this.loader) {
+      this.loader.showLoader();
     }
   }
 
   public async checkMediaReady(): Promise<void> {
     if (this.mediatrigger) {
-      await this.mediatrigger.triggered();
+      await this.mediatrigger.checkTriggered();
     }
   }
 
