@@ -1,11 +1,11 @@
 import { isArrayLikeObject, isEmpty } from 'lodash-es';
 import ConcretePubSubJS from 'pubsub-js';
-import { CoreDebug } from '../debug';
 import { Delayed } from '../delay';
 import { getLogger } from '../logger';
 
 // directe errors in pubsub in de debug modus
-ConcretePubSubJS.immediateExceptions = CoreDebug.isEnabled();
+const parameters = new URLSearchParams(location.search);
+ConcretePubSubJS.immediateExceptions = parameters.has('debug');
 
 const Logger = getLogger('events > pubsub');
 
