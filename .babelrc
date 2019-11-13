@@ -13,8 +13,7 @@
   "plugins": [
     ["@babel/proposal-decorators", { "legacy": true }],
     ["@babel/proposal-class-properties", { "loose": true }],
-    ["@babel/plugin-proposal-object-rest-spread"],
-    ["@babel/plugin-transform-runtime"]
+    ["@babel/plugin-proposal-object-rest-spread"]
   ],
   "ignore": ["src/@types"]
 }
