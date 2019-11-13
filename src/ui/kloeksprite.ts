@@ -98,8 +98,8 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
   }
 
   public destroy(options?: { children?: boolean; texture?: boolean; baseTexture?: boolean }): void {
-    super.destroy(options);
     this.cleanupBeforeUnload();
+    super.destroy(options);
   }
 
   public setDefaults(defaults?: KloekSpriteDefaults, apply = false): void {
