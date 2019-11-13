@@ -29,7 +29,7 @@ class LoggerClass {
     this._info = this.getBoundMethod(console.info);
     this._warn = this.getBoundMethod(console.warn);
     this._error = this.getBoundMethod(console.error);
-    this._table = console.table.bind(console);
+    this._table = console.table ? console.table.bind(console) : console.dir.bind(console);
     this._tree = console.dir.bind(console);
   }
 
