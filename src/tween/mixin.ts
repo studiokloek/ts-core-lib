@@ -110,9 +110,9 @@ export class TweenMixin {
     return tween;
   }
 
-  protected killTweens(): void {
+  protected killTweens(_vars?: {}, _target?: {}): void {
     for (const tween of this.__tweens) {
-      tween.kill();
+      tween.kill(_vars, _target);
     }
     this.__tweens.length = 0;
   }
@@ -129,14 +129,14 @@ export class TweenMixin {
     }
   }
 
-  protected killTweenOf(target?: {}): void {
+  protected killTweenOf(target?: {}, _vars?: {}): void {
     if (target) {
       // haal uit lijst
       const tweensToKill = this.__tweens.filter(item => item.target === target);
 
       // kill
       for (const tween of tweensToKill) {
-        tween.kill();
+        tween.kill(_vars);
       }
 
       // update lijst

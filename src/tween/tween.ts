@@ -67,7 +67,7 @@ export const Tween = {
     return gsap.TweenMax.set(target, properties);
   },
 
-  killTweensOf(_target: {}): void {
-    gsap.TweenMax.killTweensOf(_target);
+  killTweensOf(_target: {}, _vars?: {}): void {
+    gsap.TweenMax.killTweensOf(_target, _vars);
   },
 };
