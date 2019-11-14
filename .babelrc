@@ -3,7 +3,6 @@
     [
       "@babel/env",
       {
-        "modules": false,
         "useBuiltIns": "usage",
         "corejs": 3
       }
@@ -13,7 +12,16 @@
   "plugins": [
     ["@babel/proposal-decorators", { "legacy": true }],
     ["@babel/proposal-class-properties", { "loose": true }],
-    ["@babel/plugin-proposal-object-rest-spread"]
+    ["@babel/plugin-proposal-object-rest-spread"],
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "version": "7.7.0",
+        "corejs": false,
+        "helpers": true,
+        "useESModules": true
+      }
+    ]
   ],
   "ignore": ["src/@types"]
 }

@@ -21,9 +21,6 @@
     "noUnusedLocals": true,
     "experimentalDecorators": true,
     "strict": true,
-
-    "composite": true,
-
     "noImplicitThis": true,
     "alwaysStrict": true,
     "strictBindCallApply": true,
@@ -37,8 +34,9 @@
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
-    // "moduleResolution": "node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+
+    "noImplicitAny": true
   },
   "exclude": ["node_modules", "lib"],
   "include": ["src/**/*.ts"]

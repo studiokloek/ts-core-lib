@@ -1,6 +1,3 @@
-import 'core-js';
-import 'regenerator-runtime/runtime';
-
 export * from './debug';
 export * from './logger';
 export * from './events';
