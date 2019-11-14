@@ -38,7 +38,7 @@ const Logger = getLogger('device > stage');
 // geen pixi bericht
 utils.skipHello();
 
-interface RendererOptions {
+export interface RendererOptions {
   width?: number;
   height?: number;
   view?: HTMLCanvasElement;
@@ -54,13 +54,13 @@ interface RendererOptions {
   powerPreference?: string;
 }
 
-interface StageOptions {
+export interface StageOptions {
   backgroundColor?: number | undefined;
   fps: number;
   target: HTMLElement | string;
 }
 
-interface SizeOptions {
+export interface SizeOptions {
   orientation: string;
   size: {
     default: {
