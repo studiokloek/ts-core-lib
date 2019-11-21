@@ -2,21 +2,22 @@ import { Plugins } from '@capacitor/core';
 import { Sine } from 'gsap';
 import { Bind } from 'lodash-decorators';
 import { round } from 'lodash-es';
+import { SyncEvent } from 'ts-events';
 import { CoreDebug } from '../debug';
 import { Delayed } from '../delay';
 import { deviceNeedsMediaTrigger, isApp } from '../device';
 import { AppEvent, PubSub } from '../events';
 import { getElement } from '../html';
 import { Logger } from '../logger';
-import { Stage } from '../screen';
+import { Screen, Stage } from '../screen';
 import { Tween } from '../tween';
 import { constrainNumber, mapNumber, randomBetween } from '../util/math';
-import { SyncEvent } from 'ts-events';
 const { SplashScreen } = Plugins;
 
 class MediaTriggerScreen {
   private parent!: HTMLElement;
   private element!: HTMLElement | null;
+  private logo!: HTMLElement | null;
   public trigger: SyncEvent<void> = new SyncEvent();
   private loadedResolver!: (value?: any) => void;
   private isReady: boolean = false;
@@ -29,6 +30,7 @@ class MediaTriggerScreen {
 
     this.parent = _target;
     this.element = this.parent.querySelector('.media-trigger');
+    this.logo = this.parent.querySelector('.logo');
 
     if (!this.element) {
       Logger.error('splash', 'Could not find media trigger element...');
@@ -92,15 +94,25 @@ class MediaTriggerScreen {
       return;
     }
 
+    const scaleWidth = Screen.height / Screen.width,
+      scale = Math.min(1, Stage.scale.x * 1.5);
+
     Tween.set(this.element, {
       transformOrigin: '0 0',
       x: 0,
-      y: Stage.position.y - 40,
+      y: Stage.position.y,
       width: Stage.width,
       height: Stage.height,
-      backgroundSize: `${mapNumber(Stage.scale.x, 0.5, 1, 80, 160, true)}px`,
-      backgroundPosition: `center ${mapNumber(Stage.scale.x, 0.5, 1, 90, 98, true)}%`,
+      backgroundSize: `${mapNumber(scaleWidth, 0.5, 1, 100 * scale, 150 * scale, true)}px`,
+      backgroundPosition: `center ${mapNumber(Stage.scale.x, 0.75, 1, 90, 80, true)}%`,
     });
+
+    if (this.logo) {
+      Tween.set(this.logo, {
+        width: `${mapNumber(scaleWidth, 0.5, 1.33, 100 * scale, 150 * scale, true)}%`,
+        height: `${mapNumber(scaleWidth, 0.5, 1.33, 100 * scale, 150 * scale, true)}%`,
+      });
+    }
   }
 }
 
