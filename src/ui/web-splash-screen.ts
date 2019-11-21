@@ -83,7 +83,7 @@ class MediaTriggerScreen {
 
     this.trigger.post();
 
-    // Screen size change?
+    // Laat weten dat het scherm is aangeraakt, handig voor bv fullscreen
     PubSub.publishSync(AppEvent.MEDIATRIGGER_READY);
 
     if (this.loadedResolver) {
@@ -98,7 +98,7 @@ class MediaTriggerScreen {
     }
 
     const scaleWidth = Screen.height / Screen.width,
-      scale = Math.min(1, Stage.scale.x * 1.5);
+      scale = Math.min(1, Math.min(Stage.scale.x, Stage.scale.y) * 1.5);
 
     Tween.set(this.element, {
       transformOrigin: '0 0',
