@@ -83,6 +83,9 @@ class MediaTriggerScreen {
 
     this.trigger.post();
 
+    // Screen size change?
+    PubSub.publishSync(AppEvent.MEDIATRIGGER_READY);
+
     if (this.loadedResolver) {
       this.loadedResolver();
     }

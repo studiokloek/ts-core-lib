@@ -16,6 +16,7 @@ export const TouchEvent: { [key: string]: interaction.InteractionEventTypes } = 
 export const AppEvent = {
   RESIZED: 'resized',
   DEBUG_VALUE: 'debug_value',
+  MEDIATRIGGER_READY: 'mediatrigger_ready',
   READY: 'ready',
   LOAD_COMPLETE: 'load_complete',
   LOAD_PROGRESS: 'loaded_progress',
