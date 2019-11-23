@@ -13,7 +13,7 @@ export class TweenMixin {
     durationOrProperties: number | gsap.TweenConfig,
     propertiesOrSettings?: gsap.TweenConfig,
     settings?: gsap.TweenConfig,
-  ): { target: any; duration: number; vars: object; completeHandler: Function | undefined } {
+  ): { target: any; duration: number; vars: object; completeHandler: Function | undefined; completeHandlerParams: any[] | undefined } {
     let target,
       duration = 0,
       properties = {};
@@ -53,13 +53,15 @@ export class TweenMixin {
     }
 
     // remember old on complete event
-    const existingOnComplete = vars.onComplete;
+    const existingOnComplete = vars.onComplete,
+      existingOnCompleteParams = vars.onCompleteParams;
     vars.onComplete = undefined;
+    vars.onCompleteParams = undefined;
 
-    return { target, duration, vars, completeHandler: existingOnComplete };
+    return { target, duration, vars, completeHandler: existingOnComplete, completeHandlerParams: existingOnCompleteParams };
   }
 
-  private __registerTween(tween: gsap.TweenMax, completeHandler: Function | undefined): void {
+  private __registerTween(tween: gsap.TweenMax, completeHandler: Function | undefined, onCompleteParams?: any[]): void {
     // bewaar in lijst
     this.__tweens.push(tween);
 
@@ -69,7 +71,7 @@ export class TweenMixin {
       // haal uit lijst
       this.__tweens = pull(this.__tweens, tween);
       if (completeHandler) {
-        completeHandler.apply(tween, arguments_);
+        completeHandler.apply(tween, onCompleteParams || arguments_);
       }
     });
   }
@@ -81,13 +83,18 @@ export class TweenMixin {
     settings?: gsap.TweenConfig,
   ): gsap.TweenMax {
     // haal tween props op
-    const { target, duration, vars, completeHandler } = this.__getTweenSettings(targetOrDuration, durationOrProperties, propertiesOrSettings, settings);
+    const { target, duration, vars, completeHandler, completeHandlerParams } = this.__getTweenSettings(
+      targetOrDuration,
+      durationOrProperties,
+      propertiesOrSettings,
+      settings,
+    );
 
     // maak tween aan
     const tween = gsap.TweenMax.from(target, duration, vars);
 
     // registreer tween
-    this.__registerTween(tween, completeHandler);
+    this.__registerTween(tween, completeHandler, completeHandlerParams);
 
     return tween;
   }
@@ -99,13 +106,18 @@ export class TweenMixin {
     settings?: gsap.TweenConfig,
   ): gsap.TweenMax {
     // haal tween props op
-    const { target, duration, vars, completeHandler } = this.__getTweenSettings(targetOrDuration, durationOrProperties, propertiesOrSettings, settings);
+    const { target, duration, vars, completeHandler, completeHandlerParams } = this.__getTweenSettings(
+      targetOrDuration,
+      durationOrProperties,
+      propertiesOrSettings,
+      settings,
+    );
 
     // maak tween aan
     const tween = gsap.TweenMax.to(target, duration, vars);
 
     // registreer tween
-    this.__registerTween(tween, completeHandler);
+    this.__registerTween(tween, completeHandler, completeHandlerParams);
 
     return tween;
   }
