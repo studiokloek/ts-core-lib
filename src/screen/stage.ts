@@ -425,7 +425,10 @@ export class ConcreteStage {
 
     TweenMax.lagSmoothing(0, 0);
 
-    storeTickerTimeBeforeSleep();
+    // async, want er komt nog een tick
+    Delayed.async(() => {
+      storeTickerTimeBeforeSleep();
+    });
   }
 
   public wake(): void {

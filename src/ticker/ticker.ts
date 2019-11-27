@@ -16,7 +16,7 @@ export interface TickerCallback extends Function {
   __tickerid__?: number;
 }
 
-const DELAY_FACTOR = round(1000 / 60);
+const DELAY_FACTOR = round(1000 / 60, 5);
 let TICKER_UUID = 0;
 
 export class ConcreteTicker {
