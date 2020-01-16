@@ -3,7 +3,7 @@ import { round } from 'lodash-es';
 import { Delayed } from '../../delay';
 import { SoundAsset } from '../../loaders';
 import { Stage } from '../../screen';
-import { Tween } from '../../tween';
+import { Tween, Easing } from '../../tween';
 import { KloekRandom } from '../../util';
 import { SoundLibrary } from './library';
 
@@ -148,7 +148,7 @@ class ConcreteSoundsPlayer {
   public fadeAllTo(target = 1, duration = 1): void {
     Tween.killTweensOf(this.volumeFader);
     this.volumeFader.value = Howler.volume();
-    Tween.to(this.volumeFader, duration, { value: target, ease: Linear.easeNone, onUpdate: this.fadeAllUpdater });
+    Tween.to(this.volumeFader, duration, { value: target, ease: Easing.Linear.easeNone, onUpdate: this.fadeAllUpdater });
   }
 
   @Bind
