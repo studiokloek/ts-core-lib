@@ -1,16 +1,16 @@
-import { TweenMax } from 'gsap';
+import { gsap } from 'gsap';
 import { getLogger } from '../logger';
 
 const Logger = getLogger('delay');
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function addDelay(_callback: (...args: any[]) => void, _delay: number, _params?: any[]): TweenMax | undefined {
+function addDelay(_callback: (...args: any[]) => void, _delay: number, _params?: any[]): gsap.core.Tween | undefined {
   if (!_callback || typeof _callback !== 'function') {
     Logger.warn('addDelay()', 'No callback provided...');
     return;
   }
 
-  return TweenMax.delayedCall(_delay, _callback, _params);
+  return gsap.delayedCall(_delay, _callback, _params);
 }
 
 function killDelay(_callback: (...args: any[]) => void): void {
@@ -19,7 +19,7 @@ function killDelay(_callback: (...args: any[]) => void): void {
     return;
   }
 
-  TweenMax.killDelayedCallsTo(_callback);
+  gsap.killTweensOf(_callback);
 }
 
 function pauseDelay(_callback: (...args: any[]) => void): void {
@@ -28,7 +28,7 @@ function pauseDelay(_callback: (...args: any[]) => void): void {
     return;
   }
 
-  const calls = TweenMax.getTweensOf(_callback);
+  const calls = gsap.getTweensOf(_callback);
 
   for (let i = 0, ln = calls.length; i < ln; i++) {
     calls[i].pause();
@@ -41,29 +41,24 @@ function resumeDelay(_callback: (...args: any[]) => void): void {
     return;
   }
 
-  const calls = TweenMax.getTweensOf(_callback);
+  const calls = gsap.getTweensOf(_callback);
 
   for (let i = 0, ln = calls.length; i < ln; i++) {
     calls[i].resume();
   }
 }
 
-function killAllDelays(): void {
-  TweenMax.killAll(false, false, true, false);
-}
-
 function callAsync(_callback: (...args: any[]) => void): void {
-  TweenMax.delayedCall(0, _callback);
+  gsap.delayedCall(0, _callback);
 }
 
 async function waitFor(_delay: number = 0): Promise<void> {
-  return new Promise(resolve => TweenMax.delayedCall(_delay, resolve));
+  return new Promise(resolve => gsap.delayedCall(_delay, resolve));
 }
 
 export const Delayed = {
   call: addDelay,
   kill: killDelay,
-  killAll: killAllDelays,
   pause: pauseDelay,
   resume: resumeDelay,
   async: callAsync,

@@ -1,4 +1,4 @@
-import { Tween, TweenMax } from 'gsap';
+import { gsap} from 'gsap';
 import { find, remove } from 'lodash-es';
 import { getLogger } from '../logger';
 import { Delayed } from './delay';
@@ -6,7 +6,7 @@ import { Delayed } from './delay';
 const Logger = getLogger('delay > mixin');
 
 export class DelayedMixin {
-  private __delayed: Tween[] = [];
+  private __delayed: gsap.core.Tween[] = [];
 
   protected addDelay(_callback: (...args: any[]) => void, _delay: number, _params?: any[]): void {
     if (!_callback) {
@@ -33,11 +33,11 @@ export class DelayedMixin {
 
   protected killDelay(_callback: (...args: any[]) => void): void {
     // welke items zijn dat
-    const calls = TweenMax.getTweensOf(_callback);
+    const calls = gsap.getTweensOf(_callback);
 
     for (let i = 0, ln = calls.length; i < ln; i++) {
       // bestaat hij in de lijst? kill
-      const item = find(this.__delayed, calls[i]) as Tween;
+      const item = find(this.__delayed, calls[i]) as gsap.core.Tween;
 
       if (item) {
         // remove
@@ -51,11 +51,11 @@ export class DelayedMixin {
 
   protected pauseDelay(_callback: (...args: any[]) => void): void {
     // welke items zijn dat
-    const calls = TweenMax.getTweensOf(_callback);
+    const calls = gsap.getTweensOf(_callback);
 
     for (let i = 0, ln = calls.length; i < ln; i++) {
       // bestaat hij in de lijst? pause
-      const item = find(this.__delayed, calls[i]) as Tween;
+      const item = find(this.__delayed, calls[i]) as gsap.core.Tween;
 
       if (item) {
         item.pause();
@@ -65,11 +65,11 @@ export class DelayedMixin {
 
   protected remumeDelay(_callback: (...args: any[]) => void): void {
     // welke items zijn dat
-    const calls = TweenMax.getTweensOf(_callback);
+    const calls = gsap.getTweensOf(_callback);
 
     for (let i = 0, ln = calls.length; i < ln; i++) {
       // bestaat hij in de lijst? resume
-      const item = find(this.__delayed, calls[i]) as Tween;
+      const item = find(this.__delayed, calls[i]) as gsap.core.Tween;
 
       if (item) {
         item.resume();

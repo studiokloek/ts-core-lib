@@ -1,4 +1,4 @@
-import { TweenMax } from 'gsap';
+import { gsap } from 'gsap';
 import { Bind } from 'lodash-decorators';
 import { round } from 'lodash-es';
 import { CoreDebug } from '../debug';
@@ -159,7 +159,7 @@ export class ConcreteTicker {
 
     this.restoreTimeAfterSleep();
 
-    TweenMax.ticker.addEventListener('tick', this.update, null, false, 20);
+    gsap.ticker.add(this.update);
   }
 
   public sleep(): void {
@@ -171,7 +171,7 @@ export class ConcreteTicker {
 
     this.storeTimeBeforeSleep();
 
-    TweenMax.ticker.removeEventListener('tick', this.update);
+    gsap.ticker.remove(this.update);
   }
 
   public restoreTimeAfterSleep(): void {

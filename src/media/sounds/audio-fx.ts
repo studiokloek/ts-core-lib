@@ -3,7 +3,7 @@ import { round } from 'lodash-es';
 import { Delayed } from '../../delay';
 import { SoundAsset } from '../../loaders';
 import { Stage } from '../../screen';
-import { Linear, Tween } from '../../tween';
+import { Tween } from '../../tween';
 import { KloekRandom } from '../../util';
 import { SoundLibrary } from './library';
 

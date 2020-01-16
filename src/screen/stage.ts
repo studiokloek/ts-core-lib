@@ -1,4 +1,4 @@
-import { TweenMax } from 'gsap';
+import { gsap } from 'gsap';
 import { Bind } from 'lodash-decorators';
 import { ceil, round } from 'lodash-es';
 import {
@@ -111,7 +111,7 @@ const DefaultSizeOptions: SizeOptions = {
 };
 
 const gpuInfo: GPUInfo = getGPUInfo();
-const TweenMaxTicker = TweenMax.ticker;
+const GSAPTicker = gsap.ticker;
 
 class Stage extends Container {}
 
@@ -232,8 +232,8 @@ export class ConcreteStage {
     }
 
     // Ticker.fps = this.fps;
-    TweenMaxTicker.fps(this.options.fps);
-    TweenMaxTicker.useRAF(true);
+    GSAPTicker.fps(this.options.fps);
+    // GSAPTicker.useRAF(true);
 
     // stop de standaard ticker, wij update zelf
     this.sharedTicker = PixiTicker.shared;
@@ -313,15 +313,15 @@ export class ConcreteStage {
     Logger.debug('Starting...');
 
     if (CoreDebug.showStats() && this.stats) {
-      TweenMaxTicker.addEventListener('tick', this.debugRender, this, false, 1);
+      GSAPTicker.add(this.debugRender);
       this.stats.begin();
     } else {
-      TweenMaxTicker.addEventListener('tick', this.render, this, false, 1);
+      GSAPTicker.add(this.render);
     }
   }
 
   private render(): void {
-    this.sharedTicker.update(TweenMaxTicker.time * 1000);
+    this.sharedTicker.update(GSAPTicker.time * 1000);
     this.renderer.render(this._view);
   }
 
@@ -418,12 +418,12 @@ export class ConcreteStage {
     this.timeScaleBeforeSleep = this._timeScale;
     this._timeScale = 0;
 
-    TweenMaxTicker.sleep();
+    GSAPTicker.sleep();
 
-    TweenMax.globalTimeScale(0);
+    gsap.globalTimeline.timeScale(0);
     setTickerGlobalTimeScale(0);
 
-    TweenMax.lagSmoothing(0, 0);
+    GSAPTicker.lagSmoothing(0, 0);
 
     // async, want er komt nog een tick
     Delayed.async(() => {
@@ -439,12 +439,12 @@ export class ConcreteStage {
 
     Logger.info('wake()');
 
-    TweenMaxTicker.wake(false);
-    TweenMax.lagSmoothing(500, 33);
+    GSAPTicker.wake();
+    GSAPTicker.lagSmoothing(500, 33);
 
     if (typeof this.timeScaleBeforeSleep === 'number') {
       this._timeScale = this.timeScaleBeforeSleep;
-      TweenMax.globalTimeScale(this._timeScale);
+      gsap.globalTimeline.timeScale(this._timeScale);
       setTickerGlobalTimeScale(this._timeScale);
     }
 
@@ -465,7 +465,7 @@ export class ConcreteStage {
     }
 
     this._timeScale = _value;
-    TweenMax.globalTimeScale(_value);
+    gsap.globalTimeline.timeScale(_value);
     setTickerGlobalTimeScale(_value);
   }
 
@@ -474,15 +474,15 @@ export class ConcreteStage {
     // Logger.info('ticker', 'Starting energy saving mode');
     Logger.info('Starting energy saving mode.');
 
-    TweenMaxTicker.useRAF(false);
-    TweenMaxTicker.fps(30);
+    // GSAPTicker.useRAF(false);
+    GSAPTicker.fps(30);
   }
 
   public highPerformance(): void {
     Logger.info('Exiting energy saving mode');
 
-    TweenMaxTicker.useRAF(true);
-    TweenMaxTicker.fps(this.options ? this.options.fps : 60);
+    // GSAPTicker.useRAF(true);
+    GSAPTicker.fps(this.options ? this.options.fps : 60);
   }
 
   // TEXTURES

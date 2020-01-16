@@ -1,13 +1,13 @@
-import * as gsap from 'gsap';
+import { gsap } from 'gsap';
 import { get, set } from 'lodash-es';
 import { DisplayObject } from 'pixi.js-legacy';
 import { getLogger } from '../logger';
-
+ 
 const Logger = getLogger('tween');
 
 export const Tween = {
-  to: async (target: {}, duration: number = 0, properties: gsap.TweenConfig, settings?: gsap.TweenConfig): Promise<gsap.TweenMax> => {
-    let vars: gsap.TweenConfig;
+  to: async (target: {}, duration: number = 0, properties: gsap.TweenVars, settings?: gsap.TweenVars): Promise<TweenMax> => {
+    let vars: gsap.TweenVars;
 
     if (settings) {
       if ((target as DisplayObject).worldTransform !== undefined) {
@@ -30,11 +30,13 @@ export const Tween = {
       vars = { ...properties };
     }
 
+    vars.duration = duration;
+
     // maak tween aan
-    return gsap.TweenMax.to(target, duration, vars);
+    return gsap.to(target, vars);
   },
-  from: async (target: {}, duration: number = 0, properties: gsap.TweenConfig, settings?: gsap.TweenConfig): Promise<gsap.TweenMax> => {
-    let vars: gsap.TweenConfig;
+  from: async (target: {}, duration: number = 0, properties: gsap.TweenVars, settings?: gsap.TweenVars): Promise<TweenMax> => {
+    let vars: gsap.TweenVars;
 
     if (settings) {
       // if (target instanceof DisplayObject) {
@@ -59,15 +61,17 @@ export const Tween = {
       vars = { ...properties };
     }
 
+    vars.duration = duration;
+
     // maak tween aan
-    return gsap.TweenMax.from(target, duration, vars);
+    return gsap.from(target, vars);
   },
 
-  set: (target: {}, properties: gsap.TweenConfig): gsap.TweenMax => {
-    return gsap.TweenMax.set(target, properties);
+  set: (target: {}, properties: gsap.TweenVars): TweenMax => {
+    return gsap.set(target, properties);
   },
 
   killTweensOf(_target: {}, _vars?: {}): void {
-    gsap.TweenMax.killTweensOf(_target, _vars);
+    gsap.killTweensOf(_target, _vars);
   },
 };

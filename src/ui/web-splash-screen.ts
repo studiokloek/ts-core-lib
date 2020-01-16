@@ -1,5 +1,4 @@
 import { Plugins } from '@capacitor/core';
-import { Sine } from 'gsap';
 import { Bind } from 'lodash-decorators';
 import { round } from 'lodash-es';
 import { SyncEvent } from 'ts-events';
@@ -10,7 +9,7 @@ import { AppEvent, PubSub } from '../events';
 import { getElement } from '../html';
 import { Logger } from '../logger';
 import { Screen, Stage } from '../screen';
-import { Tween } from '../tween';
+import { Tween, Easing } from '../tween';
 import { constrainNumber, mapNumber, randomBetween } from '../util/math';
 const { SplashScreen } = Plugins;
 
@@ -166,7 +165,7 @@ class WebLoaderScreen {
       1,
       { position: this.targetPosition },
       {
-        ease: Sine.easeInOut,
+        ease: Easing.Sine.easeInOut,
         onUpdate: () => {
           if (this.indicator) {
             Tween.set(this.indicator, { width: `${this.position * 100}%` });
