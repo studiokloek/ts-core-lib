@@ -1,4 +1,4 @@
-import { gsap } from 'gsap';
+import { gsap, Tween as GSAPTween } from 'gsap';
 import { get, isNumber, pull, set } from 'lodash-es';
 import { DisplayObject } from 'pixi.js-legacy';
 import { getLogger } from '../logger';
@@ -6,10 +6,10 @@ import { getLogger } from '../logger';
 const Logger = getLogger('tween > mixin');
 
 export class TweenMixin {
-  private __tweens: gsap.core.Tween[] = [];
+  private __tweens: GSAPTween[] = [];
 
   private __getTweenSettings(
-    targetOrDuration: {} | number,
+    targetOrDuration: gsap.TweenTarget | number,
     durationOrProperties: number | gsap.TweenVars,
     propertiesOrSettings?: gsap.TweenVars,
     settings?: gsap.TweenVars,
@@ -63,7 +63,7 @@ export class TweenMixin {
     return { target, vars, completeHandler: existingOnComplete, completeHandlerParams: existingOnCompleteParams };
   }
 
-  private __registerTween(tween: gsap.core.Tween, completeHandler: Function | undefined, onCompleteParams?: any[]): void {
+  private __registerTween(tween: GSAPTween, completeHandler: Function | undefined, onCompleteParams?: any[]): void {
     // bewaar in lijst
     this.__tweens.push(tween);
 
@@ -79,11 +79,11 @@ export class TweenMixin {
   }
 
   protected tweenFrom(
-    targetOrDuration: {} | number,
+    targetOrDuration: gsap.TweenTarget | number,
     durationOrProperties: number | gsap.TweenVars,
     propertiesOrSettings?: gsap.TweenVars,
     settings?: gsap.TweenVars,
-  ): gsap.core.Tween {
+  ): GSAPTween {
     // haal tween props op
     const { target, vars, completeHandler, completeHandlerParams } = this.__getTweenSettings(
       targetOrDuration,
@@ -102,11 +102,11 @@ export class TweenMixin {
   }
 
   protected tween(
-    targetOrDuration: {} | number,
+    targetOrDuration: gsap.TweenTarget | number,
     durationOrProperties: number | gsap.TweenVars,
     propertiesOrSettings?: gsap.TweenVars,
     settings?: gsap.TweenVars,
-  ): gsap.core.Tween {
+  ): GSAPTween {
     // haal tween props op
     const { target, vars, completeHandler, completeHandlerParams } = this.__getTweenSettings(
       targetOrDuration,
@@ -143,7 +143,7 @@ export class TweenMixin {
     }
   }
 
-  protected killTweenOf(target?: {}, _vars?: {}): void {
+  protected killTweenOf(target?: gsap.TweenTarget, _vars?: gsap.TweenVars): void {
     if (target) {
       // haal uit lijst
       const tweensToKill = this.__tweens.filter(item => item.targets().includes(target));

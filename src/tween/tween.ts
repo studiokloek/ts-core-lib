@@ -1,12 +1,12 @@
-import { gsap } from 'gsap';
-import { get, set } from 'lodash-es';
+import { gsap, Tween as GSAPTween } from 'gsap';
+import { get } from 'lodash-es';
 import { DisplayObject } from 'pixi.js-legacy';
 import { getLogger } from '../logger';
- 
+
 const Logger = getLogger('tween');
 
 export const Tween = {
-  to: async (target: {}, duration: number = 0, properties: gsap.TweenVars, settings?: gsap.TweenVars): Promise<TweenMax> => {
+  to: (target: {}, duration: number = 0, properties: gsap.TweenVars, settings?: gsap.TweenVars): GSAPTween => {
     let vars: gsap.TweenVars;
 
     if (settings) {
@@ -17,10 +17,10 @@ export const Tween = {
         }
 
         // fix rotation
-        const rotation = get(properties, 'rotation', undefined);
-        if (typeof rotation === 'number') {
-          set(properties, 'rotation', rotation * (180 / Math.PI));
-        }
+        // const rotation = get(properties, 'rotation', undefined);
+        // if (typeof rotation === 'number') {
+        //   set(properties, 'rotation', rotation * (180 / Math.PI));
+        // }
 
         vars = { ...{ pixi: properties }, ...settings };
       } else {
@@ -35,12 +35,10 @@ export const Tween = {
     // maak tween aan
     return gsap.to(target, vars);
   },
-  from: async (target: {}, duration: number = 0, properties: gsap.TweenVars, settings?: gsap.TweenVars): Promise<TweenMax> => {
+  from: (target: {}, duration: number = 0, properties: gsap.TweenVars, settings?: gsap.TweenVars): GSAPTween => {
     let vars: gsap.TweenVars;
 
     if (settings) {
-      // if (target instanceof DisplayObject) {
-
       if ((target as DisplayObject).worldTransform !== undefined) {
         // warn if props contain wrong values
         if (get(properties, 'delay') || get(properties, 'ease') || get(properties, 'onComplete')) {
@@ -48,10 +46,10 @@ export const Tween = {
         }
 
         // fix rotation
-        const rotation = get(properties, 'rotation', undefined);
-        if (typeof rotation === 'number') {
-          set(properties, 'rotation', rotation * (180 / Math.PI));
-        }
+        // const rotation = get(properties, 'rotation', undefined);
+        // if (typeof rotation === 'number') {
+        //   set(properties, 'rotation', rotation * (180 / Math.PI));
+        // }
 
         vars = { ...{ pixi: properties }, ...settings };
       } else {
@@ -67,11 +65,11 @@ export const Tween = {
     return gsap.from(target, vars);
   },
 
-  set: (target: {}, properties: gsap.TweenVars): TweenMax => {
+  set: (target: {}, properties: gsap.TweenVars): GSAPTween => {
     return gsap.set(target, properties);
   },
 
-  killTweensOf(_target: {}, _vars?: {}): void {
+  killTweensOf: (_target: {}, _vars?: {}): void => {
     gsap.killTweensOf(_target, _vars);
   },
 };

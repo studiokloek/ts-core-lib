@@ -320,11 +320,13 @@ export class ConcreteStage {
     }
   }
 
+  @Bind()
   private render(): void {
     this.sharedTicker.update(GSAPTicker.time * 1000);
     this.renderer.render(this._view);
   }
 
+  @Bind()
   private debugRender(): void {
     this.render();
 
