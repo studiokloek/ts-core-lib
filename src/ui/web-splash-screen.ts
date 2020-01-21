@@ -65,7 +65,7 @@ class MediaTriggerScreen {
 
     this.isReady = true;
 
-    Tween.to(this.element, 0.5, { autoAlpha: 0 });
+    Tween.to(this.element, 0.5, { autoAlpha: 0 }, { delay: 0 });
 
     this.checkReady();
   }
@@ -75,7 +75,7 @@ class MediaTriggerScreen {
       return;
     }
 
-    Tween.to(this.element, 0.5, { autoAlpha: 0 });
+    Tween.to(this.element, 0.5, { autoAlpha: 0 }, { delay: 0 });
 
     PubSub.unsubscribe(this.layout);
     this.element.removeEventListener('click', this.onClicked);
@@ -177,7 +177,7 @@ class WebLoaderScreen {
     if (value < 1) {
       Delayed.call(this.trickle, randomBetween(2, 4));
     } else {
-      Tween.to(this.bar, 0.4, { autoAlpha: 0 });
+      Tween.to(this.bar, 0.4, { autoAlpha: 0 }, { delay: 0 });
     }
   }
 
@@ -191,7 +191,7 @@ class WebLoaderScreen {
       return;
     }
 
-    Tween.to(this.bar, 0.5, { autoAlpha: 1 });
+    Tween.to(this.bar, 0.5, { autoAlpha: 1 }, { delay: 0 });
   }
 
   public hide(): void {
@@ -199,7 +199,7 @@ class WebLoaderScreen {
       return;
     }
 
-    Tween.to(this.element, 0.5, { autoAlpha: 0 });
+    Tween.to(this.element, 0.5, { autoAlpha: 0 }, { delay: 0 });
   }
 
   public increment(_value: number = 0.01): void {

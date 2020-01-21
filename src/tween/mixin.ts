@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { get, isNumber, pull, set } from 'lodash-es';
+import { get, isNumber, pull } from 'lodash-es';
 import { DisplayObject } from 'pixi.js-legacy';
 import { getLogger } from '../logger';
 
@@ -38,11 +38,11 @@ export class TweenMixin {
           Logger.warn('Can not mix tween settings (delay/ease/onComplete/etc) into PIXI properties.');
         }
 
-        // fix rotation
-        const rotation = get(properties, 'rotation', undefined);
-        if (typeof rotation === 'number') {
-          set(properties, 'rotation', rotation * (180 / Math.PI));
-        }
+        // // fix rotation
+        // const rotation = get(properties, 'rotation', undefined);
+        // if (typeof rotation === 'number') {
+        //   set(properties, 'rotation', rotation * (180 / Math.PI));
+        // }
 
         vars = { ...{ pixi: properties }, ...settings };
       } else {
