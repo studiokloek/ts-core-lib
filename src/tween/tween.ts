@@ -6,8 +6,8 @@ import { getLogger } from '../logger';
 const Logger = getLogger('tween');
 
 export const Tween = {
-  to: (target: {}, duration: number = 0, properties: gsap.TweenVars, settings?: gsap.TweenVars): GSAPTween => {
-    let vars: gsap.TweenVars;
+  to: (target: {}, duration: number = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTween => {
+    let vars: GSAPTweenVars;
 
     if (settings) {
       if ((target as DisplayObject).worldTransform !== undefined) {
@@ -33,10 +33,10 @@ export const Tween = {
     vars.duration = duration;
 
     // maak tween aan
-    return gsap.to(target, vars);
+    return gsap.to(target, vars) as GSAPTween;
   },
-  from: (target: {}, duration: number = 0, properties: gsap.TweenVars, settings?: gsap.TweenVars): GSAPTween => {
-    let vars: gsap.TweenVars;
+  from: (target: {}, duration: number = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTween => {
+    let vars: GSAPTweenVars;
 
     if (settings) {
       if ((target as DisplayObject).worldTransform !== undefined) {
@@ -62,11 +62,11 @@ export const Tween = {
     vars.duration = duration;
 
     // maak tween aan
-    return gsap.from(target, vars);
+    return gsap.from(target, vars) as GSAPTween;
   },
 
-  set: (target: {}, properties: gsap.TweenVars): GSAPTween => {
-    return gsap.set(target, properties);
+  set: (target: {}, properties: GSAPTweenVars): GSAPTween => {
+    return gsap.set(target, properties) as GSAPTween;
   },
 
   killTweensOf: (_target: {}, _vars?: {}): void => {
