@@ -32,6 +32,7 @@ function initStats(_ua: string): void {
     return;
   }
 
+  // is Google Analytics beschikbaar en staat Debug uit?
   if (window.ga && !CoreDebug.isEnabled()) {
     // onder iOS moeten we andere instellingen hebben.
     if (isApp() && isPlatform(Platform.IOS)) {
