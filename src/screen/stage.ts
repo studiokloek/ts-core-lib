@@ -60,6 +60,10 @@ export interface StageOptions {
   target: HTMLElement | string;
 }
 
+export function isSizeOptions(_options: SizeOptions): _options is SizeOptions {
+  return _options && typeof _options.orientation === 'string' && typeof _options.size === 'object' && typeof _options.ratio === 'object';
+}
+
 export interface SizeOptions {
   orientation: string;
   size: {
@@ -80,6 +84,10 @@ export interface SizeOptions {
     min: number;
     max: number;
   };
+}
+
+export interface MultiSizeOptions {
+  [key: string]: SizeOptions | undefined;
 }
 
 const DefaultStageOptions: StageOptions = {
@@ -126,7 +134,7 @@ export class ConcreteStage {
   private _generateResolution: number = ResolutionMode.NORMAL;
 
   private options: StageOptions | undefined;
-  private sizeOptions: SizeOptions | undefined;
+  private _sizeOptions: MultiSizeOptions | undefined;
   private isRunning = false;
   private renderer!: Renderer | CanvasRenderer;
   private target: HTMLElement | null | undefined;
@@ -147,9 +155,10 @@ export class ConcreteStage {
 
   // INIT
 
-  public init(_options: StageOptions, _sizingOptions?: SizeOptions): void {
+  public init(_options: StageOptions, _sizingOptions?: SizeOptions | MultiSizeOptions): void {
     this.options = { ...DefaultStageOptions, ..._options };
-    this.sizeOptions = { ...DefaultSizeOptions, ..._sizingOptions };
+
+    this.setSizingOptions(_sizingOptions);
 
     // basis fps
     this._fps = this.options.fps || DefaultStageOptions.fps;
@@ -406,6 +415,58 @@ export class ConcreteStage {
   @Bind
   private onScreenResized(): void {
     this.resize();
+  }
+
+  // SIZING
+  private get sizeOptions(): SizeOptions {
+    const orientation = Screen.orientation;
+
+    let options;
+
+    // bestaat er een optie voor de huidige orientatie
+    if (this._sizeOptions) {
+      if (this._sizeOptions[orientation]) {
+        Logger.info('sizeOptions()', `Found options for orientation:` + orientation);
+        options = this._sizeOptions[orientation];
+      } else {
+        // is er wel een vaste groote voor andere orientatie?
+        // dan gebruiken we deze voor beide groottes
+        const oppositeOrientation = orientation === OrientationMode.LANDSCAPE ? OrientationMode.PORTRAIT : OrientationMode.LANDSCAPE;
+        if (this._sizeOptions[oppositeOrientation]) {
+          Logger.info('sizeOptions()', `Found options for opposite orientation:` + oppositeOrientation);
+          options = this._sizeOptions[oppositeOrientation];
+        }
+      }
+    }
+
+    if (!options) {
+      Logger.info('sizeOptions()', `No options found for any orientation:` + orientation);
+      options = DefaultSizeOptions;
+    }
+
+    return options;
+  }
+
+  private setSizingOptions(_sizingOptions?: SizeOptions | MultiSizeOptions): void {
+    let sizingOptions = _sizingOptions;
+
+    if (!sizingOptions) {
+      // geen sizing, dan default
+      this._sizeOptions = { [DefaultSizeOptions.orientation]: DefaultSizeOptions };
+    } else {
+      // enkele sizing?
+      sizingOptions = _sizingOptions as SizeOptions;
+      if (isSizeOptions(sizingOptions)) {
+        this._sizeOptions = { [sizingOptions.orientation]: sizingOptions };
+      } else {
+        sizingOptions = _sizingOptions as MultiSizeOptions;
+
+        // complexer object
+        if (sizingOptions) {
+          this._sizeOptions = sizingOptions;
+        }
+      }
+    }
   }
 
   // SLEEP / WAKE

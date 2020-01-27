@@ -50,7 +50,7 @@ export class Screen {
     let orientation = this._orientation;
 
     // alleen op mobiel kan portrait voorkomen
-    if (isMobile() && this.width < this.height) {
+    if (this.width < this.height) {
       orientation = OrientationMode.PORTRAIT;
     } else {
       orientation = OrientationMode.LANDSCAPE;
