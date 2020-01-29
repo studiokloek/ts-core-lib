@@ -1,4 +1,4 @@
-import { isMobile } from '../device';
+// import { isMobile } from '../device';
 import { Bind, Debounce } from 'lodash-decorators';
 import { AsyncEvent } from 'ts-events';
 import { OrientationMode, ResolutionMode } from './constants';
