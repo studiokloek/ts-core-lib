@@ -141,7 +141,7 @@ export class ConcreteStage {
   private _view: Stage;
   private textureGC: systems.TextureGCSystem | undefined;
   private unloadingTextures: boolean | undefined;
-  private interaction: interaction.InteractionManager | undefined;
+  private _interaction: interaction.InteractionManager | undefined;
   private sharedTicker!: PixiTicker;
   private _timeScale: number = 1;
   private timeScaleBeforeSleep: number | undefined;
@@ -269,8 +269,8 @@ export class ConcreteStage {
       return;
     }
 
-    this.interaction = this.renderer.plugins.interaction as interaction.InteractionManager;
-    this.interaction.autoPreventDefault = true;
+    this._interaction = this.renderer.plugins.interaction as interaction.InteractionManager;
+    this._interaction.autoPreventDefault = true;
   }
 
   private initRenderer(): void {
@@ -619,6 +619,10 @@ export class ConcreteStage {
   }
 
   // GET / SET
+
+  public get interaction(): interaction.InteractionManager | undefined {
+    return this._interaction;
+  }
 
   public get view(): Stage {
     return this._view;
