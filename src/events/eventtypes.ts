@@ -7,6 +7,7 @@ export const TouchEvent: { [key: string]: interaction.InteractionEventTypes } = 
   START: 'pointerdown',
   END: 'pointerup',
   END_OUTSIDE: 'pointerupoutside',
+  CANCEL: 'pointercancel',
   MOVE: 'pointermove',
   OVER: 'pointerover',
   OUT: 'pointerout',
