@@ -347,14 +347,16 @@ export class ConcreteStage {
   // RESIZE
 
   private resize(): void {
-    if (!this.sizeOptions) {
+    const options = this.sizeOptions;
+
+    if (!options) {
       return;
     }
 
     const screenRatio = Screen.width / Screen.height;
-    const { min: minRatio, max: maxRatio } = this.sizeOptions.ratio;
-    const { width: minWidth, heigth: minHeight } = this.sizeOptions.size.minimum;
-    const { width: maxWidth, heigth: maxHeight } = this.sizeOptions.size.maximum;
+    const { min: minRatio, max: maxRatio } = options.ratio;
+    const { width: minWidth, heigth: minHeight } = options.size.minimum;
+    const { width: maxWidth, heigth: maxHeight } = options.size.maximum;
 
     if (screenRatio < minRatio) {
       // balken boven en onder
@@ -376,14 +378,14 @@ export class ConcreteStage {
     this._width = ceil(this._width);
     this._height = ceil(this._height);
 
-    const { width: defaultWidth, heigth: defaultHeight } = this.sizeOptions.size.default;
+    const { width: defaultWidth, heigth: defaultHeight } = options.size.default;
     this.scale.x = round(this.width / defaultWidth, 5);
     this.scale.y = round(this.height / defaultHeight, 5);
 
     this.position.x = round(Screen.width - this.width) * 0.5;
     this.position.y = round(Screen.height - this.height) * 0.5;
 
-    this._aspect = this.sizeOptions.orientation === OrientationMode.LANDSCAPE ? round(this.scale.y / this.scale.x, 5) : round(this.scale.x / this.scale.y, 5);
+    this._aspect = options.orientation === OrientationMode.LANDSCAPE ? round(this.scale.y / this.scale.x, 5) : round(this.scale.x / this.scale.y, 5);
 
     if (this.target) {
       Tween.set(this.target, {
@@ -451,7 +453,7 @@ export class ConcreteStage {
     let sizingOptions = _sizingOptions;
 
     if (!sizingOptions) {
-      // geen sizing, dan default
+      // helemaal geen sizing, dan default...
       this._sizeOptions = { [DefaultSizeOptions.orientation]: DefaultSizeOptions };
     } else {
       // enkele sizing?
