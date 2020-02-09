@@ -69,15 +69,15 @@ export interface SizeOptions {
   size: {
     default: {
       width: number;
-      heigth: number;
+      height: number;
     };
     minimum: {
       width: number;
-      heigth: number;
+      height: number;
     };
     maximum: {
       width: number;
-      heigth: number;
+      height: number;
     };
   };
   ratio: {
@@ -101,15 +101,15 @@ const DefaultSizeOptions: SizeOptions = {
   size: {
     default: {
       width: 1024,
-      heigth: 768,
+      height: 768,
     },
     minimum: {
       width: 320,
-      heigth: 240,
+      height: 240,
     },
     maximum: {
       width: 2048,
-      heigth: 1536,
+      height: 1536,
     },
   },
   ratio: {
@@ -121,7 +121,7 @@ const DefaultSizeOptions: SizeOptions = {
 const gpuInfo: GPUInfo = getGPUInfo();
 const GSAPTicker = gsap.ticker;
 
-class Stage extends Container {}
+class Stage extends Container { }
 
 export class ConcreteStage {
   private _width: number = Screen.width;
@@ -135,6 +135,7 @@ export class ConcreteStage {
 
   private options: StageOptions | undefined;
   private _sizeOptions: MultiSizeOptions | undefined;
+  private currentSizeOptions: SizeOptions | undefined;
   private isRunning = false;
   private renderer!: Renderer | CanvasRenderer;
   private target: HTMLElement | null | undefined;
@@ -176,6 +177,7 @@ export class ConcreteStage {
     this.connectToTarget();
 
     // force once and then listen for resizes
+    this.determineSizeOptions();
     this.resize();
     Screen.resized.attach(this.onScreenResized);
 
@@ -347,7 +349,7 @@ export class ConcreteStage {
   // RESIZE
 
   private resize(): void {
-    const options = this.sizeOptions;
+    const options = this.currentSizeOptions;
 
     if (!options) {
       return;
@@ -355,8 +357,8 @@ export class ConcreteStage {
 
     const screenRatio = Screen.width / Screen.height;
     const { min: minRatio, max: maxRatio } = options.ratio;
-    const { width: minWidth, heigth: minHeight } = options.size.minimum;
-    const { width: maxWidth, heigth: maxHeight } = options.size.maximum;
+    const { width: minWidth, height: minHeight } = options.size.minimum;
+    const { width: maxWidth, height: maxHeight } = options.size.maximum;
 
     if (screenRatio < minRatio) {
       // balken boven en onder
@@ -378,7 +380,7 @@ export class ConcreteStage {
     this._width = ceil(this._width);
     this._height = ceil(this._height);
 
-    const { width: defaultWidth, heigth: defaultHeight } = options.size.default;
+    const { width: defaultWidth, height: defaultHeight } = options.size.default;
     this.scale.x = round(this.width / defaultWidth, 5);
     this.scale.y = round(this.height / defaultHeight, 5);
 
@@ -414,13 +416,14 @@ export class ConcreteStage {
     }
   }
 
+  // RESIZE
   @Bind
   private onScreenResized(): void {
+    this.determineSizeOptions();
     this.resize();
   }
 
-  // SIZING
-  private get sizeOptions(): SizeOptions {
+  private determineSizeOptions(): void {
     const orientation = Screen.orientation;
 
     let options;
@@ -428,25 +431,25 @@ export class ConcreteStage {
     // bestaat er een optie voor de huidige orientatie
     if (this._sizeOptions) {
       if (this._sizeOptions[orientation]) {
-        Logger.info('sizeOptions()', `Found options for orientation:` + orientation);
+        Logger.info('determineSizeOptions()', `Found options for orientation:` + orientation);
         options = this._sizeOptions[orientation];
       } else {
         // is er wel een vaste groote voor andere orientatie?
         // dan gebruiken we deze voor beide groottes
         const oppositeOrientation = orientation === OrientationMode.LANDSCAPE ? OrientationMode.PORTRAIT : OrientationMode.LANDSCAPE;
         if (this._sizeOptions[oppositeOrientation]) {
-          Logger.info('sizeOptions()', `Found options for opposite orientation:` + oppositeOrientation);
+          Logger.info('determineSizeOptions()', `Found options for opposite orientation:` + oppositeOrientation);
           options = this._sizeOptions[oppositeOrientation];
         }
       }
     }
 
     if (!options) {
-      Logger.info('sizeOptions()', `No options found for any orientation:` + orientation);
+      Logger.info('determineSizeOptions()', `No options found for any orientation:` + orientation);
       options = DefaultSizeOptions;
     }
 
-    return options;
+    this.currentSizeOptions = options;
   }
 
   private setSizingOptions(_sizingOptions?: SizeOptions | MultiSizeOptions): void {
@@ -652,5 +655,17 @@ export class ConcreteStage {
 
   public get aspect(): number {
     return this._aspect;
+  }
+
+  public get screenOrientation(): string {
+    return Screen.orientation;
+  }
+
+  public get defaultWidth(): number {
+    return this.currentSizeOptions ? this.currentSizeOptions.size.default.width : DefaultSizeOptions.size.default.width;
+  }
+
+  public get defaultHeight(): number {
+    return this.currentSizeOptions ? this.currentSizeOptions.size.default.height : DefaultSizeOptions.size.default.height;
   }
 }
