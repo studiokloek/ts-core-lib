@@ -19,7 +19,7 @@ export interface SpineAssetInfo {
 }
 
 export function isSpineAsset(_info: SpineAsset): _info is SpineAsset {
-  return (_info as SpineAsset).skeleton !== undefined;
+  return _info && (_info as SpineAsset).skeleton !== undefined;
 }
 
 export interface SpineLoaderOptions {

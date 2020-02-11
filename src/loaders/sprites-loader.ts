@@ -7,7 +7,7 @@ import { determineResolution } from '../screen';
 const Logger = getLogger('loader > sprite');
 
 export function isSpriteAsset(_info: SpriteAsset): _info is SpriteAsset {
-  return (_info as SpriteAsset).id !== undefined;
+  return _info && (_info as SpriteAsset).id !== undefined;
 }
 
 export interface SpriteAsset {

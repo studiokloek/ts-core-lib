@@ -20,9 +20,13 @@ export function isBetweenDates(start: Date, end: Date): boolean {
 }
 
 export function isLeapYear(year: number): boolean {
+  if (!year) {
+    return false;
+  }
+
   const d = new Date(year, 1, 28);
   d.setDate(d.getDate() + 1);
-  return d.getMonth() == 1;
+  return d.getMonth() === 1;
 }
 
 // wordt gebruikt voor date string uit firestore
@@ -46,7 +50,7 @@ export function getDateFromAPIString(value: string): Date {
 }
 
 export function isSameDay(d1: Date, d2: Date): boolean {
-  return d1.getUTCFullYear() == d2.getUTCFullYear() && d1.getUTCMonth() == d2.getUTCMonth() && d1.getUTCDate() == d2.getUTCDate();
+  return d1 && d2 && d1.getUTCFullYear() == d2.getUTCFullYear() && d1.getUTCMonth() == d2.getUTCMonth() && d1.getUTCDate() == d2.getUTCDate();
 }
 
 export function getSecondsBetween(d1: Date, d2: Date): number {

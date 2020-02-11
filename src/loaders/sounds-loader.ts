@@ -20,7 +20,7 @@ export interface SoundAssetList {
 }
 
 export function isSoundAsset(_info: SoundAsset): _info is SoundAsset {
-  return (_info as SoundAsset).duration !== undefined && (_info as SoundAsset).id !== undefined;
+  return _info && (_info as SoundAsset).duration !== undefined && (_info as SoundAsset).id !== undefined;
 }
 
 export interface SoundsAssetInfo {

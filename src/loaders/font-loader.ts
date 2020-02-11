@@ -10,7 +10,7 @@ export interface FontAsset {
 }
 
 export function isFontAsset(_info: FontAsset): _info is FontAsset {
-  return (_info as FontAsset).family !== undefined;
+  return _info && (_info as FontAsset).family !== undefined;
 }
 
 export interface FontAssetInfo {

@@ -4,5 +4,5 @@ export interface PrepareCleanupInterface {
 }
 
 export function isPrepareCleanup(instance: any): instance is PrepareCleanupInterface {
-  return typeof instance.cleanupBeforeUnload === 'function';
+  return instance && typeof instance.cleanupBeforeUnload === 'function';
 }
