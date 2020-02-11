@@ -19,6 +19,7 @@ export interface MediatorInterface {
 export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) implements MediatorInterface {
   protected isActive = false;
   protected isPrepared = false;
+  protected isMediator = true;
   protected mediators: MediatorInterface[] = [];
   protected views: ViewInterface[] = [];
 

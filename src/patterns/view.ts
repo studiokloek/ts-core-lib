@@ -27,6 +27,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
   protected options: {};
   protected views: ViewInterface[] = [];
   protected target: Container | undefined;
+  protected isView = true;
   protected isPrepared = false;
   protected isActive = false;
 
@@ -86,22 +87,9 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
 
     this.views.forEach(view => view.prepareAfterLoad());
 
-    // prepare sprites
-    // for (let key of Object.keys(this)) {
-    //   if (key.indexOf('_') === 0) {
-    //     continue;
-    //   }
-
-    //   const value = get(this, key);
-    //   if (value && isPrepareCleanup(value) && !(value instanceof View)) {
-    //     value.prepareAfterLoad();
-    //   }
-    // }
-
     for (const child of this.children) {
-      // geen geregistreerde view, maar wel preparecleanup type?
-
-      if (!this.views.includes(child as View) && isPrepareCleanup(child)) {
+      // geen view, maar wel preparecleanup type?
+      if (!(child as View).isView && isPrepareCleanup(child)) {
         child.prepareAfterLoad();
       }
     }
@@ -115,21 +103,9 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
 
     this.views.forEach(view => view.cleanupBeforeUnload());
 
-    // clean sprites
-    // for (let key of Object.keys(this)) {
-    //   if (key.indexOf('_') === 0) {
-    //     continue;
-    //   }
-
-    //   const value = get(this, key);
-    //   if (value && isPrepareCleanup(value) && !(value instanceof View)) {
-    //     value.cleanupBeforeUnload();
-    //   }
-    // }
-
     for (const child of this.children) {
-      // geen geregistreerde view, maar wel preparecleanup type?
-      if (!this.views.includes(child as View) && isPrepareCleanup(child)) {
+      // geen view, maar wel preparecleanup type?
+      if (!(child as View).isView && isPrepareCleanup(child)) {
         child.cleanupBeforeUnload();
       }
     }
