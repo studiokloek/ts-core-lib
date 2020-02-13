@@ -45,22 +45,32 @@ fixKey();
 const currentKeys: { [key: string]: boolean } = {};
 
 window.addEventListener('keydown', event => {
-  currentKeys[event.key] = true;
+  currentKeys[event.key.toLowerCase()] = true;
   event.preventDefault();
 });
 
 window.addEventListener('keyup', event => {
-  currentKeys[event.key] = false;
+  currentKeys[event.key.toLowerCase()] = false;
   event.preventDefault();
+});
+
+window.addEventListener('blur', () => {
+  for (const key in currentKeys) {
+    currentKeys[key] = false;
+  }
 });
 
 export const Keyboard = {
   isDown: (key: string) => currentKeys[key] === true,
 
-  UP: 'ArrowUp',
-  DOWN: 'ArrowDown',
-  LEFT: 'ArrowLeft',
-  RIGHT: 'ArrowRight',
+  UP: 'arrowup',
+  DOWN: 'arrowdown',
+  LEFT: 'arrowleft',
+  RIGHT: 'arrowright',
   SPACE: ' ',
-  ENTER: 'Enter',
+  ENTER: 'enter',
+  META: 'meta',
+  SHIFT: 'shift',
+  ALT: 'alt',
+  CTRL: 'ctrl'
 };
