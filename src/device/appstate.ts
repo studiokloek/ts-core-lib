@@ -18,7 +18,17 @@ function handleAppState(state: AppState): void {
     PubSub.publishSync(AppEvent.STATE_INACTIVE);
   }
 
-  Logger.info(`Changed to '${state.isActive ? 'active' : 'in-active'}'`);
+  Logger.info(`Changed state to '${state.isActive ? 'active' : 'in-active'}'`);
+}
+
+function handleWindowBlur(): void {
+  Logger.info(`Changed state to 'blurred'`);
+  PubSub.publishSync(AppEvent.STATE_BLURRED);
+}
+
+function handleWindowFocus(): void {
+  Logger.info(`Changed state to 'focussed'`);
+  PubSub.publishSync(AppEvent.STATE_FOCUSSED);
 }
 
 export async function initAppStateDetection(): Promise<void> {
@@ -41,4 +51,13 @@ export async function initAppStateDetection(): Promise<void> {
       false,
     );
   }
+
+  // luister of focus veranderd
+  window.addEventListener('blur', handleWindowBlur);
+  window.addEventListener('focus', handleWindowFocus);
+  
+  // als app klaar is, een keer goede focus geven
+  PubSub.subscribeOnce(AppEvent.READY, () => {
+    window.focus();
+  });
 }

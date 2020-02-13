@@ -25,7 +25,10 @@ export const AppEvent = {
   DISABLE_INTERACTION: 'disable_interaction',
   STATE_ACTIVE: 'state_active',
   STATE_INACTIVE: 'state_inactive',
+  STATE_FOCUSSED: 'state_focus',
+  STATE_BLURRED: 'state_blur',
   NETWORK_ONLINE: 'network_online',
   NETWORK_OFFLINE: 'network_offline',
 };
+
 fixEventNames(AppEvent, 'app');

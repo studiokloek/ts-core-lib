@@ -221,7 +221,7 @@ class ConcreteWebSplashScreen {
 
     PubSub.subscribe(AppEvent.LOAD_COMPLETE, this.onLoadComplete);
     PubSub.subscribe(AppEvent.LOAD_PROGRESS, this.onLoadProgress);
-    PubSub.subscribe(AppEvent.READY, this.onReady);
+    PubSub.subscribeOnce(AppEvent.READY, this.onReady);
   }
 
   private initWebLoaderScreen(_target: HTMLElement | string): void {
