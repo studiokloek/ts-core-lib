@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { get, isNumber, pull } from 'lodash-es';
+import { get, isNumber, pull, remove } from 'lodash-es';
 import { DisplayObject } from 'pixi.js-legacy';
 import { getLogger } from '../logger';
 
@@ -130,18 +130,15 @@ export class TweenMixin {
     }
   }
 
-  protected killTweenOf(target?: GSAPTweenTarget, _vars?: GSAPTweenVars): void {
-    if (target) {
+  protected killTweenOf(_target?: GSAPTweenTarget, _vars?: GSAPTweenVars): void {
+    if (_target) {
       // haal uit lijst
-      const tweensToKill = this.__tweens.filter(item => item.targets().includes(target));
+      const tweensToKill = remove(this.__tweens, item => item.targets().includes(_target));
 
       // kill
       for (const tween of tweensToKill) {
         tween.kill(_vars);
       }
-
-      // update lijst
-      this.__tweens = this.__tweens.filter(item => !item.targets().includes(target));
     }
   }
 }
