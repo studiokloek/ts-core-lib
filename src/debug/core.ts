@@ -5,7 +5,7 @@ import { assign } from 'lodash-es';
 const parameters = new URLSearchParams(location.search);
 
 export interface CoreDebugSettings {
-  isEnabled: boolean;
+  isEnabled?: boolean;
   minLogLevel: number;
   globalTimescale: number;
   showStats: boolean;
