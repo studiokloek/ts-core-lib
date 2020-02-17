@@ -5,8 +5,8 @@ import { OrientationMode, ResolutionMode } from './constants';
 import { determineResolution } from './resolution';
 
 export class Screen {
-  private _width = 1;
-  private _height = 1;
+  private _width = 640;
+  private _height = 480;
   private _orientation: string = OrientationMode.LANDSCAPE;
   private _resolution: number = ResolutionMode.NORMAL;
 

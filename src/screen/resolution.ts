@@ -21,8 +21,6 @@ export const determineResolution = memoize((): { screen: number; texture: number
   let screenResolution = ResolutionMode.NORMAL,
     textureResolution = ResolutionMode.NORMAL;
 
-  Logger.info('pixelRatio[', pixelRatio, '] viewportSize[', viewportSize, ']');
-
   if (isMobile()) {
     if (isPlatform(Platform.IOS) && viewportSize > 1024) {
       // ios retina
@@ -30,7 +28,7 @@ export const determineResolution = memoize((): { screen: number; texture: number
     } else if (viewportSize > 1280 && pixelRatio > 1.5) {
       // android retina ea
       screenResolution = textureResolution = ResolutionMode.RETINA;
-    } else if (pixelRatio > 1.5 && viewportSize > 1280) {
+    } else if (pixelRatio > 1.2 && viewportSize > 1280) {
       textureResolution = ResolutionMode.RETINA;
     }
     // grote viewport en geen oude browser?
@@ -43,6 +41,8 @@ export const determineResolution = memoize((): { screen: number; texture: number
       textureResolution = ResolutionMode.RETINA;
     }
   }
+
+  Logger.info(`pixelRatio[${pixelRatio}] viewportSize[${viewportSize}] screenResolution[${screenResolution}] textureResolution[${textureResolution}]`);
 
   // Logger.info(screenResolution, textureResolution);
 

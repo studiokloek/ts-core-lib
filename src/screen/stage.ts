@@ -124,8 +124,8 @@ const GSAPTicker = gsap.ticker;
 class Stage extends Container {}
 
 export class ConcreteStage {
-  private _width: number = 1024;
-  private _height: number = 768;
+  private _width: number = 640;
+  private _height: number = 480;
   private _aspect = 0;
   private _scale = { x: 1, y: 1 };
   private _position = { x: 0, y: 0 };
