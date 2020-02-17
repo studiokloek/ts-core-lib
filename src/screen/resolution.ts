@@ -30,11 +30,11 @@ export const determineResolution = memoize((): { screen: number; texture: number
     } else if (viewportSize > 1280 && pixelRatio > 1.5) {
       // android retina ea
       screenResolution = textureResolution = ResolutionMode.RETINA;
-    } else if (viewportSize > 1280) {
+    } else if (pixelRatio > 1.5 && viewportSize > 1280) {
       textureResolution = ResolutionMode.RETINA;
     }
     // grote viewport en geen oude browser?
-  } else if (viewportSize > 1024 && !isObsoleteBrowser()) {
+  } else if (viewportSize > 1280 && !isObsoleteBrowser()) {
     if (pixelRatio >= 2) {
       // is er retina scherm aanwezig?
       screenResolution = textureResolution = ResolutionMode.RETINA;

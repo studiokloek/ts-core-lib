@@ -121,11 +121,11 @@ const DefaultSizeOptions: SizeOptions = {
 const gpuInfo: GPUInfo = getGPUInfo();
 const GSAPTicker = gsap.ticker;
 
-class Stage extends Container { }
+class Stage extends Container {}
 
 export class ConcreteStage {
-  private _width: number = Screen.width;
-  private _height: number = Screen.height;
+  private _width: number = 1024;
+  private _height: number = 768;
   private _aspect = 0;
   private _scale = { x: 1, y: 1 };
   private _position = { x: 0, y: 0 };
@@ -159,6 +159,7 @@ export class ConcreteStage {
   public init(_options: StageOptions, _sizingOptions?: SizeOptions | MultiSizeOptions): void {
     this.options = { ...DefaultStageOptions, ..._options };
 
+    this.onScreenResized();
     this.setSizingOptions(_sizingOptions);
 
     // basis fps
