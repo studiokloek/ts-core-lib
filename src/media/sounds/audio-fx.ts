@@ -7,6 +7,9 @@ import { Tween, Easing } from '../../tween';
 import { KloekRandom } from '../../util';
 import { SoundLibrary } from './library';
 
+// we regelen zelf suspend
+Howler.autoSuspend = false;
+
 export interface AudioFXOptions {
   loop?: boolean;
   rate?: number;
@@ -158,6 +161,31 @@ class ConcreteSoundsPlayer {
 
   public setVolume(_value: number): void {
     Howler.volume(_value);
+  }
+
+  // before webview pause，suspend the AudioContext
+  public async suspendContext(): Promise<void> {
+    const { ctx } = Howler;
+    if (ctx && ctx.state === 'running') {
+      try {
+        await ctx.suspend();
+      } catch {}
+    }
+
+    this.pauseAll();
+    this.setVolume(0);
+  }
+
+  // after webview resumes，manually resume the AudioContext
+  public async resumeContext(): Promise<void> {
+    const { ctx } = Howler;
+    if (ctx && ctx.state !== 'running') {
+      try {
+        await ctx.resume();
+      } catch {}
+    }
+    this.fadeAllTo(1, 0.3);
+    this.resumeAll();
   }
 }
 
