@@ -487,17 +487,11 @@ export class ConcreteStage {
     this.timeScaleBeforeSleep = this._timeScale;
     this._timeScale = 0;
 
-    GSAPTicker.sleep();
-
-    gsap.globalTimeline.timeScale(0);
+    storeTickerTimeBeforeSleep();
     setTickerGlobalTimeScale(0);
-
+    gsap.globalTimeline.timeScale(0);
     GSAPTicker.lagSmoothing(0, 0);
-
-    // async, want er komt nog een tick
-    Delayed.async(() => {
-      storeTickerTimeBeforeSleep();
-    });
+    GSAPTicker.sleep();
   }
 
   public wake(): void {
