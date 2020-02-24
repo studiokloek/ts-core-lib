@@ -4,6 +4,7 @@ export const ResolutionMode = {
 };
 
 export const OrientationMode = {
+  NONE: '',
   LANDSCAPE: 'landscape',
   PORTRAIT: 'portrait',
 };

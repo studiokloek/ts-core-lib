@@ -4,7 +4,7 @@ import { AsyncEvent } from 'ts-events';
 import { OrientationMode, ResolutionMode } from './constants';
 import { determineResolution } from './resolution';
 
-export class Screen {
+class ConcreteScreen {
   private _width = 640;
   private _height = 480;
   private _orientation: string = OrientationMode.LANDSCAPE;
@@ -85,3 +85,5 @@ export class Screen {
     return this._height;
   }
 }
+
+export const Screen = new ConcreteScreen();

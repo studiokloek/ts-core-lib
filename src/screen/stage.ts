@@ -121,8 +121,6 @@ const DefaultSizeOptions: SizeOptions = {
 const gpuInfo: GPUInfo = getGPUInfo();
 const GSAPTicker = gsap.ticker;
 
-class Stage extends Container {}
-
 export class ConcreteStage {
   private _width: number = 640;
   private _height: number = 480;
@@ -139,7 +137,7 @@ export class ConcreteStage {
   private isRunning = false;
   private renderer!: Renderer | CanvasRenderer;
   private target: HTMLElement | null | undefined;
-  private _view: Stage;
+  private _view: Container;
   private textureGC: systems.TextureGCSystem | undefined;
   private unloadingTextures: boolean | undefined;
   private _interaction: interaction.InteractionManager | undefined;
@@ -148,9 +146,10 @@ export class ConcreteStage {
   private timeScaleBeforeSleep: number | undefined;
   private sleeping = false;
   private stats: Stats | undefined;
+  private forcedScreenOrientation: string | undefined;
 
   public constructor() {
-    this._view = new Stage();
+    this._view = new Container();
     this._view.interactive = true;
   }
 
@@ -425,7 +424,7 @@ export class ConcreteStage {
   }
 
   private determineSizeOptions(): void {
-    const orientation = Screen.orientation;
+    const orientation = this.forcedScreenOrientation || Screen.orientation;
 
     let options;
 
@@ -624,7 +623,7 @@ export class ConcreteStage {
     return this._interaction;
   }
 
-  public get view(): Stage {
+  public get view(): Container {
     return this._view;
   }
 
@@ -653,7 +652,17 @@ export class ConcreteStage {
   }
 
   public get screenOrientation(): string {
-    return Screen.orientation;
+    return this.forcedScreenOrientation || Screen.orientation;
+  }
+
+  public set forcedOrientation(_value:string) {
+
+    const oldScreenOrientation = this.screenOrientation;
+    this.forcedScreenOrientation = _value;
+
+    if (_value !== oldScreenOrientation) {
+      this.onScreenResized();
+    }
   }
 
   public get defaultWidth(): number {
@@ -664,3 +673,5 @@ export class ConcreteStage {
     return this.currentSizeOptions ? this.currentSizeOptions.size.default.height : DefaultSizeOptions.size.default.height;
   }
 }
+
+export const Stage = new ConcreteStage();
