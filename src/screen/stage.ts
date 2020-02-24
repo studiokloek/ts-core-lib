@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { Bind } from 'lodash-decorators';
-import { ceil, round } from 'lodash-es';
+import { ceil, get, round } from 'lodash-es';
 import {
   autoDetectRenderer,
   CanvasRenderer,
@@ -8,6 +8,7 @@ import {
   DisplayObject,
   Graphics,
   interaction,
+  IPoint,
   Point,
   Rectangle,
   Renderer,
@@ -17,21 +18,20 @@ import {
   Texture,
   Ticker as PixiTicker,
   utils,
-  IPoint,
 } from 'pixi.js-legacy';
 import Stats from 'stats.js';
 import { Screen } from '.';
+import { CoreDebug } from '../debug';
+import { Delayed } from '../delay';
 import { getGPUInfo, GPUInfo } from '../device';
+import { AppEvent, PubSub } from '../events';
+import { getLogger } from '../logger';
 import { restoreTickerTimeAfterSleep, setTickerGlobalTimeScale, storeTickerTimeBeforeSleep } from '../ticker';
 import { Tween } from '../tween';
-import { ResolutionMode, OrientationMode } from './constants';
+import { constrainNumber } from '../util/math';
+import { OrientationMode, ResolutionMode } from './constants';
 import { determineResolution } from './resolution';
 import { StageInfo } from './stageinfo';
-import { getLogger } from '../logger';
-import { CoreDebug } from '../debug';
-import { constrainNumber } from '../util/math';
-import { PubSub, AppEvent } from '../events';
-import { Delayed } from '../delay';
 
 const Logger = getLogger('device > stage');
 
@@ -122,8 +122,8 @@ const gpuInfo: GPUInfo = getGPUInfo();
 const GSAPTicker = gsap.ticker;
 
 export class ConcreteStage {
-  private _width: number = 640;
-  private _height: number = 480;
+  private _width = 640;
+  private _height = 480;
   private _aspect = 0;
   private _scale = { x: 1, y: 1 };
   private _position = { x: 0, y: 0 };
@@ -142,7 +142,7 @@ export class ConcreteStage {
   private unloadingTextures: boolean | undefined;
   private _interaction: interaction.InteractionManager | undefined;
   private sharedTicker!: PixiTicker;
-  private _timeScale: number = 1;
+  private _timeScale = 1;
   private timeScaleBeforeSleep: number | undefined;
   private sleeping = false;
   private stats: Stats | undefined;
@@ -431,21 +431,21 @@ export class ConcreteStage {
     // bestaat er een optie voor de huidige orientatie
     if (this._sizeOptions) {
       if (this._sizeOptions[orientation]) {
-        Logger.info('determineSizeOptions()', `Found options for orientation:` + orientation);
+        Logger.info('determineSizeOptions()', `Found options for orientation:${orientation}`);
         options = this._sizeOptions[orientation];
       } else {
         // is er wel een vaste groote voor andere orientatie?
         // dan gebruiken we deze voor beide groottes
         const oppositeOrientation = orientation === OrientationMode.LANDSCAPE ? OrientationMode.PORTRAIT : OrientationMode.LANDSCAPE;
         if (this._sizeOptions[oppositeOrientation]) {
-          Logger.info('determineSizeOptions()', `Found options for opposite orientation:` + oppositeOrientation);
+          Logger.info('determineSizeOptions()', `Found options for opposite orientation:${oppositeOrientation}`);
           options = this._sizeOptions[oppositeOrientation];
         }
       }
     }
 
     if (!options) {
-      Logger.info('determineSizeOptions()', `No options found for any orientation:` + orientation);
+      Logger.info('determineSizeOptions()', `No options found for any orientation:${orientation}`);
       options = DefaultSizeOptions;
     }
 
@@ -655,10 +655,24 @@ export class ConcreteStage {
     return this.forcedScreenOrientation || Screen.orientation;
   }
 
-  public set forcedOrientation(_value:string) {
-
+  public set forcedOrientation(_value: string) {
     const oldScreenOrientation = this.screenOrientation;
     this.forcedScreenOrientation = _value;
+
+    // force orientation
+    const orientation = get(window, 'screen.orientation') as ScreenOrientation;
+
+    if (orientation) {
+      if (this.forcedScreenOrientation) {
+        const lockOrientation = this.forcedScreenOrientation === OrientationMode.LANDSCAPE ? 'landscape-primary' : 'portrait-primary';
+
+        if (orientation.type !== lockOrientation) {
+          orientation.lock(lockOrientation);
+        }
+      } else {
+        orientation.unlock();
+      }
+    }
 
     if (_value !== oldScreenOrientation) {
       this.onScreenResized();
