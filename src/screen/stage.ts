@@ -667,7 +667,11 @@ export class ConcreteStage {
         const lockOrientation = this.forcedScreenOrientation === OrientationMode.LANDSCAPE ? 'landscape-primary' : 'portrait-primary';
 
         if (orientation.type !== lockOrientation) {
-          orientation.lock(lockOrientation);
+          try {
+            orientation.lock(lockOrientation);
+          } catch {
+            Logger.warn('Could not lock orientation on this device.');
+          }
         }
       } else {
         orientation.unlock();
