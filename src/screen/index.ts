@@ -1,7 +1,7 @@
 export * from './screen';
 export * from './stage';
 
-import {Screen} from './screen';
+import { Screen } from './screen';
 
 export function initScreen(): void {
   Screen.init();

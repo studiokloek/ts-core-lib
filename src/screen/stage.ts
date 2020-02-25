@@ -23,7 +23,7 @@ import Stats from 'stats.js';
 import { Screen } from '.';
 import { CoreDebug } from '../debug';
 import { Delayed } from '../delay';
-import { getGPUInfo, GPUInfo } from '../device';
+import { getGPUInfo, GPUInfo, isApp } from '../device';
 import { AppEvent, PubSub } from '../events';
 import { getLogger } from '../logger';
 import { restoreTickerTimeAfterSleep, setTickerGlobalTimeScale, storeTickerTimeBeforeSleep } from '../ticker';
@@ -660,9 +660,9 @@ export class ConcreteStage {
     this.forcedScreenOrientation = _value;
 
     // force orientation
-    const orientation = get(window, 'screen.orientation') as ScreenOrientation;
 
-    if (orientation) {
+    const orientation = get(window, 'screen.orientation') as ScreenOrientation;
+    if (isApp() && orientation) {
       if (this.forcedScreenOrientation) {
         const lockOrientation = this.forcedScreenOrientation === OrientationMode.LANDSCAPE ? 'landscape-primary' : 'portrait-primary';
 
@@ -680,10 +680,10 @@ export class ConcreteStage {
       } else {
         orientation.unlock();
       }
-    }
-
-    if (_value !== oldScreenOrientation) {
-      this.onScreenResized();
+    } else {
+      if (_value !== oldScreenOrientation) {
+        this.onScreenResized();
+      }
     }
   }
 
