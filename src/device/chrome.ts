@@ -10,6 +10,7 @@ export async function initDeviceChrome(): Promise<void> {
     try {
       await StatusBar.setStyle({ style: StatusBarStyle.Light });
       await StatusBar.hide();
+      Logger.info('StatusBar hidden...');
     } catch (error) {
       Logger.error('Error setting StatusBar', error);
     }

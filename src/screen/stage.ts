@@ -659,8 +659,7 @@ export class ConcreteStage {
     const oldScreenOrientation = this.screenOrientation;
     this.forcedScreenOrientation = _value;
 
-    // force orientation
-
+    // in app force orientation with plugin
     const orientation = get(window, 'screen.orientation') as ScreenOrientation;
     if (isApp() && orientation) {
       if (this.forcedScreenOrientation) {

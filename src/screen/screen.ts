@@ -24,7 +24,7 @@ class ConcreteScreen {
     window.addEventListener('resize', this.onResize);
   }
 
-  @Debounce(500)
+  @Debounce(50)
   @Bind
   private onResize(): void {
     this.calculateDimension();
