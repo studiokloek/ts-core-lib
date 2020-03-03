@@ -1,12 +1,12 @@
 // import { isMobile } from '../device';
-import { Bind, Debounce } from 'lodash-decorators';
+import { Bind, Throttle } from 'lodash-decorators';
 import { AsyncEvent } from 'ts-events';
 import { OrientationMode, ResolutionMode } from './constants';
 import { determineResolution } from './resolution';
 
 class ConcreteScreen {
-  private _width = 640;
-  private _height = 480;
+  private _width = 0;
+  private _height = 0;
   private _orientation: string = OrientationMode.LANDSCAPE;
   private _resolution: number = ResolutionMode.NORMAL;
 
@@ -14,8 +14,7 @@ class ConcreteScreen {
   public orientationChanged = new AsyncEvent<string>();
 
   public init(): void {
-    this.calculateDimension();
-    this.determineOrientation();
+    this.handleResize();
 
     // resolutie wordt maar 1 keer geupdate, omdat het pixicanvas
     // niet dynamisch kan wisselen van resolutie
@@ -24,29 +23,44 @@ class ConcreteScreen {
     window.addEventListener('resize', this.onResize);
   }
 
-  @Debounce(50)
+  @Throttle(250)
   @Bind
   private onResize(): void {
-    this.calculateDimension();
-    this.determineOrientation();
+    this.handleResize();
   }
 
-  private calculateDimension(): void {
+  private handleResize(): void {
+    const resized = this.calculateDimension();
+
+    if (!resized) {
+      return;
+    }
+
+    const orientationChanged = this.determineOrientation();
+
+    if (orientationChanged) {
+      this.orientationChanged.post(this.orientation);
+    }
+
+    this.resized.post({ width: this.width, height: this.height });
+  }
+
+  private calculateDimension(): boolean {
     const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
       height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
     // is er wel wat veranderd?
     if (this.height === height && this.width === width) {
-      return;
+      return false;
     }
 
     this._width = width;
     this._height = height;
 
-    this.resized.post({ width: this.width, height: this.height });
+    return true;
   }
 
-  private determineOrientation(): void {
+  private determineOrientation(): boolean {
     let orientation = this._orientation;
 
     // alleen op mobiel kan portrait voorkomen
@@ -58,7 +72,7 @@ class ConcreteScreen {
 
     // zelfde?
     if (this._orientation === orientation) {
-      return;
+      return false;
     }
 
     this._orientation = orientation;
@@ -66,7 +80,7 @@ class ConcreteScreen {
     // scroll naar boven
     document.body.scrollTop = 0;
 
-    this.orientationChanged.post(this.orientation);
+    return true;
   }
 
   public get orientation(): string {
