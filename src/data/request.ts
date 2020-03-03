@@ -55,11 +55,11 @@ export async function getLocalUrlContents(_url: string): Promise<ResponseResult>
   const result: ResponseResult = {};
 
   // zijn we wel online
-  const networkError = await checkNetworkStatus();
-  if (networkError) {
-    result.error = networkError;
-    return result;
-  }
+  // const networkError = await checkNetworkStatus();
+  // if (networkError) {
+  //   result.error = networkError;
+  //   return result;
+  // }
 
   try {
     const response = await request.get(_url);
@@ -92,7 +92,7 @@ export async function getAPIRequest(_url: string): Promise<ResponseResult> {
   try {
     const response = await request.get(_url).accept('json');
     const contents = response.body;
-    
+
     Logger.debug(`getAPIRequest() done loading ${stringSizeInKb(contents)}kb from '${_url}'`);
 
     result.body = contents;
