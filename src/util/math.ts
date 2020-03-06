@@ -17,7 +17,10 @@ export const numberIsBetween = (value: number, min: number, max: number): boolea
 export const mapNumber = (value: number, istart: number, istop: number, ostart: number, ostop: number, constrain?: boolean, roundPrecision = -1): number => {
   constrain = constrain === true ? true : false;
 
-  let mappedValue = (ostop - ostart) * ((value - istart) / (istop - istart));
+  // fix voor als range start/stop gelijk is, om te voorkomen dat we door nul delen
+  const inputRangeDiff = istop - istart || 0.0000001;
+
+  let mappedValue = (ostop - ostart) * ((value - istart) / inputRangeDiff);
 
   if (constrain) {
     if (ostop > ostart) {
