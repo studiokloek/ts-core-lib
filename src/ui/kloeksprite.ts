@@ -20,7 +20,6 @@ export interface KloekSpriteDefaults {
 
 export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCleanupInterface {
   protected _isFilled = false;
-  protected isPrepared = false;
   protected textureId?: string;
   protected asset?: SpriteAsset;
   protected defaults?: KloekSpriteDefaults;
@@ -60,15 +59,11 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
   }
 
   public prepareAfterLoad(): void {
-    if (this.isPrepared) return;
-    this.isPrepared = true;
     this.fillTexture();
     this.applyDefaults();
   }
 
   public cleanupBeforeUnload(): void {
-    if (!this.isPrepared) return;
-    this.isPrepared = false;
     this.killTweens();
     this.emptyTexture();
   }
