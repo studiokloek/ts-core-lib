@@ -21,12 +21,14 @@ export interface SpriteAssetInfo {
   fileName: string;
   numberOfParts: number;
   type: string;
+  resolution?: number;
 }
 
 interface SpriteLoaderOptions {
   assetName?: string;
   assetDirectory: string;
   numberOfParts: number;
+  resolution?: number;
 }
 
 const OptionDefaults: SpriteLoaderOptions = {
@@ -81,7 +83,14 @@ export class SpriteLoader implements AssetLoaderInterface {
   }
 
   private getTextureExtention(): string {
-    const { texture: textureResolution } = determineResolution();
+    let textureResolution = 1;
+
+    if (typeof this.options.resolution === 'number') {
+      textureResolution = this.options.resolution;
+    } else {
+      textureResolution = determineResolution().texture;
+    }
+
     return textureResolution >= 2 ? '@2x' : '';
   }
 
@@ -189,6 +198,7 @@ export function createSpriteLoader(assetInfo: SpriteAssetInfo): SpriteLoader {
     assetName: assetInfo.fileName,
     assetDirectory: './assets/sprites/',
     numberOfParts: assetInfo.numberOfParts,
+    resolution: assetInfo.resolution,
   });
 
   return loader;
