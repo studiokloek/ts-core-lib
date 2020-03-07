@@ -68,9 +68,7 @@ export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) impl
   // PREPARE & CLEANUP
 
   public prepareAfterLoad(): void {
-    if (this.isPrepared) {
-      return;
-    }
+    if (this.isPrepared) return;
     this.isPrepared = true;
 
     this.mediators.forEach(mediator => mediator.prepareAfterLoad());
@@ -78,16 +76,14 @@ export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) impl
   }
 
   public cleanupBeforeUnload(): void {
-    if (!this.isPrepared) {
-      return;
-    }
+    if (!this.isPrepared) return;
     this.isPrepared = false;
-
-    this.mediators.forEach(mediator => mediator.cleanupBeforeUnload());
-    this.views.forEach(view => view.cleanupBeforeUnload());
 
     this.removeTickers();
     this.killDelays();
+
+    this.mediators.forEach(mediator => mediator.cleanupBeforeUnload());
+    this.views.forEach(view => view.cleanupBeforeUnload());
   }
 
   // ACTIVATE & DEACTIVATE
@@ -100,11 +96,11 @@ export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) impl
 
     this.isActive = true;
 
-    this.mediators.forEach(mediator => mediator.activate());
-    this.views.forEach(view => view.activate());
-
     this.resumeDelays();
     this.resumeTickers();
+
+    this.mediators.forEach(mediator => mediator.activate());
+    this.views.forEach(view => view.activate());
   }
 
   public deactivate(): void {
@@ -115,10 +111,10 @@ export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) impl
 
     this.isActive = false;
 
-    this.mediators.forEach(mediator => mediator.deactivate());
-    this.views.forEach(view => view.deactivate());
-
     this.pauseDelays();
     this.pauseTickers();
+
+    this.mediators.forEach(mediator => mediator.deactivate());
+    this.views.forEach(view => view.deactivate());
   }
 }

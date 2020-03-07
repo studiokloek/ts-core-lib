@@ -101,6 +101,10 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     }
     this.isPrepared = false;
 
+    this.killTweens();
+    this.removeTickers();
+    this.killDelays();
+
     this.views.forEach(view => view.cleanupBeforeUnload());
 
     for (const child of this.children) {
@@ -109,10 +113,6 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
         child.cleanupBeforeUnload();
       }
     }
-
-    this.killTweens();
-    this.removeTickers();
-    this.killDelays();
   }
 
   // ACTIVATE & DEACTIVATE
@@ -122,11 +122,11 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     }
     this.isActive = true;
 
-    this.views.forEach(view => view.activate());
-
     this.resumeDelays();
     this.resumeTweens();
     this.resumeTickers();
+
+    this.views.forEach(view => view.activate());
   }
 
   public deactivate(): void {
@@ -135,10 +135,10 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     }
     this.isActive = false;
 
-    this.views.forEach(view => view.deactivate());
-
     this.pauseDelays();
     this.pauseTweens();
     this.pauseTickers();
+
+    this.views.forEach(view => view.deactivate());
   }
 }
