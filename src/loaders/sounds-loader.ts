@@ -46,7 +46,7 @@ export class SoundsLoader implements AssetLoaderInterface {
   private isLoading: boolean;
   public isLoaded: boolean;
 
-  private loadedResolver!: (value?: any) => void;
+  private _loadedResolver!: (value?: any) => void;
 
   public constructor(_options: SoundsLoaderOptions) {
     this.options = { ..._options };
@@ -60,31 +60,27 @@ export class SoundsLoader implements AssetLoaderInterface {
 
   public prepareForLoad(): Promise<void> {
     return new Promise(resolve => {
-      this.loadedResolver = resolve;
+      this._loadedResolver = resolve;
     });
   }
 
   public async load(): Promise<object | void> {
     if (this.isLoading) {
       Logger.error('Already loading...');
-
       return;
     }
 
     // geluid uit?
     if (CoreDebug.disableSounds()) {
-      this.loadedResolver(this.data);
+      this.resolveLoaded();
       return;
     }
 
     // zijn er uberhaupt assets om in te laden?
     if (!this.options.assets) {
-      this.loadedResolver(this.data);
+      this.resolveLoaded();
       return;
     }
-
-    this.isLoaded = false;
-    this.isLoading = false;
 
     this.numberDoneLoading = 0;
     this.soundsToLoad = this.getSoundsToLoad(this.options.assets);
@@ -99,10 +95,15 @@ export class SoundsLoader implements AssetLoaderInterface {
     for (let i = 0; i < 8; i++) {
       this.preloadNextSoundAsset();
     }
+
+    if (!this._loadedResolver) {
+      return this.prepareForLoad();
+    }
   }
 
   private async preloadNextSoundAsset(): Promise<void> {
-    if (this.soundsToLoad.length === 0) {
+    if (!this.isLoading || this.soundsToLoad.length === 0) {
+      this.resolveLoaded();
       return;
     }
 
@@ -116,7 +117,8 @@ export class SoundsLoader implements AssetLoaderInterface {
       this.preloadNextSoundAsset();
     } else {
       Logger.info(`Loaded '${this.options.assetName}' sounds`);
-      this.loadedResolver(this.data);
+      this.isLoaded = true;
+      this.resolveLoaded();
     }
   }
 
@@ -149,10 +151,17 @@ export class SoundsLoader implements AssetLoaderInterface {
       SoundLibrary.unload(item, this.options.assetName);
     }
 
+    Logger.info(`Un-loaded '${this.options.assetName}'`);
+
+    this.soundsToLoad.length = 0;
     this.isLoaded = false;
     this.isLoading = false;
+  }
 
-    Logger.info(`Un-loaded '${this.options.assetName}'`);
+  private resolveLoaded(): void {
+    if (this._loadedResolver) {
+      this._loadedResolver(this.data);
+    }
   }
 
   public get data(): SoundLibraryItem[] {
