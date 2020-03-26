@@ -1,11 +1,11 @@
 import { gsap, Tween as GSAPTween } from 'gsap';
-import { get } from 'lodash-es';
+import { get, set } from 'lodash-es';
 import { DisplayObject } from 'pixi.js-legacy';
 import { getLogger } from '../logger';
 
 const Logger = getLogger('tween');
 
-function getTweenVars(target: {}, duration: number = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTweenVars {
+function getTweenVars(target: {}, duration = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTweenVars {
   let vars: GSAPTweenVars;
 
   if (settings) {
@@ -17,10 +17,10 @@ function getTweenVars(target: {}, duration: number = 0, properties: GSAPTweenVar
       }
 
       // fix rotation
-      // const rotation = get(properties, 'rotation', undefined);
-      // if (typeof rotation === 'number') {
-      //   set(properties, 'rotation', rotation * (180 / Math.PI));
-      // }
+      const rotation = get(properties, 'rotation', undefined);
+      if (typeof rotation === 'number') {
+        set(properties, 'rotation', rotation * (180 / Math.PI));
+      }
 
       vars = { ...{ pixi: properties }, ...settings };
     } else {
@@ -36,12 +36,12 @@ function getTweenVars(target: {}, duration: number = 0, properties: GSAPTweenVar
 }
 
 export const Tween = {
-  to: (target: {}, duration: number = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTween => {
+  to: (target: {}, duration = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTween => {
     // maak tween aan
     const vars = getTweenVars(target, duration, properties, settings);
     return gsap.to(target, vars) as GSAPTween;
   },
-  from: (target: {}, duration: number = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTween => {
+  from: (target: {}, duration = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTween => {
     // maak tween aan
     const vars = getTweenVars(target, duration, properties, settings);
     return gsap.from(target, vars) as GSAPTween;

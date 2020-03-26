@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { get, isNumber, pull, remove } from 'lodash-es';
+import { get, isNumber, pull, remove, set } from 'lodash-es';
 import { DisplayObject } from 'pixi.js-legacy';
 import { getLogger } from '../logger';
 
@@ -39,10 +39,10 @@ export class TweenMixin {
         }
 
         // // fix rotation
-        // const rotation = get(properties, 'rotation', undefined);
-        // if (typeof rotation === 'number') {
-        //   set(properties, 'rotation', rotation * (180 / Math.PI));
-        // }
+        const rotation = get(properties, 'rotation', undefined);
+        if (typeof rotation === 'number') {
+          set(properties, 'rotation', rotation * (180 / Math.PI));
+        }
 
         vars = { ...{ pixi: properties }, ...settings };
       } else {
