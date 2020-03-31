@@ -19,7 +19,7 @@ class MediaTriggerScreen {
   private logo!: HTMLElement | null;
   public trigger: SyncEvent<void> = new SyncEvent();
   private loadedResolver!: (value?: any) => void;
-  private isReady: boolean = false;
+  private isReady = false;
 
   public constructor(_target: HTMLElement | null) {
     if (!_target) {
@@ -47,7 +47,7 @@ class MediaTriggerScreen {
   }
 
   public async checkTriggered(): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (this.isReady) {
         return resolve();
       } else {
@@ -120,8 +120,8 @@ class MediaTriggerScreen {
 
 class WebLoaderScreen {
   private element: HTMLElement | null;
-  private position: number = 0;
-  private targetPosition: number = 0;
+  private position = 0;
+  private targetPosition = 0;
   private indicator!: HTMLElement | null;
   private bar!: HTMLElement | null;
 
@@ -202,7 +202,7 @@ class WebLoaderScreen {
     Tween.to(this.element, 0.5, { autoAlpha: 0 }, { delay: 0 });
   }
 
-  public increment(_value: number = 0.01): void {
+  public increment(_value = 0.01): void {
     this.setPostition(this.position + _value);
   }
 
@@ -273,7 +273,7 @@ class ConcreteWebSplashScreen {
   }
 
   @Bind
-  private onLoadProgress(value: number = 0.01): void {
+  private onLoadProgress(value = 0.01): void {
     if (this.loader) {
       this.loader.increment(value);
     }
