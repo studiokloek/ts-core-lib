@@ -35,18 +35,18 @@ export function getDateFromFirestoreString(value: string): Date | undefined {
     return;
   }
 
-  const parts = value.split('-');
+  const parts = map(`${value}`.split('-'), (v) => toNumber(v));
 
   if (!parts || parts.length !== 3) {
     return;
   }
 
-  return new Date(toNumber(parts[0]), toNumber(parts[1]) - 1, toNumber(parts[2]));
+  return new Date(parts[0], --parts[1], parts[2]);
 }
 
 export function getDateFromAPIString(value: string): Date {
-  const b = map(`${value}`.split(/\D/), v => toNumber(v));
-  return new Date(b[0], --b[1], b[2], b[3], b[4], b[5]);
+  const parts = map(`${value}`.split(/\D/), (v) => toNumber(v));
+  return new Date(parts[0], --parts[1], parts[2], parts[3], parts[4], parts[5]);
 }
 
 export function isSameDay(d1: Date, d2: Date): boolean {
