@@ -44,6 +44,7 @@
     "pixi.js-legacy": "^5.2.1",
     "pubsub-js": "^1.8.0",
     "random-js": "^2.1.0",
+    "slugify": "^1.4.0",
     "stats.js": "^0.17.0",
     "superagent": "^5.2.2",
     "ts-events": "^3.4.0",
