@@ -8,5 +8,6 @@ export const replaceAll = (string: string, pattern: string, replacement: string)
 export const slugify = (string: string, lowercase = false): string => {
   return orgSlugify(string, {
     lower: lowercase,
+    strict: true,
   });
 };
