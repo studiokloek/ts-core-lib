@@ -1,6 +1,6 @@
 // get babel runtime version
-const pkg = require('./package.json');
-const runtimeVersion = pkg.dependencies['@babel/runtime'].replace('^', '');
+const package = require('./package.json');
+const runtimeVersion = package.peerDependencies['@babel/runtime'].replace('^', '');
 
 module.exports = {
   presets: [
@@ -27,5 +27,5 @@ module.exports = {
       },
     ],
   ],
-  ignore: ['src/@types', /[\/\\]core-js/, /@babel[\/\\]runtime/],
+  ignore: ['src/@types', /[/\\]core-js/, /@babel[/\\]runtime/],
 };
