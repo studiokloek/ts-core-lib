@@ -87,7 +87,7 @@ export class AssetLoader {
 
   public addAsset(asset: AssetLoaderInfo[] | AssetLoaderInfo | undefined): void {
     if (Array.isArray(asset)) {
-      asset.map(_asset => this.addAsset(_asset));
+      asset.map((_asset) => this.addAsset(_asset));
 
       return;
     }
@@ -139,7 +139,7 @@ export class AssetLoader {
     this.queue = [...this.loaders];
 
     const concurrent = this.options.maxConcurrent || 1,
-      allLoadedPromises = this.loaders.map(loader => loader.prepareForLoad());
+      allLoadedPromises = this.loaders.map((loader) => loader.prepareForLoad());
 
     for (let i = 0; i < concurrent; i++) {
       this.loadNext();

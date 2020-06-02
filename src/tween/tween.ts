@@ -17,12 +17,12 @@ function getTweenVars(target: {}, duration = 0, properties: GSAPTweenVars, setti
       }
 
       // fix rotation
-      const rotation = get(properties, 'rotation', undefined);
+      const rotation = get(properties, 'rotation');
       if (typeof rotation === 'number') {
         set(properties, 'rotation', rotation * (180 / Math.PI));
       }
 
-      vars = { ...{ pixi: properties }, ...settings };
+      vars = { ...{ pixi: properties as GSAPTweenVars['pixi'] }, ...settings };
     } else {
       vars = { ...properties, ...settings };
     }
