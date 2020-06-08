@@ -1,12 +1,13 @@
 // get babel runtime version
 const package = require('./package.json');
-const runtimeVersion = package.peerDependencies['@babel/runtime'].replace('^', '');
+const runtimeVersion = package.peerDependencies['@babel/runtime-corejs3'].replace('^', '');
 
 module.exports = {
   presets: [
     [
       '@babel/env',
       {
+        modules: false,
         useBuiltIns: 'usage',
         corejs: 3,
       },
@@ -21,7 +22,8 @@ module.exports = {
       '@babel/plugin-transform-runtime',
       {
         version: runtimeVersion,
-        corejs: false,
+        corejs: 3,
+        proposals: true,
         helpers: true,
         useESModules: true,
       },
