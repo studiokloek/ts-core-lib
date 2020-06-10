@@ -28,7 +28,7 @@ export class SoundLibraryItem {
     }
 
     // inladen
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (this.player) {
         this.player.once('load', () => {
           this.isLoaded = true;

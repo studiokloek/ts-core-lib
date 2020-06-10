@@ -6,6 +6,7 @@ import { Stage } from '../../screen';
 import { Tween, Easing } from '../../tween';
 import { KloekRandom } from '../../util';
 import { SoundLibrary } from './library';
+import { Howler, Howl } from 'howler';
 
 // we regelen zelf suspend
 Howler.autoSuspend = false;
@@ -130,7 +131,7 @@ class ConcreteSoundsPlayer {
     for (const id in this.playingSounds) {
       const player = this.playingSounds[id];
       if (player.state() === 'loaded') {
-        player.play(parseInt(id));
+        player.play(Number.parseInt(id));
       } else {
         delete this.playingSounds[id];
       }
@@ -141,7 +142,7 @@ class ConcreteSoundsPlayer {
     for (const id in this.playingSounds) {
       const player = this.playingSounds[id];
       if (player.state() === 'loaded') {
-        player.pause(parseInt(id));
+        player.pause(Number.parseInt(id));
       } else {
         delete this.playingSounds[id];
       }
