@@ -32,7 +32,7 @@
   },
   "peerDependencies": {
     "@babel/runtime-corejs3": "^7.10.2",
-    "@capacitor/core": "^2.1.2",
+    "@capacitor/core": "^2.2.0",
     "bowser": "^2.9.0",
     "fontfaceobserver": "^2.1.0",
     "gsap": "^3.3.1",
