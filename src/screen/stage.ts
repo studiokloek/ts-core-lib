@@ -147,6 +147,7 @@ export class ConcreteStage {
   private sleeping = false;
   private stats: Stats | undefined;
   private forcedScreenOrientation: string | undefined;
+  private firstResize = true;
 
   public constructor() {
     this._view = new Container();
@@ -176,9 +177,7 @@ export class ConcreteStage {
     this.initInteraction();
     this.connectToTarget();
 
-    // force once and then listen for resizes
-    this.determineSizeOptions();
-    this.resize();
+    // listen for resize
     Screen.resized.attach(this.onScreenResized);
 
     // een keer renderen zodat we geen zwarte flits zien
@@ -409,11 +408,15 @@ export class ConcreteStage {
       position: this.position,
     };
 
-    PubSub.publish(AppEvent.RESIZED, info, true);
+    if (!this.firstResize) {
+      PubSub.publish(AppEvent.RESIZED, info, true);
+    }
 
     if (this.stats) {
       this.stats.dom.style.left = `${this.position.x - 1}px`;
     }
+
+    this.firstResize = false;
   }
 
   // RESIZE
