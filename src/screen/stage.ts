@@ -57,6 +57,7 @@ export interface RendererOptions {
 export interface StageOptions {
   backgroundColor?: number | undefined;
   fps: number;
+  antialias?: boolean;
   target: HTMLElement | string;
 }
 
@@ -92,6 +93,7 @@ export interface MultiSizeOptions {
 
 const DefaultStageOptions: StageOptions = {
   fps: 60,
+  antialias: false,
   backgroundColor: 0x000000,
   target: '#app',
 };
@@ -178,6 +180,8 @@ export class ConcreteStage {
     this.connectToTarget();
 
     // listen for resize
+    this.determineSizeOptions();
+    this.resize();
     Screen.resized.attach(this.onScreenResized);
 
     // een keer renderen zodat we geen zwarte flits zien
@@ -299,7 +303,7 @@ export class ConcreteStage {
       autoDensity: true,
       preserveDrawingBuffer: gpuInfo.preserveDrawingBuffer,
       transparent: false,
-      antialias: false,
+      antialias: this.options?.antialias === true ? true : false,
       resolution: rendererResolution,
       forceCanvas: !gpuInfo.isWebGLSupported,
       backgroundColor: this.options ? this.options.backgroundColor : 0x000000,
