@@ -7,7 +7,6 @@ import {
   Container,
   DisplayObject,
   Graphics,
-  interaction,
   IPoint,
   Point,
   Rectangle,
@@ -142,7 +141,7 @@ export class ConcreteStage {
   private _view: Container;
   private textureGC: systems.TextureGCSystem | undefined;
   private unloadingTextures: boolean | undefined;
-  private _interaction: interaction.InteractionManager | undefined;
+  private _interaction: PIXI.InteractionManager | undefined;
   private sharedTicker!: PixiTicker;
   private _timeScale = 1;
   private timeScaleBeforeSleep: number | undefined;
@@ -274,7 +273,7 @@ export class ConcreteStage {
       return;
     }
 
-    this._interaction = this.renderer.plugins.interaction as interaction.InteractionManager;
+    this._interaction = this.renderer.plugins.interaction as PIXI.InteractionManager;
     this._interaction.autoPreventDefault = true;
   }
 
@@ -626,7 +625,7 @@ export class ConcreteStage {
 
   // GET / SET
 
-  public get interaction(): interaction.InteractionManager | undefined {
+  public get interaction(): PIXI.InteractionManager | undefined {
     return this._interaction;
   }
 
@@ -677,7 +676,7 @@ export class ConcreteStage {
             .lock(lockOrientation)
             .then(() => {
               Logger.info(`Locked orientation to '${lockOrientation}'`);
-              return null;
+              return;
             })
             .catch(() => {
               Logger.warn('Could not lock orientation on this device.');

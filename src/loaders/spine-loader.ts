@@ -76,7 +76,7 @@ export class SpineLoader implements AssetLoaderInterface {
   }
 
   public prepareForLoad(): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.loadedResolver = resolve;
     });
   }
@@ -96,11 +96,11 @@ export class SpineLoader implements AssetLoaderInterface {
     this.loadUrl = `${this.baseUrl}${resolutionExtension}`;
     this.loader.add(`${this.loadUrl}.json`);
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.loader.load((_loader: Loader, _resources: any) => {
-        this.loader.removeAllListeners();
+        // this.loader.removeAllListeners();
 
-        const resource = _resources ? _resources[`${this.loadUrl}.json`] : null;
+        const resource = _resources ? _resources[`${this.loadUrl}.json`] : undefined;
 
         if (!resource) {
           Logger.error('Error accessing resource in loader...');

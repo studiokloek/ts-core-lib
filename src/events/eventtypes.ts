@@ -1,8 +1,7 @@
-import { interaction } from 'pixi.js-legacy';
 import { fixEventNames } from './util';
 
 // TOUCH EVENTS
-export const TouchEvent: { [key: string]: interaction.InteractionEventTypes } = {
+export const TouchEvent: { [key: string]: PIXI.InteractionEventTypes } = {
   TAP: 'pointertap',
   START: 'pointerdown',
   END: 'pointerup',

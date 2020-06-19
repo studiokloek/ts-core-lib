@@ -95,7 +95,7 @@ export class SpriteLoader implements AssetLoaderInterface {
   }
 
   public prepareForLoad(): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.loadedResolver = resolve;
     });
   }
@@ -118,12 +118,12 @@ export class SpriteLoader implements AssetLoaderInterface {
       this.loader.add(`${url}.json`);
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.loader.load((_loader, _resources) => {
-        this.loader.removeAllListeners();
+        //this.loader.removeAllListeners();
 
         for (const loadUrl of this.loadUrlIndex) {
-          const resource = _resources ? _resources[`${loadUrl}.json`] : null;
+          const resource = _resources ? _resources[`${loadUrl}.json`] : undefined;
 
           if (!resource) {
             Logger.error('Error accessing resource in loader...');
