@@ -29,7 +29,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     super();
 
     // Waarom is dit nodig bij V5?
-    this.scale.set(1);
+    // this.scale.set(1);
 
     this.setAsset(_asset);
 
@@ -80,7 +80,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     let texture;
     try {
       texture = Texture.from(this.textureId);
-    } catch (error) {
+    } catch {
       Logger.error(`Texture not found with id ${this.textureId}`);
     }
 
