@@ -575,7 +575,7 @@ export class ConcreteStage {
 
   public generateTexture(_displayObject: Container, _region?: Rectangle): Texture {
     if (typeof (_displayObject as Graphics).generateCanvasTexture === 'function') {
-      return (_displayObject as Graphics).generateCanvasTexture(settings.SCALE_MODE, this._generateResolution);
+      return (_displayObject as Graphics).generateCanvasTexture(settings.SCALE_MODE, 1);
     }
 
     return this.renderer.generateTexture(_displayObject, settings.SCALE_MODE, this._generateResolution, _region);
