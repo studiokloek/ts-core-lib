@@ -5,20 +5,6 @@ export function getDateString(date?: Date): string {
   return `${d.getFullYear()}-${padStart(`${d.getMonth() + 1}`, 2, '0')}-${padStart(`${d.getDate()}`, 2, '0')}`;
 }
 
-export function isBetweenDates(start: Date, end: Date): boolean {
-  if (!isDate(start) || !isDate(end)) {
-    return false;
-  }
-
-  const now = new Date();
-
-  if (now > start && now < end) {
-    return true;
-  }
-
-  return false;
-}
-
 export function isLeapYear(year: number): boolean {
   if (!year) {
     return false;
@@ -49,14 +35,6 @@ export function getDateFromAPIString(value: string): Date {
   return new Date(parts[0], --parts[1], parts[2], parts[3], parts[4], parts[5]);
 }
 
-export function isSameDay(d1: Date, d2: Date): boolean {
-  return d1 && d2 && d1.getUTCFullYear() == d2.getUTCFullYear() && d1.getUTCMonth() == d2.getUTCMonth() && d1.getUTCDate() == d2.getUTCDate();
-}
-
-export function getSecondsBetween(d1: Date, d2: Date): number {
-  return Math.round((d1.getTime() - d2.getTime()) * 0.001);
-}
-
 export function calulateAgeFromDate(birthday?: Date | string): number {
   if (!birthday) {
     return -1;
@@ -79,4 +57,71 @@ export function calulateAgeFromDate(birthday?: Date | string): number {
 
   const days = (now.getTime() - birthday.getTime()) / (3600 * 24 * 1000);
   return floor(years + days / (isLeapYear(now.getFullYear()) ? 366 : 365));
+}
+
+export function isSameDay(d1: Date, d2: Date): boolean {
+  return d1 && d2 && d1.getUTCFullYear() == d2.getUTCFullYear() && d1.getUTCMonth() == d2.getUTCMonth() && d1.getUTCDate() == d2.getUTCDate();
+}
+
+export function getDayDate(date?: Date): Date {
+  if (!isDate(date)) {
+    date = new Date();
+  }
+
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+}
+
+export function isBeforeToday(before: Date): boolean {
+  if (!isDate(before)) {
+    return false;
+  }
+
+  const startOfToday = getDayDate();
+
+  if (before < startOfToday) {
+    return true;
+  }
+
+  return false;
+}
+
+export function isAfterToday(after: Date): boolean {
+  if (!isDate(after)) {
+    return false;
+  }
+
+  const endOfToday = getDayDate();
+  endOfToday.setUTCHours(23, 59, 59);
+
+  if (after > endOfToday) {
+    return true;
+  }
+
+  return false;
+}
+
+export function isBetweenDates(start: Date, end: Date): boolean {
+  if (!isDate(start) || !isDate(end)) {
+    return false;
+  }
+
+  const now = new Date();
+
+  if (now > start && now < end) {
+    return true;
+  }
+
+  return false;
+}
+
+export function daysBetween(start: Date, end: Date): number {
+  const oneDay = 1000 * 60 * 60 * 24,
+    startDay = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate()),
+    endDay = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
+
+  return (startDay - endDay) / oneDay;
+}
+
+export function getSecondsBetween(d1: Date, d2: Date): number {
+  return Math.round((d1.getTime() - d2.getTime()) * 0.001);
 }
