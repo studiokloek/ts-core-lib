@@ -76,6 +76,9 @@ export function isBeforeToday(before: Date): boolean {
     return false;
   }
 
+  // to UTC
+  before = new Date(Date.UTC(before.getFullYear(), before.getMonth(), before.getDate(), before.getHours(), before.getMinutes(), before.getSeconds()));
+
   const startOfToday = getDayDate();
 
   if (before < startOfToday) {
@@ -89,6 +92,9 @@ export function isAfterToday(after: Date): boolean {
   if (!isDate(after)) {
     return false;
   }
+
+  // to UTC
+  after = new Date(Date.UTC(after.getFullYear(), after.getMonth(), after.getDate(), after.getHours(), after.getMinutes(), after.getSeconds()));
 
   const endOfToday = getDayDate();
   endOfToday.setUTCHours(23, 59, 59);
