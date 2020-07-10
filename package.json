@@ -33,9 +33,9 @@
   "peerDependencies": {
     "@babel/runtime-corejs3": "^7.10.4",
     "@capacitor/core": "^2.2.1",
-    "bowser": "^2.9.0",
+    "bowser": "^2.10.0",
     "fontfaceobserver": "^2.1.0",
-    "gsap": "^3.3.4",
+    "gsap": "^3.4.0",
     "howler": "^2.2.0",
     "lodash-es": "^4.17.15",
     "pixi-spine": "^2.1.9",
