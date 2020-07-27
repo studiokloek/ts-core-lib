@@ -17,6 +17,7 @@ import {
   Texture,
   Ticker as PixiTicker,
   utils,
+  InteractionManager,
 } from 'pixi.js-legacy';
 import Stats from 'stats.js';
 import { Screen } from '.';
@@ -141,7 +142,7 @@ export class ConcreteStage {
   private _view: Container;
   private textureGC: systems.TextureGCSystem | undefined;
   private unloadingTextures: boolean | undefined;
-  private _interaction: PIXI.InteractionManager | undefined;
+  private _interaction: InteractionManager | undefined;
   private sharedTicker!: PixiTicker;
   private _timeScale = 1;
   private timeScaleBeforeSleep: number | undefined;
@@ -273,7 +274,7 @@ export class ConcreteStage {
       return;
     }
 
-    this._interaction = this.renderer.plugins.interaction as PIXI.InteractionManager;
+    this._interaction = this.renderer.plugins.interaction as InteractionManager;
     this._interaction.autoPreventDefault = true;
   }
 
@@ -575,7 +576,7 @@ export class ConcreteStage {
 
   public generateTexture(_displayObject: Container, _region?: Rectangle): Texture {
     if (typeof (_displayObject as Graphics).generateCanvasTexture === 'function') {
-      return (_displayObject as Graphics).generateCanvasTexture(settings.SCALE_MODE, 1);
+      return (_displayObject as Graphics).generateCanvasTexture(settings.SCALE_MODE, this._generateResolution);
     }
 
     return this.renderer.generateTexture(_displayObject, settings.SCALE_MODE, this._generateResolution, _region);
@@ -625,7 +626,7 @@ export class ConcreteStage {
 
   // GET / SET
 
-  public get interaction(): PIXI.InteractionManager | undefined {
+  public get interaction(): InteractionManager | undefined {
     return this._interaction;
   }
 
