@@ -98,6 +98,14 @@ const table: { [key: string]: LoggerClass } = {};
 
 export const Logger = getLogger();
 
+export function initLogger(): void {
+  const loggers = Object.values(table);
+
+  for (const logger of loggers) {
+    logger.level = CoreDebug.getLogLevel();
+  }
+}
+
 export function getLogger(prefix = 'default'): LoggerClass {
   prefix = prefix.toLowerCase();
 
