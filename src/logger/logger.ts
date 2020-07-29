@@ -5,18 +5,18 @@ import { calculateLoggerColor, getNextLoggerColor } from './colors';
 import { LogLevels } from './levels';
 
 class LoggerClass {
-  private prefix: string = '';
-  private isEnabled: boolean = true;
+  private prefix = '';
+  private isEnabled = true;
   private logLevel: number = LogLevels.DEBUG;
-  private _color: string = '';
+  private _color = '';
 
-  private _verbose: Function;
-  private _debug: Function;
-  private _info: Function;
-  private _warn: Function;
-  private _error: Function;
-  private _table: Function;
-  private _tree: Function;
+  private _verbose: (message?: unknown, ...optionalParams: unknown[]) => void;
+  private _debug: (message?: unknown, ...optionalParams: unknown[]) => void;
+  private _info: (message?: unknown, ...optionalParams: unknown[]) => void;
+  private _warn: (message?: unknown, ...optionalParams: unknown[]) => void;
+  private _error: (message?: unknown, ...optionalParams: unknown[]) => void;
+  private _table: (tabularData?: unknown, properties?: string[]) => void;
+  private _tree: (obj: unknown, options?: Record<string, unknown>) => void;
 
   public constructor(prefix: string, color?: string) {
     if (prefix) {
@@ -33,35 +33,35 @@ class LoggerClass {
     this._tree = console.dir.bind(console);
   }
 
-  private getBoundMethod(method: Function): Function {
+  private getBoundMethod(method: (message?: unknown, ...optionalParams: unknown[]) => void): (message?: unknown, ...optionalParams: unknown[]) => void {
     return method.bind(console, `%c${this.prefix}`, `background:${this._color};color:#ffffff; font-size: 10px;padding:2px 4px 1px 4px; `);
   }
 
-  public get verbose(): Function {
+  public get verbose(): (message?: unknown, ...optionalParams: unknown[]) => void {
     return this.shouldLog(LogLevels.VERBOSE) ? this._verbose : noop;
   }
 
-  public get debug(): Function {
+  public get debug(): (message?: unknown, ...optionalParams: unknown[]) => void {
     return this.shouldLog(LogLevels.DEBUG) ? this._debug : noop;
   }
 
-  public get info(): Function {
+  public get info(): (message?: unknown, ...optionalParams: unknown[]) => void {
     return this.shouldLog(LogLevels.INFO) ? this._info : noop;
   }
 
-  public get warn(): Function {
+  public get warn(): (message?: unknown, ...optionalParams: unknown[]) => void {
     return this.shouldLog(LogLevels.WARN) ? this._warn : noop;
   }
 
-  public get error(): Function {
+  public get error(): (message?: unknown, ...optionalParams: unknown[]) => void {
     return this.shouldLog(LogLevels.ERROR) ? this._error : noop;
   }
 
-  public get table(): Function {
+  public get table(): (tabularData?: unknown, properties?: string[]) => void {
     return this.shouldLog(LogLevels.DEBUG) ? this._table : noop;
   }
 
-  public get tree(): Function {
+  public get tree(): (obj: unknown, options?: Record<string, unknown>) => void {
     return this.shouldLog(LogLevels.DEBUG) ? this._tree : noop;
   }
 
@@ -98,14 +98,20 @@ const table: { [key: string]: LoggerClass } = {};
 
 export const Logger = getLogger();
 
-export function getLogger(prefix: string = 'default'): LoggerClass {
+export function getLogger(prefix = 'default'): LoggerClass {
   prefix = prefix.toLowerCase();
+
+  // om resources te sparen gebruiken we default zodra we niet in debug modus zijn
+  if (!CoreDebug.isEnabled()) {
+    prefix = 'default';
+  }
+
   let logger = table[prefix] as LoggerClass;
 
   // bestaat deze logger al?
   if (!logger) {
     // nee, uitzoeken of er al een logger bestaat binnen deze namespace
-    const parts = prefix.split('>').map(part => trim(part)),
+    const parts = prefix.split('>').map((part) => trim(part)),
       numberOfParts = parts.length;
 
     // eventuele sub loggers aanmaken
