@@ -16,8 +16,12 @@ export interface SpriteAsset {
   height: number;
 }
 
+export interface SpriteAssetList {
+  [key: string]: SpriteAsset | SpriteAssetList;
+}
+
 export interface SpriteAssetInfo {
-  assets: Record<string, unknown>;
+  assets: SpriteAssetList;
   fileName: string;
   numberOfParts: number;
   type: string;
