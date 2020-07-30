@@ -59,14 +59,20 @@ export class SoundsLoader implements AssetLoaderInterface {
   }
 
   public prepareForLoad(): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this._loadedResolver = resolve;
     });
   }
 
-  public async load(): Promise<object | void> {
+  public async load(): Promise<void> {
     if (this.isLoading) {
       Logger.error('Already loading...');
+      return;
+    }
+
+    if (this.isLoaded) {
+      Logger.info('Already loaded...');
+      this.resolveLoaded();
       return;
     }
 

@@ -81,12 +81,20 @@ export class SpineLoader implements AssetLoaderInterface {
     });
   }
 
-  public async load(): Promise<object | undefined> {
+  public async load(): Promise<SpineAsset | undefined> {
     if (this.isLoading) {
       Logger.error('Already loading...');
 
       return;
     }
+
+    if (this.isLoaded) {
+      Logger.info('Already loaded...');
+      this.loadedResolver(this._data);
+
+      return;
+    }
+
     this.isLoaded = false;
     this.isLoading = true;
 

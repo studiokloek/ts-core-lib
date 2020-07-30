@@ -13,7 +13,7 @@ const Logger = getLogger('loader');
 type AssetData = { [key: string]: Texture } | SoundLibraryItem[] | SpineAsset | FontAsset | undefined;
 
 export interface AssetLoaderInterface {
-  load(): Promise<object | void>;
+  load(): Promise<unknown | void>;
   unload(): void;
   prepareForLoad(): Promise<void>;
   data: AssetData;
@@ -59,6 +59,7 @@ export class AssetLoader {
   protected assets: LoaderAssets;
   private numberLoaded = 0;
   private isLoading = false;
+  private _isLoaded = false;
   private options: LoaderOptions;
   private assetsInited = false;
   private loaders: AssetLoaderInterface[] = [];
@@ -96,7 +97,7 @@ export class AssetLoader {
       return;
     }
 
-    let loader: AssetLoaderInterface | undefined = undefined;
+    let loader: AssetLoaderInterface | undefined;
 
     Logger.debug(`Adding asset of type '${asset.type}'...`);
 
@@ -121,10 +122,11 @@ export class AssetLoader {
   }
 
   public async load(): Promise<void> {
-    if (this.isLoading) {
+    if (this.isLoading || this.isLoaded) {
       return;
     }
 
+    this._isLoaded = false;
     this.isLoading = true;
     this.numberLoaded = 0;
 
@@ -150,6 +152,7 @@ export class AssetLoader {
     // done loading
     this.loaded.post();
     this.isLoading = false;
+    this._isLoaded = true;
   }
 
   private async loadNext(): Promise<void> {
@@ -181,13 +184,18 @@ export class AssetLoader {
       loader.unload();
     }
     this.isLoading = false;
+    this._isLoaded = false;
   }
 
   public get id(): string | undefined {
     return this.options.id;
   }
 
-  protected getLoaderData(_type: string, _pattern: object): AssetData {
+  public get isLoaded(): boolean {
+    return this._isLoaded;
+  }
+
+  protected getLoaderData(_type: string, _pattern: Record<string, unknown>): AssetData {
     // haal alle loaders op van dit type
     const typeLoaders = filter(this.loaders, { type: _type });
 

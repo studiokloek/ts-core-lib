@@ -44,15 +44,20 @@ export class FontLoader implements AssetLoaderInterface {
   }
 
   public prepareForLoad(): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.loadedResolver = resolve;
     });
   }
 
-  public async load(): Promise<object | void> {
-    if (this.isLoading) {
+  public async load(): Promise<void> {
+    if (this.isLoading || this.isLoaded) {
       Logger.error('Already loading...');
+      return;
+    }
 
+    if (this.isLoaded) {
+      Logger.info('Already loaded...');
+      this.loadedResolver();
       return;
     }
 
@@ -61,7 +66,7 @@ export class FontLoader implements AssetLoaderInterface {
 
     try {
       await this.loader.load();
-    } catch (error) {
+    } catch {
       Logger.error(`Error loading '${this.options.fontFamilyName}'`);
     }
 

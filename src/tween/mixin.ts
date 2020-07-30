@@ -13,7 +13,7 @@ export class TweenMixin {
     durationOrProperties: number | GSAPTweenVars,
     propertiesOrSettings?: GSAPTweenVars,
     settings?: GSAPTweenVars,
-  ): { target: any; vars: object } {
+  ): { target: any; vars: Record<string, unknown> } {
     let target,
       duration = 0,
       properties = {};
@@ -39,7 +39,7 @@ export class TweenMixin {
         }
 
         // // fix rotation
-        const rotation = get(properties, 'rotation', undefined);
+        const rotation = get(properties, 'rotation');
         if (typeof rotation === 'number') {
           set(properties, 'rotation', rotation * (180 / Math.PI));
         }
@@ -111,6 +111,7 @@ export class TweenMixin {
     return tween;
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   protected killTweens(_target?: object, _propertiesList?: string): void {
     for (const tween of this.__tweens) {
       tween.kill(_target, _propertiesList);
@@ -133,7 +134,7 @@ export class TweenMixin {
   protected killTweenOf(_target?: GSAPTweenTarget, _vars?: GSAPTweenVars): void {
     if (_target) {
       // haal uit lijst
-      const tweensToKill = remove(this.__tweens, item => item.targets().includes(_target));
+      const tweensToKill = remove(this.__tweens, (item) => item.targets().includes(_target));
 
       // kill
       for (const tween of tweensToKill) {

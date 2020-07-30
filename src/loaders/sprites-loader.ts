@@ -17,7 +17,7 @@ export interface SpriteAsset {
 }
 
 export interface SpriteAssetInfo {
-  assets: object;
+  assets: Record<string, unknown>;
   fileName: string;
   numberOfParts: number;
   type: string;
@@ -56,7 +56,7 @@ export class SpriteLoader implements AssetLoaderInterface {
 
     this.loader = new Loader();
     this.loader.onError.add((loader: Loader, resource: LoaderResource) => {
-      console.error('error loading', loader, resource);
+      Logger.error('error loading', loader, resource);
     });
 
     // this.loader.defaultQueryString = Settings.version ? Settings.version : '';
@@ -100,9 +100,15 @@ export class SpriteLoader implements AssetLoaderInterface {
     });
   }
 
-  public async load(): Promise<object | undefined> {
+  public async load(): Promise<{ [key: string]: Texture } | undefined> {
     if (this.isLoading) {
       Logger.error('Already loading...');
+      return;
+    }
+
+    if (this.isLoaded) {
+      Logger.info('Already loaded...');
+      this.loadedResolver(this.textures);
       return;
     }
 
