@@ -17,6 +17,10 @@ export const isApp = (): boolean => {
   return deviceInfo.platform === 'ios' || deviceInfo.platform === 'android';
 };
 
+export const getDeviceId = (): string => {
+  return `${deviceInfo.platform}-${deviceInfo.uuid}`;
+};
+
 export const Platform = {
   IOS: 'ios',
   ANDROID: 'android',
