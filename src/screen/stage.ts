@@ -225,7 +225,7 @@ export class ConcreteStage {
     }
 
     this.stats = new Stats();
-    delete this.stats.dom.style.top;
+    this.stats.dom.style.top = '';
     this.stats.dom.style.bottom = '0';
     document.body.append(this.stats.dom);
     this.stats.showPanel(0);

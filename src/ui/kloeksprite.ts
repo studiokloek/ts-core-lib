@@ -232,6 +232,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
   }
 
   // GET & SET
+  // @ts-expect-error
   public get width(): number {
     if (this.texture && this.texture !== Texture.EMPTY) {
       return super.width;
@@ -242,10 +243,11 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     }
   }
 
-  public set width(_width) {
-    super.width = _width;
+  public set width(value: number) {
+    super.width = value;
   }
 
+  // @ts-expect-error
   public get height(): number {
     if (this.texture && this.texture !== Texture.EMPTY) {
       return super.height;
