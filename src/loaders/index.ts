@@ -30,7 +30,7 @@ export const LoaderAssetTypes = {
 export type AssetLoaderInfo = SpriteAssetInfo | SoundsAssetInfo | SpineAssetInfo | FontAssetInfo;
 
 export interface LoaderAssets {
-  [key: string]: AssetLoaderInfo[];
+  [key: string]: AssetLoaderInfo[] | (() => AssetLoaderInfo[]);
 }
 
 const DefaultLoaderAssets: LoaderAssets = {
@@ -86,7 +86,13 @@ export class AssetLoader {
     this.assetsInited = true;
   }
 
-  public addAsset(asset: AssetLoaderInfo[] | AssetLoaderInfo | undefined): void {
+  public addAsset(asset: AssetLoaderInfo[] | (() => AssetLoaderInfo[]) | AssetLoaderInfo | undefined): void {
+    if (typeof asset === 'function') {
+      (asset() as AssetLoaderInfo[]).map((_asset) => this.addAsset(_asset));
+
+      return;
+    }
+
     if (Array.isArray(asset)) {
       asset.map((_asset) => this.addAsset(_asset));
 
