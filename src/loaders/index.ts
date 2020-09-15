@@ -27,7 +27,7 @@ export const LoaderAssetTypes = {
   SPINE: 'spine',
 };
 
-type AssetLoaderInfo = SpriteAssetInfo | SoundsAssetInfo | SpineAssetInfo | FontAssetInfo;
+export type AssetLoaderInfo = SpriteAssetInfo | SoundsAssetInfo | SpineAssetInfo | FontAssetInfo;
 
 export interface LoaderAssets {
   [key: string]: AssetLoaderInfo[];
