@@ -27,7 +27,6 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
   protected options: {};
   protected views: ViewInterface[] = [];
   protected target: Container | undefined;
-  protected isView = true;
   protected isPrepared = false;
   protected isActive = false;
 
@@ -69,6 +68,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
 
   public removeFromTarget(): void {
     if (this.target && this.parent) {
+      // eslint-disable-next-line unicorn/prefer-node-remove
       this.target.removeChild(this);
     }
   }
@@ -85,7 +85,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     }
     this.isPrepared = true;
 
-    this.views.forEach(view => view.prepareAfterLoad());
+    this.views.forEach((view) => view.prepareAfterLoad());
 
     for (const child of this.children) {
       // geen view, maar wel preparecleanup type?
@@ -105,7 +105,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     this.removeTickers();
     this.killDelays();
 
-    this.views.forEach(view => view.cleanupBeforeUnload());
+    this.views.forEach((view) => view.cleanupBeforeUnload());
 
     for (const child of this.children) {
       // geen view, maar wel preparecleanup type?
@@ -126,7 +126,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     this.resumeTweens();
     this.resumeTickers();
 
-    this.views.forEach(view => view.activate());
+    this.views.forEach((view) => view.activate());
   }
 
   public deactivate(): void {
@@ -139,6 +139,10 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     this.pauseTweens();
     this.pauseTickers();
 
-    this.views.forEach(view => view.deactivate());
+    this.views.forEach((view) => view.deactivate());
+  }
+
+  public get isView(): boolean {
+    return true;
   }
 }
