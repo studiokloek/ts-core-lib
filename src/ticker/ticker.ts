@@ -6,14 +6,14 @@ import { getLogger } from '../logger';
 
 const Logger = getLogger('ticker');
 
+export interface TickerCallback extends Function {
+  __tickerid__?: number;
+}
+
 interface TickerItem {
   callback: TickerCallback;
   startTime: number;
   active: boolean;
-}
-
-export interface TickerCallback extends Function {
-  __tickerid__?: number;
 }
 
 const DELAY_FACTOR = round(1000 / 60, 5);
@@ -33,10 +33,14 @@ export class ConcreteTicker {
   private beforeSleepTimeScale = 1;
   private isRunning = false;
 
-  public constructor(name: string) {
+  public constructor(name: string, autoStart = true) {
     this._name = name;
 
-    this.wake();
+    if (autoStart) {
+      this.wake();
+    } else {
+      this.storeTimeBeforeSleep();
+    }
   }
 
   @Bind
@@ -53,7 +57,7 @@ export class ConcreteTicker {
 
       if (item.active) {
         // time, delay, running
-        item.callback.apply(null, [round((this._time - item.startTime) * this._timeScale * this._globalTimeScale, 5), delay, this._time]);
+        Reflect.apply(item.callback, undefined, [round((this._time - item.startTime) * this._timeScale * this._globalTimeScale, 5), delay, this._time]);
       } else {
         needRemove = true;
       }
@@ -69,10 +73,14 @@ export class ConcreteTicker {
       }
 
       this.numberOfItems = this.items.length;
+
+      if (this.numberOfItems === 0) {
+        this.sleep();
+      }
     }
   }
 
-  public add(callback: Function): number {
+  public add(callback: (_time?: number, _delay?: number) => void): number {
     if (typeof callback !== 'function') {
       Logger.error('Ticker', 'Could not add callback. No valid callback provided.');
       return -1;
@@ -111,13 +119,15 @@ export class ConcreteTicker {
     this.numberOfItems = this.items.length;
     this.hash[tickerCallbackId] = item;
 
+    this.wake();
+
     return time;
   }
 
   public remove(callback: TickerCallback | TickerCallback[]): void {
     // meerdere callbacks?
     if (Array.isArray(callback)) {
-      callback.forEach(item => {
+      callback.forEach((item) => {
         this.remove(item);
       });
 
