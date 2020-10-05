@@ -10,7 +10,7 @@ let MIXIN_UUID = 0;
 export class TickerMixin {
   private __ticker?: ConcreteTicker;
 
-  protected addTicker(callback: (_time?: number, _delay?: number) => void): number {
+  protected addTicker(callback: TickerCallback): number {
     if (typeof callback !== 'function') {
       Logger.error('addTicker', 'Could not add callback. No valid callback provided.');
       return -1;

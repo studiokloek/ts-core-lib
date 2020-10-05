@@ -80,17 +80,15 @@ export class ConcreteTicker {
     }
   }
 
-  public add(callback: (_time?: number, _delay?: number) => void): number {
+  public add(callback: TickerCallback): number {
     if (typeof callback !== 'function') {
       Logger.error('Ticker', 'Could not add callback. No valid callback provided.');
       return -1;
     }
 
-    const tickerCallback = callback as TickerCallback;
-
     // haal ticker id op, of zet een nieuwe
-    const tickerCallbackId = tickerCallback.__tickerid__ || ++TICKER_UUID;
-    tickerCallback.__tickerid__ = tickerCallbackId;
+    const tickerCallbackId = callback.__tickerid__ || ++TICKER_UUID;
+    callback.__tickerid__ = tickerCallbackId;
 
     // tijd update
     const time = round((performance.now() - this.startTime) * 0.001, 5);
@@ -110,7 +108,7 @@ export class ConcreteTicker {
     }
 
     item = {
-      callback: tickerCallback,
+      callback,
       startTime: time,
       active: true,
     };
