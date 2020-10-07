@@ -45,6 +45,10 @@ export class ConcreteTicker {
 
   @Bind
   private update(): void {
+    if (!this.isRunning) {
+      return;
+    }
+
     this._time = round((performance.now() - this.startTime) * 0.001, 5);
 
     const delay = round((1000 * (this._time - this.previousTime)) / DELAY_FACTOR, 5) * this._timeScale * this._globalTimeScale;
@@ -86,6 +90,9 @@ export class ConcreteTicker {
       return -1;
     }
 
+    // wake if needed
+    this.wake();
+
     // haal ticker id op, of zet een nieuwe
     const tickerCallbackId = callback.__tickerid__ || ++TICKER_UUID;
     callback.__tickerid__ = tickerCallbackId;
@@ -116,8 +123,6 @@ export class ConcreteTicker {
     this.items.push(item);
     this.numberOfItems = this.items.length;
     this.hash[tickerCallbackId] = item;
-
-    this.wake();
 
     return time;
   }
