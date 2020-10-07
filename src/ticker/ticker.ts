@@ -32,14 +32,16 @@ export class ConcreteTicker {
   private _globalTimeScale = 1;
   private beforeSleepTimeScale = 1;
   private isRunning = false;
+  private autoSleep = false;
 
-  public constructor(name: string, autoStart = true) {
+  public constructor(name: string, autoSleep = false) {
     this._name = name;
+    this.autoSleep = autoSleep;
 
-    if (autoStart) {
-      this.wake();
-    } else {
+    if (this.autoSleep) {
       this.storeTimeBeforeSleep();
+    } else {
+      this.wake();
     }
   }
 
@@ -78,7 +80,7 @@ export class ConcreteTicker {
 
       this.numberOfItems = this.items.length;
 
-      if (this.numberOfItems === 0) {
+      if (this.autoSleep && this.numberOfItems === 0) {
         this.sleep();
       }
     }
@@ -91,7 +93,9 @@ export class ConcreteTicker {
     }
 
     // wake if needed
-    this.wake();
+    if (this.autoSleep) {
+      this.wake();
+    }
 
     // haal ticker id op, of zet een nieuwe
     const tickerCallbackId = callback.__tickerid__ || ++TICKER_UUID;
