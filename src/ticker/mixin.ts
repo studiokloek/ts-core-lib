@@ -18,7 +18,7 @@ export class TickerMixin {
 
     if (!this.__ticker) {
       const name = get(this, 'name') || get(this, 'id') || `mixin-ticker-${++MIXIN_UUID}`;
-      this.__ticker = getTicker(name, false);
+      this.__ticker = getTicker(name, true);
     }
 
     return this.__ticker.add(callback);

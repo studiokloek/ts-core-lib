@@ -5,11 +5,11 @@ const table: { [key: string]: ConcreteTicker } = {};
 
 let globalTimeScale = 1;
 
-export function getTicker(name = 'default', autoStart = true): ConcreteTicker {
+export function getTicker(name = 'default', autoSleep = false): ConcreteTicker {
   let ticker = table[name] as ConcreteTicker;
 
   if (!ticker) {
-    ticker = table[name] = new ConcreteTicker(name, autoStart);
+    ticker = table[name] = new ConcreteTicker(name, autoSleep);
   }
 
   ticker.globalTimeScale = globalTimeScale;
