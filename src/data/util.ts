@@ -1,8 +1,9 @@
-import { round } from 'lodash-es';
+import { differenceWith, fromPairs, isEqual, round, toPairs } from 'lodash-es';
+import { Logger } from '../logger';
 
 const textEncoderSupported = typeof TextEncoder !== 'undefined';
 
-export function stringSizeInKb(_value: string = ''): number {
+export function stringSizeInKb(_value = ''): number {
   let size;
 
   if (textEncoderSupported) {
@@ -15,7 +16,7 @@ export function stringSizeInKb(_value: string = ''): number {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getValueFromJSON(source: any): any {
+export function getValueFromJSON(source: string): unknown {
   if (typeof source !== 'string') {
     return source;
   }
@@ -26,7 +27,13 @@ export function getValueFromJSON(source: any): any {
     if (value !== undefined) {
       return value;
     }
-  } catch (error) {}
+  } catch (error) {
+    Logger.error('Error parsing JSON', error);
+  }
 
   return source;
+}
+
+export function objectDifferences<T>(a: Record<string | number, T>, b: Record<string | number, T>): Record<string | number, T> {
+  return fromPairs(differenceWith(toPairs(a), toPairs(b), isEqual));
 }
