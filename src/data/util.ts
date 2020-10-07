@@ -27,9 +27,7 @@ export function getValueFromJSON(source: string): unknown {
     if (value !== undefined) {
       return value;
     }
-  } catch (error) {
-    Logger.error('Error parsing JSON', error);
-  }
+  } catch {}
 
   return source;
 }
