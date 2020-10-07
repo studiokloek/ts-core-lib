@@ -1,5 +1,4 @@
 import { differenceWith, fromPairs, isEqual, round, toPairs } from 'lodash-es';
-import { Logger } from '../logger';
 
 const textEncoderSupported = typeof TextEncoder !== 'undefined';
 
