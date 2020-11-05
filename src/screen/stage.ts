@@ -61,10 +61,6 @@ export interface StageOptions {
   target: HTMLElement | string;
 }
 
-export function isSizeOptions(_options: SizeOptions): _options is SizeOptions {
-  return _options && typeof _options.orientation === 'string' && typeof _options.size === 'object' && typeof _options.ratio === 'object';
-}
-
 export interface SizeOptions {
   orientation: string;
   size: {
@@ -85,6 +81,10 @@ export interface SizeOptions {
     min: number;
     max: number;
   };
+}
+
+export function isSizeOptions(_options: SizeOptions): _options is SizeOptions {
+  return _options && typeof _options.orientation === 'string' && typeof _options.size === 'object' && typeof _options.ratio === 'object';
 }
 
 export interface MultiSizeOptions {
