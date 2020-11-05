@@ -8,13 +8,13 @@ import { SoundLibraryItem } from './library-item';
 class ConcreteSoundsLibrary {
   private items: SoundLibraryItem[] = [];
 
-  public async load(asset: SoundAsset, zone = 'generic'): Promise<SoundLibraryItem> {
+  public async load(asset: SoundAsset, zone = 'generic', buffer = false): Promise<SoundLibraryItem> {
     // bestaat deze al?
     let item = this.getItemByAsset(asset);
 
     if (!item) {
       // nog niet, aanmaken
-      item = new SoundLibraryItem(asset);
+      item = new SoundLibraryItem(asset, { buffer });
       this.items.push(item);
     }
 
@@ -50,7 +50,7 @@ class ConcreteSoundsLibrary {
   }
 
   public getZoneSounds(_zone: string): SoundLibraryItem[] {
-    return filter(this.items, item => item.isInZone(_zone));
+    return filter(this.items, (item) => item.isInZone(_zone));
   }
 }
 

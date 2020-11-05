@@ -4,16 +4,21 @@ import { SoundAsset } from '../../loaders';
 import { isApp } from '../../device';
 
 // const Logger = getLogger('core > sounds > library > item');
+export interface SoundLibraryItemOptions {
+  buffer: boolean;
+}
 
 export class SoundLibraryItem {
   private asset: SoundAsset;
+  private options?: SoundLibraryItemOptions;
   private isLoaded = false;
   private isLoading = false;
   private player?: Howl;
   public zones: string[] = [];
 
-  public constructor(_asset: SoundAsset) {
+  public constructor(_asset: SoundAsset, _options: SoundLibraryItemOptions) {
     this.asset = _asset;
+    this.options = _options;
   }
 
   public async load(): Promise<void> {
@@ -52,6 +57,7 @@ export class SoundLibraryItem {
       autoplay: false,
       preload: false,
       loop: false,
+      html5: this.options?.buffer ?? false,
       volume: 0.5,
     };
 
