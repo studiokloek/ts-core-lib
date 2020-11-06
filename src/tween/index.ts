@@ -5,10 +5,10 @@ export * from './mixin';
 // fix promises then() from GSAP Animation
 import { gsap } from 'gsap';
 
-gsap.core.Animation.prototype.then = function(onFulfilled?: (result: GSAPAnimation) => any): Promise<GSAPAnimation> {
+gsap.core.Animation.prototype.then = function (onFulfilled?: (result: GSAPAnimation) => any): Promise<GSAPAnimation> {
   const then = this.then;
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const existing = this.eventCallback('onComplete');
 
     this.eventCallback('onComplete', (...arguments_: any[]) => {
