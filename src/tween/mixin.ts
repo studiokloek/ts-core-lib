@@ -111,10 +111,9 @@ export class TweenMixin {
     return tween;
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  protected killTweens(_target?: object, _propertiesList?: string): void {
+  protected killTweens(): void {
     for (const tween of this.__tweens) {
-      tween.kill(_target, _propertiesList);
+      tween.kill();
     }
     this.__tweens.length = 0;
   }
