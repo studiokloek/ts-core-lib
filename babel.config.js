@@ -17,9 +17,11 @@ module.exports = {
   plugins: [
     ['@babel/proposal-decorators', { legacy: true }],
     ['@babel/proposal-class-properties', { loose: true }],
-    ['@babel/plugin-proposal-object-rest-spread'],
+    ['@babel/proposal-object-rest-spread'],
+    ['@babel/proposal-nullish-coalescing-operator'],
+    ['@babel/proposal-optional-chaining'],
     [
-      '@babel/plugin-transform-runtime',
+      '@babel/transform-runtime',
       {
         version: runtimeVersion,
         corejs: 3,
