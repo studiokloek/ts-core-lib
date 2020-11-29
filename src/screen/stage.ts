@@ -18,6 +18,7 @@ import {
   Ticker as PixiTicker,
   utils,
   InteractionManager,
+  RenderTexture,
 } from 'pixi.js-legacy';
 import Stats from 'stats.js';
 import { Screen } from '.';
@@ -599,8 +600,12 @@ export class ConcreteStage {
     return pos;
   }
 
-  public extractImage(_source: DisplayObject): HTMLImageElement {
-    return this.renderer.plugins.extract.image(_source);
+  public extractImage(_source: DisplayObject | RenderTexture, _format?: string, _quality?: number): HTMLImageElement {
+    return this.renderer.plugins.extract.image(_source, _format, _quality);
+  }
+
+  public extractPixels(_source: DisplayObject | RenderTexture): Uint8Array {
+    return this.renderer.plugins.extract.pixels(_source);
   }
 
   public takeScreenshot(): void {
@@ -615,8 +620,8 @@ export class ConcreteStage {
     w.document.body.style.backgroundColor = 'black';
 
     this.render();
+
     const img = new Image();
-    // eslint-disable-next-line unicorn/prevent-abbreviations
     img.src = this.renderer.view.toDataURL('image/png');
     img.style.transformOrigin = '0 0';
     img.style.transform = 'scale(0.25)';
