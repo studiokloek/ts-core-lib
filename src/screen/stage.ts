@@ -575,7 +575,7 @@ export class ConcreteStage {
     });
   }
 
-  public generateTexture(_displayObject: Container, _region?: Rectangle): Texture {
+  public generateTexture(_displayObject: DisplayObject, _region?: Rectangle): Texture | RenderTexture {
     if (typeof (_displayObject as Graphics).generateCanvasTexture === 'function') {
       return (_displayObject as Graphics).generateCanvasTexture(settings.SCALE_MODE, this._generateResolution);
     }
