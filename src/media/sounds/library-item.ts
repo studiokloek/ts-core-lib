@@ -1,4 +1,4 @@
-import { Howl } from 'howler';
+import { Howl, HowlOptions } from 'howler';
 import { pull } from 'lodash-es';
 import { SoundAsset } from '../../loaders';
 import { isApp } from '../../device';
@@ -51,7 +51,7 @@ export class SoundLibraryItem {
       source = isApp() ? [`${file}.m4a`] : [`${file}.m4a`, `${file}.ogg`, `${file}.mp3`]; // app gebruikt alleen m4a
 
     // opties
-    const options = {
+    const options: HowlOptions = {
       // eslint-disable-next-line unicorn/prevent-abbreviations
       src: source,
       autoplay: false,
@@ -59,6 +59,12 @@ export class SoundLibraryItem {
       loop: false,
       html5: this.options?.buffer ?? false,
       volume: 0.5,
+
+      // we maken een main sprite aan, zodat we goed kunnen loopen
+      // zie ook https://github.com/goldfire/howler.js/issues/360
+      sprite: {
+        main: [0, Math.round(this.asset.duration * 1000)],
+      },
     };
 
     // maak nieuwe howl aan

@@ -39,7 +39,8 @@ class ConcreteSoundsPlayer {
       return;
     }
 
-    const id = player.play();
+    // spelen de main sprite af
+    const id = player.play('main');
     player.volume(0, id);
 
     player.once('play', () => this.registerPlayer(player, id), id);
