@@ -40,11 +40,7 @@ export function calulateAgeFromDate(birthday?: Date | string): number {
     return -1;
   }
 
-  if (typeof birthday === 'string') {
-    birthday = new Date(birthday);
-  } else {
-    birthday = new Date(birthday.getTime());
-  }
+  birthday = typeof birthday === 'string' ? new Date(birthday) : new Date(birthday.getTime());
 
   const now = new Date();
 
@@ -68,7 +64,7 @@ export function getDayDate(date?: Date): Date {
     date = new Date();
   }
 
-  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
 }
 
 export function isBeforeToday(before: Date): boolean {
@@ -77,7 +73,9 @@ export function isBeforeToday(before: Date): boolean {
   }
 
   // to UTC
-  before = new Date(Date.UTC(before.getFullYear(), before.getMonth(), before.getDate(), before.getHours(), before.getMinutes(), before.getSeconds()));
+  before = new Date(
+    Date.UTC(before.getUTCFullYear(), before.getUTCMonth(), before.getUTCDate(), before.getUTCHours(), before.getUTCMinutes(), before.getUTCSeconds()),
+  );
 
   const startOfToday = getDayDate();
 
@@ -94,7 +92,9 @@ export function isAfterToday(after: Date): boolean {
   }
 
   // to UTC
-  after = new Date(Date.UTC(after.getFullYear(), after.getMonth(), after.getDate(), after.getHours(), after.getMinutes(), after.getSeconds()));
+  after = new Date(
+    Date.UTC(after.getUTCFullYear(), after.getUTCMonth(), after.getUTCDate(), after.getUTCHours(), after.getUTCMinutes(), after.getUTCSeconds()),
+  );
 
   const endOfToday = getDayDate();
   endOfToday.setUTCHours(23, 59, 59);
@@ -122,8 +122,8 @@ export function isBetweenDates(start: Date, end: Date): boolean {
 
 export function daysBetween(start: Date, end: Date): number {
   const oneDay = 1000 * 60 * 60 * 24,
-    startDay = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate()),
-    endDay = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
+    startDay = Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate()),
+    endDay = Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate());
 
   return (startDay - endDay) / oneDay;
 }
