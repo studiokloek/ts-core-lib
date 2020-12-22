@@ -1,4 +1,4 @@
-import { filter, find, isNil, round } from 'lodash-es';
+import { filter, find, isNil, remove, round } from 'lodash-es';
 import { Texture } from 'pixi.js-legacy';
 import { SyncEvent } from 'ts-events';
 import { getLogger } from '../logger';
@@ -62,6 +62,8 @@ export class AssetLoader {
   private _isLoaded = false;
   private options: LoaderOptions;
   private assetsInited = false;
+  private dynamicLoaders: AssetLoaderInterface[] = [];
+  private dynamicAssets: (() => AssetLoaderInfo[])[] = [];
   private loaders: AssetLoaderInterface[] = [];
   private queue: AssetLoaderInterface[] = [];
 
@@ -74,7 +76,10 @@ export class AssetLoader {
   }
 
   private initAssets(): void {
+    // allready inited?
     if (this.assetsInited === true) {
+      // add dynamic assets again
+      this.dynamicAssets.forEach((asset) => this.addAsset(asset));
       return;
     }
 
@@ -86,15 +91,21 @@ export class AssetLoader {
     this.assetsInited = true;
   }
 
-  public addAsset(asset: AssetLoaderInfo[] | (() => AssetLoaderInfo[]) | AssetLoaderInfo | undefined): void {
+  public addAsset(asset: AssetLoaderInfo[] | (() => AssetLoaderInfo[]) | AssetLoaderInfo | undefined, isDynamic = false): void {
     if (typeof asset === 'function') {
-      (asset() as AssetLoaderInfo[]).map((_asset) => this.addAsset(_asset));
+      // save dynamic asset callbacks for next time
+      if (this.assetsInited !== true) {
+        this.dynamicAssets.push(asset);
+      }
+
+      // call & add assets
+      (asset() as AssetLoaderInfo[]).forEach((_asset) => this.addAsset(_asset, true));
 
       return;
     }
 
     if (Array.isArray(asset)) {
-      asset.map((_asset) => this.addAsset(_asset));
+      asset.forEach((_asset) => this.addAsset(_asset));
 
       return;
     }
@@ -124,6 +135,10 @@ export class AssetLoader {
 
     if (loader) {
       this.loaders.push(loader);
+
+      if (isDynamic) {
+        this.dynamicLoaders.push(loader);
+      }
     }
   }
 
@@ -149,7 +164,7 @@ export class AssetLoader {
     const concurrent = this.options.maxConcurrent || 1,
       allLoadedPromises = this.loaders.map((loader) => loader.prepareForLoad());
 
-    for (let i = 0; i < concurrent; i++) {
+    for (let index = 0; index < concurrent; index++) {
       this.loadNext();
     }
 
@@ -189,6 +204,11 @@ export class AssetLoader {
     for (const loader of this.loaders) {
       loader.unload();
     }
+
+    // remove dynamic ones from list
+    remove(this.loaders, (loader) => this.dynamicLoaders.includes(loader));
+    this.dynamicLoaders.length = 0;
+
     this.isLoading = false;
     this._isLoaded = false;
   }
