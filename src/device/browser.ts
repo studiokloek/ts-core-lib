@@ -107,3 +107,21 @@ export const isObsoleteBrowser = (): boolean => {
 
   return false;
 };
+
+export const isStandaloneBrowser = (): boolean => {
+  if (isApp() || !isMobile()) {
+    return false;
+  }
+
+  if (isPlatform(Platform.IOS)) {
+    return 'standalone' in window.navigator && window.navigator['standalone'];
+  }
+
+  let isStandAlone = window.matchMedia('(display-mode: standalone)').matches;
+
+  if (!isStandAlone) {
+    isStandAlone = screen.height - document.documentElement.clientHeight < 40;
+  }
+
+  return isStandAlone;
+};
