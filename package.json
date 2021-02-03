@@ -23,8 +23,7 @@
   },
   "np": {
     "yarn": false,
-    "tests": false,
-    "contents": "lib"
+    "tests": false
   },
   "engines": {
     "node": ">=8.10.0"
