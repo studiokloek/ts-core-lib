@@ -21,6 +21,11 @@
     "build:script": "tsc",
     "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline"
   },
+  "np": {
+    "yarn": false,
+    "tests": false,
+    "contents": "lib"
+  },
   "engines": {
     "node": ">=8.10.0"
   },
