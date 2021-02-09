@@ -237,6 +237,7 @@ export class ConcreteStage {
   private checkPerformance(): void {
     // canvas renderers krijgen nooit retina
     if (!gpuInfo.isWebGLSupported || gpuInfo.useLegacyWebGL) {
+      Logger.warn('Using low performance settings...', gpuInfo);
       this.lowPerformanceDetected = true;
       this._textureResolution = 1;
       this._generateResolution = 1;
