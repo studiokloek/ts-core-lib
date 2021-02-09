@@ -673,6 +673,10 @@ export class ConcreteStage {
     return this._textureResolution;
   }
 
+  public get generateResolution(): number {
+    return this._generateResolution;
+  }
+
   public get resolution(): number {
     return this._rendererResolution;
   }

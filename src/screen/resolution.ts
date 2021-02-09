@@ -3,13 +3,13 @@ import { CoreDebug } from '../debug';
 import { getPixelRatio, isMobile, isObsoleteBrowser, isPlatform, Platform } from '../device';
 import { getLogger } from '../logger';
 import { ResolutionMode } from './constants';
-import { getViewportSize } from './viewport';
+import { getScreenSize } from './viewport';
 
 const Logger = getLogger('device > resolution');
 
 export const determineResolution = memoize((): { screen: number; texture: number } => {
   const pixelRatio = getPixelRatio(),
-    viewportSize = Math.floor(getViewportSize() * pixelRatio);
+    viewportSize = Math.floor(getScreenSize() * pixelRatio);
 
   if (CoreDebug.forceLowResolution()) {
     return {

@@ -14,3 +14,7 @@ export const getViewportSize = memoize(() => {
   }
   return viewportSize;
 });
+
+export const getScreenSize = memoize(() => {
+  return Math.max(window.screen.availHeight, window.screen.availWidth);
+});

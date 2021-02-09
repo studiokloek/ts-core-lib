@@ -62,7 +62,8 @@ export class KloekText extends Text implements PrepareCleanupInterface {
   }
 
   private determineResolution(): void {
-    this.resolution = Math.max(Stage.textureResolution, Math.round(Stage.textureResolution * Stage.scale.x));
+    this.resolution = Stage.textureResolution;
+    // this.resolution = Math.max(Stage.textureResolution, Math.round(Stage.textureResolution * Stage.scale.x));
   }
 
   public static create(_text: string, _style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>): KloekText {
