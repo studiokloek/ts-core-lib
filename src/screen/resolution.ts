@@ -31,13 +31,16 @@ export const determineResolution = memoize((): { screen: number; texture: number
     } else if (pixelRatio > 1.2 && viewportSize > 1280) {
       textureResolution = ResolutionMode.RETINA;
     }
-    // grote viewport en geen oude browser?
-  } else if (viewportSize > 1280 && !isObsoleteBrowser()) {
+    // dekstop, maar geen oude browser?
+  } else if (!isObsoleteBrowser()) {
+    // is er retina?
     if (pixelRatio >= 2) {
-      // is er retina scherm aanwezig?
-      screenResolution = textureResolution = ResolutionMode.RETINA;
-    } else {
-      // nee, maar wel hoge textures
+      screenResolution = ResolutionMode.RETINA;
+    }
+
+    // grote viewport?
+    if (viewportSize >= 1280) {
+      // dan high res textures
       textureResolution = ResolutionMode.RETINA;
     }
   }
