@@ -131,6 +131,8 @@ export class ConcreteStage {
   private _scale = { x: 1, y: 1 };
   private _position = { x: 0, y: 0 };
   private _fps = 60;
+  private lowPerformanceDetected = false;
+  private _rendererResolution: number = ResolutionMode.NORMAL;
   private _textureResolution: number = ResolutionMode.NORMAL;
   private _generateResolution: number = ResolutionMode.NORMAL;
 
@@ -235,6 +237,7 @@ export class ConcreteStage {
   private checkPerformance(): void {
     // canvas renderers krijgen nooit retina
     if (!gpuInfo.isWebGLSupported || gpuInfo.useLegacyWebGL) {
+      this.lowPerformanceDetected = true;
       this._textureResolution = 1;
       this._generateResolution = 1;
       this._fps = 30;
@@ -294,9 +297,11 @@ export class ConcreteStage {
     let rendererResolution = Screen.resolution;
 
     // lagere texture resolutie? (bv geen webgl) dan ook renderen lager
-    if (this._textureResolution === ResolutionMode.NORMAL) {
+    if (this.lowPerformanceDetected) {
       rendererResolution = ResolutionMode.NORMAL;
     }
+
+    this._rendererResolution = rendererResolution;
 
     const renderOptions: RendererOptions = {
       width: this.width,
@@ -305,7 +310,7 @@ export class ConcreteStage {
       preserveDrawingBuffer: gpuInfo.preserveDrawingBuffer,
       transparent: false,
       antialias: this.options?.antialias === true ? true : false,
-      resolution: rendererResolution,
+      resolution: this._rendererResolution,
       forceCanvas: !gpuInfo.isWebGLSupported,
       backgroundColor: this.options ? this.options.backgroundColor : 0x000000,
       forceFXAA: false,
@@ -661,6 +666,14 @@ export class ConcreteStage {
 
   public get aspect(): number {
     return this._aspect;
+  }
+
+  public get textureResolution(): number {
+    return this._textureResolution;
+  }
+
+  public get resolution(): number {
+    return this._rendererResolution;
   }
 
   public get screenOrientation(): string {

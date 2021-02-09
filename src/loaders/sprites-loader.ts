@@ -2,18 +2,18 @@ import { concat, last, merge, split } from 'lodash-es';
 import { Loader, LoaderResource, Texture } from 'pixi.js-legacy';
 import { AssetLoaderInterface } from '.';
 import { getLogger } from '../logger';
-import { determineResolution } from '../screen';
+import { Stage } from '../screen';
 
 const Logger = getLogger('loader > sprite');
-
-export function isSpriteAsset(_info: SpriteAsset): _info is SpriteAsset {
-  return _info && (_info as SpriteAsset).id !== undefined;
-}
 
 export interface SpriteAsset {
   id: string;
   width: number;
   height: number;
+}
+
+export function isSpriteAsset(_info: SpriteAsset): _info is SpriteAsset {
+  return _info && (_info as SpriteAsset).id !== undefined;
 }
 
 export interface SpriteAssetList {
@@ -89,11 +89,7 @@ export class SpriteLoader implements AssetLoaderInterface {
   private getTextureExtention(): string {
     let textureResolution = 1;
 
-    if (typeof this.options.resolution === 'number') {
-      textureResolution = this.options.resolution;
-    } else {
-      textureResolution = determineResolution().texture;
-    }
+    textureResolution = typeof this.options.resolution === 'number' ? this.options.resolution : Stage.textureResolution;
 
     return textureResolution >= 2 ? '@2x' : '';
   }
@@ -122,8 +118,9 @@ export class SpriteLoader implements AssetLoaderInterface {
     // url bepalen we hier omdat de resolutie veranderd zou kunnen zijn
     const resolutionExtension = this.getTextureExtention();
 
-    for (let i = 1; i <= this.options.numberOfParts; i++) {
-      const url = `${this.baseUrl}-${String(i) + resolutionExtension}`;
+    const numberOfParts = this.options.numberOfParts;
+    for (let index = 1; index <= numberOfParts; index++) {
+      const url = `${this.baseUrl}-${String(index) + resolutionExtension}`;
       this.loadUrlIndex.push(url);
       this.loader.add(`${url}.json`);
     }

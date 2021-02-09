@@ -64,11 +64,7 @@ class ConcreteScreen {
     let orientation = this._orientation;
 
     // alleen op mobiel kan portrait voorkomen
-    if (this.width < this.height) {
-      orientation = OrientationMode.PORTRAIT;
-    } else {
-      orientation = OrientationMode.LANDSCAPE;
-    }
+    orientation = this.width < this.height ? OrientationMode.PORTRAIT : OrientationMode.LANDSCAPE;
 
     // zelfde?
     if (this._orientation === orientation) {
