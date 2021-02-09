@@ -27,6 +27,9 @@ export const Platform = {
 };
 
 export const isPlatform = (_name: string): boolean => {
+  if (deviceInfo.platform === 'web') {
+    return deviceInfo.operatingSystem === _name;
+  }
   return deviceInfo.platform === _name;
 };
 
