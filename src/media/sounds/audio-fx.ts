@@ -41,6 +41,8 @@ class ConcreteSoundsPlayer {
 
     // spelen de main sprite af
     const id = player.play('main');
+
+    player.pause();
     player.volume(0, id);
 
     player.once('play', () => this.registerPlayer(player, id), id);
@@ -67,22 +69,27 @@ class ConcreteSoundsPlayer {
       player.rate(Stage.timeScale, id);
     }
 
+    // delay?
+    if (delay > 0) {
+      Delayed.call(this.doPlay, delay, [player, id, volume, options]);
+    } else {
+      this.doPlay(player, id, volume, options);
+    }
+
+    return id;
+  }
+
+  private doPlay(player: Howl, id: number, volume = -1, options?: AudioFXOptions): void {
     // fade?
     const targetVolume = volume === -1 ? 0.5 : volume;
+
     if (options && options.fade) {
       player.fade(0, targetVolume, options.fade * 1000, id);
     } else {
       player.volume(targetVolume, id);
     }
 
-    // delay?
-    // TODO fix/check delayed fade
-    if (delay > 0) {
-      player.pause();
-      Delayed.call(player.play, delay, [id]);
-    }
-
-    return id;
+    player.play(id);
   }
 
   private registerPlayer(player: Howl, id: number): void {
