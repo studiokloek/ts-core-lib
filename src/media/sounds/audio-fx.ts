@@ -42,7 +42,6 @@ class ConcreteSoundsPlayer {
     // spelen de main sprite af
     const id = player.play('main');
 
-    player.pause();
     player.volume(0, id);
 
     player.once('play', () => this.registerPlayer(player, id), id);
@@ -69,6 +68,8 @@ class ConcreteSoundsPlayer {
       player.rate(Stage.timeScale, id);
     }
 
+    player.pause();
+
     // delay?
     if (delay > 0) {
       Delayed.call(this.doPlay, delay, [player, id, volume, options]);
@@ -79,11 +80,13 @@ class ConcreteSoundsPlayer {
     return id;
   }
 
+  @Bind
   private doPlay(player: Howl, id: number, volume = -1, options?: AudioFXOptions): void {
     // fade?
     const targetVolume = volume === -1 ? 0.5 : volume;
 
     if (options && options.fade) {
+      player.once('fade', (id) => player.volume(targetVolume, id));
       player.fade(0, targetVolume, options.fade * 1000, id);
     } else {
       player.volume(targetVolume, id);
@@ -118,18 +121,13 @@ class ConcreteSoundsPlayer {
 
     // als er geen specifieke is meegegeven, stoppen we alle audio, dus dan ook alle delays
     if (!id) {
-      Delayed.kill(player.play);
+      Delayed.kill(this.doPlay);
     }
 
     if (options && options.fade && options.fade > 0) {
-      player.once(
-        'fade',
-        () => {
-          player.stop(id);
-        },
-        id,
-      );
-      player.fade(player.volume(), 0, options.fade * 1000, id);
+      player.once('fade', (id) => player.stop(id));
+      const volume = id ? (player.volume(id) as number) : player.volume();
+      player.fade(volume, 0, options.fade * 1000, id);
     } else {
       player.stop(id);
     }
