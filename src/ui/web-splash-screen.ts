@@ -219,7 +219,7 @@ class WebLoaderScreen {
   }
 
   public increment(_value = 0.01): void {
-    this.setPostition(this.position + _value);
+    this.setPostition(this.targetPosition + _value);
   }
 
   public get target(): HTMLElement | null {
