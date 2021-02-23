@@ -48,27 +48,7 @@ class ConcreteSoundsPlayer {
     player.once('end', () => this.unregisterPlayer(player, id), id);
     player.once('stop', () => this.unregisterPlayer(player, id), id);
 
-    if (options) {
-      player.loop(options.loop || false, id);
-
-      // snelheid meegegeven, of anders snelheid van de mainticker
-      const rate = options.rate ? options.rate * Stage.timeScale : Stage.timeScale;
-      player.rate(rate, id);
-
-      if (options.randomStart === true) {
-        const postition = round(KloekRandom.real(0, player.duration() * 0.9), 2);
-        player.seek(postition, id);
-      }
-
-      if (options.position) {
-        player.seek(options.position, id);
-      }
-    } else {
-      // snelheid meegegeven
-      player.rate(Stage.timeScale, id);
-    }
-
-    player.pause();
+    player.pause(id);
 
     // delay?
     if (delay > 0) {
@@ -82,10 +62,28 @@ class ConcreteSoundsPlayer {
 
   @Bind
   private doPlay(player: Howl, id: number, volume = -1, options?: AudioFXOptions): void {
-    // fade?
-    const targetVolume = volume === -1 ? 0.5 : volume;
+    // in loop afspelen?
+    player.loop(options?.loop ?? false, id);
 
-    if (options && options.fade) {
+    // op positie starten??
+    if (options?.position) {
+      player.seek(options.position, id);
+    } else if (options?.randomStart === true) {
+      // of juisxt starten op random positie
+      const postition = round(KloekRandom.real(0, player.duration() * 0.9), 2);
+      player.seek(postition, id);
+    }
+
+    // snelheid meegegeven, of anders snelheid van de mainticker
+    if (options?.rate) {
+      player.rate(options.rate * Stage.timeScale, id);
+    } else {
+      player.rate(Stage.timeScale, id);
+    }
+
+    // infaden van volume?
+    const targetVolume = volume === -1 ? 0.5 : volume;
+    if (options?.fade) {
       player.once('fade', (id) => player.volume(targetVolume, id));
       player.fade(0, targetVolume, options.fade * 1000, id);
     } else {
