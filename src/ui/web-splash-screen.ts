@@ -17,6 +17,7 @@ const { SplashScreen } = Plugins;
 type ManualSplashLayout = boolean | ((ui: { element: HTMLElement | null; logo: HTMLElement | null }) => void);
 interface WebSplashScreenOptions {
   manualLayout?: ManualSplashLayout;
+  triggered?: () => void;
 }
 
 class MediaTriggerScreen {
@@ -259,6 +260,10 @@ class ConcreteWebSplashScreen {
 
   @Bind
   private onMediaTriggered(): void {
+    if (this.options?.triggered) {
+      this.options.triggered();
+    }
+
     if (this.loader) {
       this.loader.showLoader();
     }
