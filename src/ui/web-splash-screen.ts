@@ -1,6 +1,6 @@
 import { Plugins } from '@capacitor/core';
 import { Bind } from 'lodash-decorators';
-import { round } from 'lodash-es';
+import { isFunction, round } from 'lodash-es';
 import { SyncEvent } from 'ts-events';
 import { CoreDebug } from '../debug';
 import { Delayed } from '../delay';
@@ -11,7 +11,13 @@ import { Logger } from '../logger';
 import { Screen, Stage } from '../screen';
 import { Tween, Easing } from '../tween';
 import { constrainNumber, mapNumber, randomBetween } from '../util/math';
+
 const { SplashScreen } = Plugins;
+
+type ManualSplashLayout = boolean | ((ui: { element: HTMLElement | null; logo: HTMLElement | null }) => void);
+interface WebSplashScreenOptions {
+  manualLayout?: ManualSplashLayout;
+}
 
 class MediaTriggerScreen {
   private parent!: HTMLElement;
@@ -20,13 +26,15 @@ class MediaTriggerScreen {
   public trigger: SyncEvent<void> = new SyncEvent();
   private loadedResolver!: (value?: any) => void;
   private isReady = false;
+  private manualLayout: boolean | ManualSplashLayout | undefined;
 
-  public constructor(_target: HTMLElement | null) {
+  public constructor(_target: HTMLElement | null, _layout?: ManualSplashLayout) {
     if (!_target) {
       Logger.error('splash', 'No target provided...');
       return;
     }
 
+    this.manualLayout = _layout;
     this.parent = _target;
     this.element = this.parent.querySelector('.media-trigger');
     this.logo = this.parent.querySelector('.logo');
@@ -94,6 +102,14 @@ class MediaTriggerScreen {
   private layout(): void {
     if (!this.element) {
       return;
+    }
+
+    if (this.manualLayout) {
+      if (isFunction(this.manualLayout)) {
+        this.manualLayout({ element: this.element, logo: this.logo });
+      } else {
+        return;
+      }
     }
 
     const scaleWidth = Screen.height / Screen.width,
@@ -212,10 +228,12 @@ class WebLoaderScreen {
 }
 
 class ConcreteWebSplashScreen {
+  private options: WebSplashScreenOptions | undefined;
   private loader: WebLoaderScreen | undefined;
   private mediatrigger: MediaTriggerScreen | undefined;
 
-  public init(_target: HTMLElement | string): void {
+  public init(_target: HTMLElement | string, _options?: WebSplashScreenOptions): void {
+    this.options = _options;
     this.initWebLoaderScreen(_target);
     this.initMediaTriggerScreen();
 
@@ -230,7 +248,7 @@ class ConcreteWebSplashScreen {
 
   private initMediaTriggerScreen(): void {
     if (this.loader && deviceNeedsMediaTrigger()) {
-      this.mediatrigger = new MediaTriggerScreen(this.loader.target);
+      this.mediatrigger = new MediaTriggerScreen(this.loader.target, this.options?.manualLayout);
       this.mediatrigger.trigger.attach(this.onMediaTriggered);
     } else {
       if (this.loader) {
