@@ -5,7 +5,7 @@ export const isInFrame = memoize(() => {
 
   try {
     inFrame = window.frameElement !== undefined || window.self !== window.top;
-  } catch (error) {
+  } catch {
     return true;
   }
 

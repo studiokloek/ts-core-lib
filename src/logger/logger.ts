@@ -10,13 +10,13 @@ class LoggerClass {
   private logLevel: number = LogLevels.DEBUG;
   private _color = '';
 
-  private _verbose: (message?: unknown, ...optionalParams: unknown[]) => void;
-  private _debug: (message?: unknown, ...optionalParams: unknown[]) => void;
-  private _info: (message?: unknown, ...optionalParams: unknown[]) => void;
-  private _warn: (message?: unknown, ...optionalParams: unknown[]) => void;
-  private _error: (message?: unknown, ...optionalParams: unknown[]) => void;
+  private _verbose: (message?: unknown, ...optionalParameters: unknown[]) => void;
+  private _debug: (message?: unknown, ...optionalParameters: unknown[]) => void;
+  private _info: (message?: unknown, ...optionalParameters: unknown[]) => void;
+  private _warn: (message?: unknown, ...optionalParameters: unknown[]) => void;
+  private _error: (message?: unknown, ...optionalParameters: unknown[]) => void;
   private _table: (tabularData?: unknown, properties?: string[]) => void;
-  private _tree: (obj: unknown, options?: Record<string, unknown>) => void;
+  private _tree: (object: unknown, options?: Record<string, unknown>) => void;
 
   public constructor(prefix: string, color?: string) {
     if (prefix) {
@@ -33,27 +33,27 @@ class LoggerClass {
     this._tree = console.dir.bind(console);
   }
 
-  private getBoundMethod(method: (message?: unknown, ...optionalParams: unknown[]) => void): (message?: unknown, ...optionalParams: unknown[]) => void {
+  private getBoundMethod(method: (message?: unknown, ...optionalParameters: unknown[]) => void): (message?: unknown, ...optionalParameters: unknown[]) => void {
     return method.bind(console, `%c${this.prefix}`, `background:${this._color};color:#ffffff; font-size: 10px;padding:2px 4px 1px 4px; `);
   }
 
-  public get verbose(): (message?: unknown, ...optionalParams: unknown[]) => void {
+  public get verbose(): (message?: unknown, ...optionalParameters: unknown[]) => void {
     return this.shouldLog(LogLevels.VERBOSE) ? this._verbose : noop;
   }
 
-  public get debug(): (message?: unknown, ...optionalParams: unknown[]) => void {
+  public get debug(): (message?: unknown, ...optionalParameters: unknown[]) => void {
     return this.shouldLog(LogLevels.DEBUG) ? this._debug : noop;
   }
 
-  public get info(): (message?: unknown, ...optionalParams: unknown[]) => void {
+  public get info(): (message?: unknown, ...optionalParameters: unknown[]) => void {
     return this.shouldLog(LogLevels.INFO) ? this._info : noop;
   }
 
-  public get warn(): (message?: unknown, ...optionalParams: unknown[]) => void {
+  public get warn(): (message?: unknown, ...optionalParameters: unknown[]) => void {
     return this.shouldLog(LogLevels.WARN) ? this._warn : noop;
   }
 
-  public get error(): (message?: unknown, ...optionalParams: unknown[]) => void {
+  public get error(): (message?: unknown, ...optionalParameters: unknown[]) => void {
     return this.shouldLog(LogLevels.ERROR) ? this._error : noop;
   }
 
@@ -61,7 +61,7 @@ class LoggerClass {
     return this.shouldLog(LogLevels.DEBUG) ? this._table : noop;
   }
 
-  public get tree(): (obj: unknown, options?: Record<string, unknown>) => void {
+  public get tree(): (object: unknown, options?: Record<string, unknown>) => void {
     return this.shouldLog(LogLevels.DEBUG) ? this._tree : noop;
   }
 
@@ -134,12 +134,7 @@ export function getLogger(prefix = 'default'): LoggerClass {
 
       if (depth === 0) {
         // is er al een main logger?
-        if (logger) {
-          mainLoggerColor = logger.titleColor;
-        } else {
-          // nee nieuwe basis kleur opvragen
-          mainLoggerColor = getNextLoggerColor();
-        }
+        mainLoggerColor = logger ? logger.titleColor : getNextLoggerColor();
 
         loggerColor = mainLoggerColor;
       } else {
