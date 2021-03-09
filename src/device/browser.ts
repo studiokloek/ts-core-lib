@@ -1,9 +1,9 @@
-import { getParser, Parser } from 'bowser';
+import { default as Bowser, Parser } from 'bowser';
 import { memoize } from 'lodash-es';
 import { isApp, isPlatform, Platform } from './device';
 import { supportsTouch } from './interaction';
 
-export const browserInfoParser = getParser(navigator.userAgent);
+export const browserInfoParser = Bowser.getParser(navigator.userAgent);
 
 export const browserSatisfies = (info: Parser.checkTree): boolean => {
   return browserInfoParser.satisfies(info) === true;
