@@ -1,8 +1,8 @@
-import { filters } from 'pixi.js-legacy';
+import { ColorMatrix, ColorMatrixFilter } from '@pixi/filter-color-matrix';
 import { determineResolution } from '../screen';
 
-export function getColorMatrixFilter(matrix: number[]): filters.ColorMatrixFilter {
-  const filter = new filters.ColorMatrixFilter();
+export function getColorMatrixFilter(matrix: ColorMatrix): ColorMatrixFilter {
+  const filter = new ColorMatrixFilter();
   filter.padding = 12;
 
   const { texture: textureResolution } = determineResolution();

@@ -1,5 +1,5 @@
 import { concat, last, merge, split } from 'lodash-es';
-import { Loader, LoaderResource, Texture } from 'pixi.js-legacy';
+import { Loader, Texture } from 'pixi.js';
 import { AssetLoaderInterface } from '.';
 import { getLogger } from '../logger';
 import { Stage } from '../screen';
@@ -59,7 +59,7 @@ export class SpriteLoader implements AssetLoaderInterface {
     this.options = { ...OptionDefaults, ..._options };
 
     this.loader = new Loader();
-    this.loader.onError.add((loader: Loader, resource: LoaderResource) => {
+    this.loader.onError.add((loader, resource) => {
       Logger.error('error loading', loader, resource);
     });
 

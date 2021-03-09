@@ -1,5 +1,5 @@
 import { get } from 'lodash-es';
-import { Container } from 'pixi.js-legacy';
+import { Container } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
 import { isPrepareCleanup, PrepareCleanupInterface } from './preparecleanup';
 import { getLogger } from '../logger';

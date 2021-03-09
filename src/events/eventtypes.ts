@@ -1,9 +1,10 @@
 import { fixEventNames } from './util';
-import { InteractionEventTypes } from 'pixi.js-legacy';
 
 // TOUCH EVENTS
 type TouchEventTypes = 'TAP' | 'START' | 'END' | 'END_OUTSIDE' | 'CANCEL' | 'MOVE' | 'OVER' | 'OUT';
-export const TouchEvent: { [key in TouchEventTypes]: InteractionEventTypes } = {
+type InteractionPointerEvents = "pointerdown" | "pointercancel" | "pointerup" | "pointertap" | "pointerupoutside" | "pointermove" | "pointerover" | "pointerout";
+
+export const TouchEvent: { [key in TouchEventTypes]: InteractionPointerEvents } = {
   TAP: 'pointertap',
   START: 'pointerdown',
   END: 'pointerup',

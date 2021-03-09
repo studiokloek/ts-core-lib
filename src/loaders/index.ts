@@ -1,5 +1,5 @@
 import { filter, find, isNil, remove, round } from 'lodash-es';
-import { Texture } from 'pixi.js-legacy';
+import { Texture } from 'pixi.js';
 import { SyncEvent } from 'ts-events';
 import { getLogger } from '../logger';
 import { SoundLibraryItem } from '../media';

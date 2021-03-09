@@ -3,7 +3,10 @@
     "rootDir": "./src/",
     "baseUrl": "./src",
     "paths": {
-      "*": ["@types/*"]
+      "*": ["@types/*"],
+      "mini-signals": [
+        "../node_modules/resource-loader/typings/mini-signals.d.ts"
+      ]
     },
     "outDir": "./lib/",
 

@@ -1,3 +1,5 @@
+import { BaseTexture, Container, Graphics, Loader, TLoaderResource, Matrix, Rectangle, SimpleMesh, Sprite, Texture } from "pixi.js";
+
 declare namespace PIXI.spine.core {
   class Animation {
     name: string;
@@ -601,7 +603,7 @@ declare namespace PIXI.spine.core {
 declare namespace PIXI.spine.core {
   class Bone implements Updatable {
     static yDown: boolean;
-    matrix: PIXI.Matrix;
+    matrix: Matrix;
     readonly worldX: number;
     readonly worldY: number;
     data: BoneData;
@@ -1087,8 +1089,8 @@ declare namespace PIXI.spine.core {
     Repeat = 10497,
   }
   class TextureRegion {
-    texture: PIXI.Texture;
-    size: PIXI.Rectangle;
+    texture: Texture;
+    size: Rectangle;
     readonly width: number;
     readonly height: number;
     readonly u: number;
@@ -1112,14 +1114,14 @@ declare namespace PIXI.spine.core {
     regions: TextureAtlasRegion[];
     constructor(
       atlasText?: string,
-      textureLoader?: (path: string, loaderFunction: (tex: PIXI.BaseTexture) => any) => any,
+      textureLoader?: (path: string, loaderFunction: (tex: BaseTexture) => any) => any,
       callback?: (obj: TextureAtlas) => any,
     );
-    addTexture(name: string, texture: PIXI.Texture): TextureAtlasRegion;
-    addTextureHash(textures: Map<PIXI.Texture>, stripExtension: boolean): void;
+    addTexture(name: string, texture: Texture): TextureAtlasRegion;
+    addTextureHash(textures: Map<Texture>, stripExtension: boolean): void;
     addSpineAtlas(
       atlasText: string,
-      textureLoader: (path: string, loaderFunction: (tex: PIXI.BaseTexture) => any) => any,
+      textureLoader: (path: string, loaderFunction: (tex: BaseTexture) => any) => any,
       callback: (obj: TextureAtlas) => any,
     ): void;
     private load;
@@ -1132,7 +1134,7 @@ declare namespace PIXI.spine.core {
     magFilter: TextureFilter;
     uWrap: TextureWrap;
     vWrap: TextureWrap;
-    baseTexture: PIXI.BaseTexture;
+    baseTexture: BaseTexture;
     width: number;
     height: number;
     setFilters(): void;
@@ -1379,29 +1381,29 @@ declare namespace PIXI.loaders {
 }
 declare namespace PIXI.spine {
   class AtlasParser {
-    static use(this: PIXI.Loader, resource: PIXI.LoaderResource, next: () => any): any;
+    static use(this: Loader, resource: TLoaderResource, next: () => any): any;
   }
   function imageLoaderAdapter(
     loader: any,
     namePrefix: any,
     baseUrl: any,
     imageOptions: any,
-  ): (line: string, callback: (baseTexture: PIXI.BaseTexture) => any) => void;
+  ): (line: string, callback: (baseTexture: BaseTexture) => any) => void;
   function syncImageLoaderAdapter(baseUrl: any, crossOrigin: any): (line: any, callback: any) => void;
-  function staticImageLoader(pages: { [key: string]: PIXI.BaseTexture | PIXI.Texture }): (line: any, callback: any) => void;
+  function staticImageLoader(pages: { [key: string]: BaseTexture | Texture }): (line: any, callback: any) => void;
 }
 interface Math {
   fround(n: number): number;
 }
 declare namespace PIXI.spine {
-  class SpineSprite extends PIXI.Sprite {
+  class SpineSprite extends Sprite {
     region: core.TextureRegion;
   }
-  class SpineMesh extends PIXI.SimpleMesh {
+  class SpineMesh extends SimpleMesh {
     region: core.TextureRegion;
-    constructor(texture: PIXI.Texture, vertices?: Float32Array, uvs?: Float32Array, indices?: Uint16Array, drawMode?: number);
+    constructor(texture: Texture, vertices?: Float32Array, uvs?: Float32Array, indices?: Uint16Array, drawMode?: number);
   }
-  class Spine extends PIXI.Container {
+  class Spine extends Container {
     static globalAutoUpdate: boolean;
     static globalDelayLimit: number;
     tintRgb: ArrayLike<number>;
@@ -1409,8 +1411,8 @@ declare namespace PIXI.spine {
     skeleton: core.Skeleton;
     stateData: core.AnimationStateData;
     state: core.AnimationState;
-    slotContainers: PIXI.Container[];
-    tempClipContainers: PIXI.Container[];
+    slotContainers: Container[];
+    tempClipContainers: Container[];
     localDelayLimit: number;
     constructor(spineData: core.SkeletonData);
     autoUpdate: boolean;
@@ -1424,14 +1426,14 @@ declare namespace PIXI.spine {
     createSprite(slot: core.Slot, attachment: core.RegionAttachment, defName: string): SpineSprite;
     createMesh(slot: core.Slot, attachment: core.MeshAttachment): SpineMesh;
     static clippingPolygon: number[];
-    createGraphics(slot: core.Slot, clip: core.ClippingAttachment): PIXI.Graphics;
+    createGraphics(slot: core.Slot, clip: core.ClippingAttachment): Graphics;
     updateGraphics(slot: core.Slot, clip: core.ClippingAttachment): void;
-    hackTextureBySlotIndex(slotIndex: number, texture?: PIXI.Texture, size?: PIXI.Rectangle): boolean;
-    hackTextureBySlotName(slotName: string, texture?: PIXI.Texture, size?: PIXI.Rectangle): boolean;
-    newContainer(): PIXI.Container;
-    newSprite(tex: PIXI.Texture): SpineSprite;
-    newGraphics(): PIXI.Graphics;
-    newMesh(texture: PIXI.Texture, vertices?: Float32Array, uvs?: Float32Array, indices?: Uint16Array, drawMode?: number): SpineMesh;
+    hackTextureBySlotIndex(slotIndex: number, texture?: Texture, size?: Rectangle): boolean;
+    hackTextureBySlotName(slotName: string, texture?: Texture, size?: Rectangle): boolean;
+    newContainer(): Container;
+    newSprite(tex: Texture): SpineSprite;
+    newGraphics(): Graphics;
+    newMesh(texture: Texture, vertices?: Float32Array, uvs?: Float32Array, indices?: Uint16Array, drawMode?: number): SpineMesh;
     transformHack(): number;
     hackAttachmentGroups(nameSuffix: string, group: any, outGroup: any): any[][];
     destroy(options?: any): void;

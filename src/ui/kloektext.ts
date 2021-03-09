@@ -1,5 +1,5 @@
 import { isPlainObject, set } from 'lodash-es';
-import { Text, TextStyle } from 'pixi.js-legacy';
+import { Text, TextStyle } from 'pixi.js';
 import { getLogger } from '../logger';
 import { PrepareCleanupInterface } from '../patterns';
 import { Stage } from '../screen';
