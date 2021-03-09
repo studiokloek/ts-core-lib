@@ -35,7 +35,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@babel/runtime-corejs3": "^7.13.10",
     "@capacitor/core": "^2.4.7",
     "bowser": "^2.11.0",
