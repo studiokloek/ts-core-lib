@@ -1,12 +1,12 @@
 import { get } from 'lodash-es';
 import { Container } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
-import { isPrepareCleanup, PrepareCleanupInterface } from './preparecleanup';
+import { DelayedMixin } from '../delay';
 import { getLogger } from '../logger';
 import { TickerMixin } from '../ticker';
 import { TweenMixin } from '../tween';
-import { DelayedMixin } from '../delay';
-import type { Type } from '../util';
+import { Type } from '../util';
+import { isPrepareCleanup, PrepareCleanupInterface } from './preparecleanup';
 
 const Logger = getLogger('mediator > view');
 

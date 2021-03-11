@@ -1,27 +1,21 @@
 import { gsap } from 'gsap';
 import { Bind } from 'lodash-decorators';
 import { ceil, get, round } from 'lodash-es';
-import type { Graphics } from 'pixi.js-legacy';
 import {
-  autoDetectRenderer,
+  AbstractRenderer, autoDetectRenderer,
   Container,
   DisplayObject,
-  IPoint,
-  Renderer,
-  Point,
-  IRendererOptionsAuto,
-  Rectangle,
+  InteractionManager,
+  IPoint, IRendererOptionsAuto, Point,
+  Rectangle, Renderer,
+  RenderTexture,
   settings,
   Sprite,
   Texture,
-  Ticker as PixiTicker,
-  utils,
-  InteractionManager,
-  RenderTexture,
-  TextureGCSystem,
-  AbstractRenderer,
+  TextureGCSystem, Ticker as PixiTicker,
+  utils
 } from 'pixi.js';
-
+import { Graphics } from 'pixi.js-legacy';
 import Stats from 'stats.js';
 import { Screen } from '.';
 import { CoreDebug } from '../debug';
@@ -34,7 +28,7 @@ import { Tween } from '../tween';
 import { constrainNumber } from '../util/math';
 import { OrientationMode, ResolutionMode } from './constants';
 import { determineResolution } from './resolution';
-import type { StageInfo } from './stageinfo';
+import { StageInfo } from './stageinfo';
 
 const Logger = getLogger('device > stage');
 

@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { get, isNumber, pull, remove, set } from 'lodash-es';
-import type { DisplayObject } from 'pixi.js';
+import { DisplayObject } from 'pixi.js';
 import { getLogger } from '../logger';
 
 const Logger = getLogger('tween > mixin');

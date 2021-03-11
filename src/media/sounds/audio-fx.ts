@@ -1,12 +1,12 @@
+import { Howl, Howler } from 'howler';
 import { Bind } from 'lodash-decorators';
 import { round } from 'lodash-es';
 import { Delayed } from '../../delay';
-import type { SoundAsset } from '../../loaders';
+import { SoundAsset } from '../../loaders';
 import { Stage } from '../../screen';
-import { Tween, Easing } from '../../tween';
+import { Easing, Tween } from '../../tween';
 import { KloekRandom } from '../../util';
 import { SoundLibrary } from './library';
-import { Howler, Howl } from 'howler';
 
 // we regelen zelf suspend
 Howler.autoSuspend = false;

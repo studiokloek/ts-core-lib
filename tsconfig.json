@@ -20,11 +20,11 @@
     "forceConsistentCasingInFileNames": true,
 
     "importHelpers": false,
-    "skipLibCheck": true,
+    "skipLibCheck": false,
   
     "esModuleInterop": true,
     "isolatedModules": true,
-    "importsNotUsedAsValues": "error",
+    "importsNotUsedAsValues": "remove",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     

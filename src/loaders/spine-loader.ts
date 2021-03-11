@@ -1,7 +1,7 @@
 import { last, split } from 'lodash-es';
+import { PIXI } from 'pixi-spine';
 import { Loader, Texture } from 'pixi.js';
-import type { PIXI } from 'pixi-spine';
-import type { AssetLoaderInterface } from '.';
+import { AssetLoaderInterface } from '.';
 import { getLogger } from '../logger';
 import { determineResolution } from '../screen';
 

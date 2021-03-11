@@ -1,9 +1,9 @@
 import { Sprite, Texture } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
+import { isSpriteAsset, SpriteAsset } from '../loaders';
 import { getLogger } from '../logger';
+import { PrepareCleanupInterface } from '../patterns';
 import { TweenMixin } from '../tween';
-import type { PrepareCleanupInterface } from '../patterns';
-import { SpriteAsset, isSpriteAsset } from '../loaders';
 
 const Logger = getLogger('ui > kloeksprite');
 

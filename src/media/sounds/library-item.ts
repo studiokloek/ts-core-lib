@@ -1,7 +1,7 @@
 import { Howl, HowlOptions } from 'howler';
 import { pull } from 'lodash-es';
-import type { SoundAsset } from '../../loaders';
 import { isApp } from '../../device';
+import { SoundAsset } from '../../loaders';
 
 // const Logger = getLogger('core > sounds > library > item');
 export interface SoundLibraryItemOptions {

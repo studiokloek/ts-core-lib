@@ -1,8 +1,8 @@
 import { filter, find, isNil, remove, round } from 'lodash-es';
-import type { Texture } from 'pixi.js';
+import { Texture } from 'pixi.js';
 import { SyncEvent } from 'ts-events';
 import { getLogger } from '../logger';
-import type { SoundLibraryItem } from '../media';
+import { SoundLibraryItem } from '../media';
 import { createFontLoader, FontAsset, FontAssetInfo } from './font-loader';
 import { createSoundsLoader, SoundsAssetInfo } from './sounds-loader';
 import { createSpineLoader, SpineAsset, SpineAssetInfo } from './spine-loader';

@@ -1,11 +1,8 @@
-import { SoundLibrary, SoundLibraryItem } from '../media';
-
-SoundLibraryItem;
-
-import { merge, isObject } from 'lodash-es';
-import type { AssetLoaderInterface } from '.';
-import { getLogger } from '../logger';
+import { isObject, merge } from 'lodash-es';
+import { AssetLoaderInterface } from '.';
 import { CoreDebug } from '../debug';
+import { getLogger } from '../logger';
+import { SoundLibrary, SoundLibraryItem } from '../media';
 
 const Logger = getLogger('loader > sounds ');
 

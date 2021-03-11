@@ -1,3 +1,4 @@
+
 import { DeviceInfo, Plugins } from '@capacitor/core';
 
 const { Device } = Plugins;
