@@ -1,5 +1,5 @@
 import { filter, find, pull } from 'lodash-es';
-import { SoundAsset } from '../../loaders';
+import type { SoundAsset } from '../../loaders';
 import { SoundLibraryItem } from './library-item';
 // import { getLogger } from '../../logger';
 

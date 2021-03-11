@@ -1,7 +1,7 @@
 import { get } from 'lodash-es';
 import { getTicker } from '.';
 import { getLogger } from '../logger';
-import { ConcreteTicker, TickerCallback } from './ticker';
+import type { ConcreteTicker, TickerCallback } from './ticker';
 
 const Logger = getLogger('ticker > mixin');
 

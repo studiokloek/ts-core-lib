@@ -1,10 +1,10 @@
 import { Mixin } from 'ts-mixer';
-import { ViewInterface, ViewOptions } from './view';
+import type { ViewInterface, ViewOptions } from './view';
 import { getLogger } from '../logger';
 import { PubSubMixin } from '../events';
 import { TickerMixin } from '../ticker';
 import { DelayedMixin, Delayed } from '../delay';
-import { Type } from '../util';
+import type { Type } from '../util';
 
 const Logger = getLogger('mediator');
 

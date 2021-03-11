@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { Bind } from 'lodash-decorators';
 import { ceil, get, round } from 'lodash-es';
-import { Graphics } from 'pixi.js-legacy';
+import type { Graphics } from 'pixi.js-legacy';
 import {
   autoDetectRenderer,
   Container,
@@ -34,7 +34,7 @@ import { Tween } from '../tween';
 import { constrainNumber } from '../util/math';
 import { OrientationMode, ResolutionMode } from './constants';
 import { determineResolution } from './resolution';
-import { StageInfo } from './stageinfo';
+import type { StageInfo } from './stageinfo';
 
 const Logger = getLogger('device > stage');
 

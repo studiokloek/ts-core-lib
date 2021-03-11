@@ -6,7 +6,7 @@ import { getLogger } from '../logger';
 import { TickerMixin } from '../ticker';
 import { TweenMixin } from '../tween';
 import { DelayedMixin } from '../delay';
-import { Type } from '../util';
+import type { Type } from '../util';
 
 const Logger = getLogger('mediator > view');
 

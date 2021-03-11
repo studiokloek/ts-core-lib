@@ -1,5 +1,5 @@
 import FontFaceObserver from 'fontfaceobserver';
-import { AssetLoaderInterface } from '.';
+import type { AssetLoaderInterface } from '.';
 import { getLogger, squashForLog } from '../logger';
 
 const Logger = getLogger('loader > font');

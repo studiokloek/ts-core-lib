@@ -1,7 +1,7 @@
 import { Bind } from 'lodash-decorators';
 import { round } from 'lodash-es';
 import { Delayed } from '../../delay';
-import { SoundAsset } from '../../loaders';
+import type { SoundAsset } from '../../loaders';
 import { Stage } from '../../screen';
 import { Tween, Easing } from '../../tween';
 import { KloekRandom } from '../../util';

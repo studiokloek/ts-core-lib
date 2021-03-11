@@ -1,6 +1,6 @@
 import { concat, last, merge, split } from 'lodash-es';
 import { Loader, Texture } from 'pixi.js';
-import { AssetLoaderInterface } from '.';
+import type { AssetLoaderInterface } from '.';
 import { getLogger } from '../logger';
 import { Stage } from '../screen';
 
