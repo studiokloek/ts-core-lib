@@ -52,7 +52,6 @@
     "stats.js": "^0.17.0",
     "superagent": "^6.1.0",
     "ts-events": "^3.4.0",
-    "core-js": "^3.9.1",
     "ts-mixer": "^5.4.0"
   },
   "devDependencies": {
@@ -73,6 +72,7 @@
     "@types/superagent": "^4.1.10",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
+    "babel-plugin-polyfill-corejs3": "^0.1.7",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-formatter-pretty": "^4.0.0",

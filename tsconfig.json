@@ -1,45 +1,54 @@
 {
   "compilerOptions": {
+    "moduleResolution": "node",
+    
     "rootDir": "./src/",
     "baseUrl": "./src",
+    "outDir": "./lib/",
+    
     "paths": {
       "*": ["@types/*"],
       "mini-signals": [
         "../node_modules/resource-loader/typings/mini-signals.d.ts"
       ]
     },
-    "outDir": "./lib/",
 
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "declaration": true,
-    "removeComments": false,
+    "lib": ["esnext"],
+    
+    "forceConsistentCasingInFileNames": true,
+
     "importHelpers": false,
-    "lib": ["dom", "es5", "es2015.core", "es2015.iterable", "es2015.promise", "es2015.symbol", "es2015.symbol.wellknown", "es2015.proxy"],
-    "plugins": [],
+    "skipLibCheck": true,
+  
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "importsNotUsedAsValues": "remove",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    
+    "declaration": true,
+    "pretty": true,
+    "sourceMap": true,
     "inlineSources": true,
+    "removeComments": false,
+
     "downlevelIteration": false,
-    "noUnusedLocals": true,
     "experimentalDecorators": true,
+    
     "strict": true,
     "noImplicitThis": true,
+    "noUnusedLocals": true,
     "alwaysStrict": true,
     "strictBindCallApply": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noUnusedParameters": true,
-
-    "pretty": true,
-    "noErrorTruncation": false,
-
-    "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
-    "esModuleInterop": true,
+    "noImplicitAny": true,
 
-    "noImplicitAny": true
   },
   "exclude": ["node_modules", "lib"],
   "include": ["src/**/*.ts"]

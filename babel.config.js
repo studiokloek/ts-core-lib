@@ -4,15 +4,14 @@ const runtimeVersion = package.dependencies['@babel/runtime-corejs3'].replace('^
 
 module.exports = {
   presets: [
-    [
-      '@babel/env',
-      {
+    ['@babel/env', {
         modules: false,
-        useBuiltIns: 'usage',
-        corejs: 3,
-      },
-    ],
-    '@babel/typescript',
+        bugfixes: true,
+    }],
+    ['@babel/typescript', {
+        onlyRemoveTypeImports: true,
+        allowDeclareFields: true,
+    }],
   ],
   plugins: [
     ['@babel/proposal-decorators', { legacy: true }],
@@ -20,16 +19,25 @@ module.exports = {
     ['@babel/proposal-object-rest-spread'],
     ['@babel/proposal-nullish-coalescing-operator'],
     ['@babel/proposal-optional-chaining'],
-    [
-      '@babel/transform-runtime',
-      {
-        version: runtimeVersion,
-        corejs: 3,
-        proposals: true,
-        helpers: true,
-        useESModules: true,
-      },
-    ],
+    ['@babel/transform-runtime', {
+      version: runtimeVersion,
+      proposals: true,
+    }],
+    ['polyfill-corejs3', {
+      method: 'usage-pure',
+    }]    
   ],
   ignore: ['src/@types', /[/\\]core-js/, /@babel[/\\]runtime/],
 };
+
+
+// [
+//   '@babel/transform-runtime',
+//   {
+//     version: runtimeVersion,
+//     corejs: 3,
+//     proposals: true,
+//     helpers: true,
+//     useESModules: true,
+//   },
+// ],
