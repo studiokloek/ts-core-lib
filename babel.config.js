@@ -1,6 +1,6 @@
 // get babel runtime version
 const package = require('./package.json'),
-  runtimeVersion = package.dependencies['@babel/runtime-corejs3'].replace('^', '');
+  runtimeVersion = package.peerDependencies['@babel/runtime-corejs3'].replace('^', '');
 
 module.exports = {
   overrides: [
