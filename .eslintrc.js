@@ -20,7 +20,7 @@ module.exports = {
     'plugin:unicorn/recommended',
     // "prettier",
     'plugin:prettier/recommended',
-    'prettier/@typescript-eslint',
+    'prettier',
   ],
   env: {
     node: true,
@@ -50,6 +50,10 @@ module.exports = {
     'unicorn/number-literal-case': 'off',
 
     'prettier/prettier': 'error',
+
+    // werkt niet met PIXI
+    'unicorn/prefer-dom-node-remove': 'off',
+    'unicorn/prefer-node-remove': 'off',
   },
 
   settings: {

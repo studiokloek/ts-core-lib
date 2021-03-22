@@ -2,19 +2,23 @@ import { gsap } from 'gsap';
 import { Bind } from 'lodash-decorators';
 import { ceil, get, round } from 'lodash-es';
 import {
-  AbstractRenderer, autoDetectRenderer,
+  AbstractRenderer,
+  autoDetectRenderer,
   Container,
   DisplayObject,
   InteractionManager,
-  IPoint, IRendererOptionsAuto, Point,
-  Rectangle, Renderer,
+  Point,
+  Rectangle,
+  Renderer,
   RenderTexture,
   settings,
   Sprite,
   Texture,
-  TextureGCSystem, Ticker as PixiTicker,
-  utils
+  TextureGCSystem,
+  Ticker as PixiTicker,
+  utils,
 } from 'pixi.js';
+import type { IPoint, IRendererOptionsAuto } from 'pixi.js';
 import { Graphics } from 'pixi.js-legacy';
 import Stats from 'stats.js';
 import { Screen } from '.';

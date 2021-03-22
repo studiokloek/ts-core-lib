@@ -1,4 +1,5 @@
-import { default as Bowser, Parser } from 'bowser';
+import { default as Bowser } from 'bowser';
+import type { Parser } from 'bowser';
 import { memoize } from 'lodash-es';
 import { isApp, isPlatform, Platform } from './device';
 import { supportsTouch } from './interaction';

@@ -1,6 +1,7 @@
 import { Sprite, Texture } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
-import { isSpriteAsset, SpriteAsset } from '../loaders';
+import { isSpriteAsset } from '../loaders';
+import type { SpriteAsset } from '../loaders';
 import { getLogger } from '../logger';
 import { PrepareCleanupInterface } from '../patterns';
 import { TweenMixin } from '../tween';

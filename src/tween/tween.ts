@@ -1,4 +1,4 @@
-import { gsap, Tween as GSAPTween } from 'gsap';
+import { gsap } from 'gsap';
 import { get, set } from 'lodash-es';
 import { DisplayObject } from 'pixi.js';
 import { getLogger } from '../logger';

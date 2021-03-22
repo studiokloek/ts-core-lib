@@ -1,4 +1,5 @@
-import { Howl, HowlOptions } from 'howler';
+import { Howl } from 'howler';
+import type { HowlOptions } from 'howler';
 import { pull } from 'lodash-es';
 import { isApp } from '../../device';
 import { SoundAsset } from '../../loaders';

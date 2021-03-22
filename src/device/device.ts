@@ -1,5 +1,5 @@
-
-import { DeviceInfo, Plugins } from '@capacitor/core';
+import { Plugins } from '@capacitor/core';
+import type { DeviceInfo } from '@capacitor/core';
 
 const { Device } = Plugins;
 

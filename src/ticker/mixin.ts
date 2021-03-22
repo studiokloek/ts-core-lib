@@ -49,10 +49,6 @@ export class TickerMixin {
   }
 
   public get tickerTime(): number {
-    if (this.__ticker) {
-      return this.__ticker.time;
-    } else {
-      return 0;
-    }
+    return this.__ticker ? this.__ticker.time : 0;
   }
 }

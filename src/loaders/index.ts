@@ -3,10 +3,14 @@ import { Texture } from 'pixi.js';
 import { SyncEvent } from 'ts-events';
 import { getLogger } from '../logger';
 import { SoundLibraryItem } from '../media';
-import { createFontLoader, FontAsset, FontAssetInfo } from './font-loader';
-import { createSoundsLoader, SoundsAssetInfo } from './sounds-loader';
-import { createSpineLoader, SpineAsset, SpineAssetInfo } from './spine-loader';
-import { createSpriteLoader, SpriteAssetInfo } from './sprites-loader';
+import { createFontLoader } from './font-loader';
+import type { FontAsset, FontAssetInfo } from './font-loader';
+import { createSoundsLoader } from './sounds-loader';
+import type { SoundsAssetInfo } from './sounds-loader';
+import { createSpineLoader } from './spine-loader';
+import type { SpineAsset, SpineAssetInfo } from './spine-loader';
+import { createSpriteLoader } from './sprites-loader';
+import type { SpriteAssetInfo } from './sprites-loader';
 
 const Logger = getLogger('loader');
 
@@ -79,7 +83,7 @@ export class AssetLoader {
     // allready inited?
     if (this.assetsInited === true) {
       // add dynamic assets again
-      this.dynamicAssets.forEach((asset) => this.addAsset(asset));
+      for (const asset of this.dynamicAssets) this.addAsset(asset);
       return;
     }
 
@@ -99,13 +103,13 @@ export class AssetLoader {
       }
 
       // call & add assets
-      (asset() as AssetLoaderInfo[]).forEach((_asset) => this.addAsset(_asset, true));
+      for (const _asset of asset() as AssetLoaderInfo[]) this.addAsset(_asset, true);
 
       return;
     }
 
     if (Array.isArray(asset)) {
-      asset.forEach((_asset) => this.addAsset(_asset));
+      for (const _asset of asset) this.addAsset(_asset);
 
       return;
     }

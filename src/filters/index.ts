@@ -1,4 +1,5 @@
-import { ColorMatrix, ColorMatrixFilter } from '@pixi/filter-color-matrix';
+import { ColorMatrixFilter } from '@pixi/filter-color-matrix';
+import type { ColorMatrix } from '@pixi/filter-color-matrix';
 import { determineResolution } from '../screen';
 
 export function getColorMatrixFilter(matrix: ColorMatrix): ColorMatrixFilter {
