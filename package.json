@@ -49,7 +49,6 @@
     "pubsub-js": "^1.9.3",
     "random-js": "^2.1.0",
     "slugify": "^1.4.7",
-    "stats.js": "^0.17.0",
     "superagent": "^6.1.0",
     "ts-events": "^3.4.0",
     "ts-mixer": "^5.4.0"

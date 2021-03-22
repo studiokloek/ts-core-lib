@@ -20,7 +20,6 @@ import {
 } from 'pixi.js';
 import type { IPoint, IRendererOptionsAuto } from 'pixi.js';
 import { Graphics } from 'pixi.js-legacy';
-import Stats from 'stats.js';
 import { Screen } from '.';
 import { CoreDebug } from '../debug';
 import { Delayed } from '../delay';
@@ -150,7 +149,6 @@ export class ConcreteStage {
   private _timeScale = 1;
   private timeScaleBeforeSleep: number | undefined;
   private sleeping = false;
-  private stats: Stats | undefined;
   private forcedScreenOrientation: string | undefined;
   private firstResize = true;
 
@@ -175,7 +173,6 @@ export class ConcreteStage {
     this._generateResolution = this._textureResolution;
 
     this.checkPerformance();
-    this.initDebug();
     this.initRenderer();
     this.initTicker();
     this.initGC();
@@ -220,18 +217,6 @@ export class ConcreteStage {
 
       this.target.append(this.renderer.view);
     }
-  }
-
-  private initDebug(): void {
-    if (!CoreDebug.showStats()) {
-      return;
-    }
-
-    this.stats = new Stats();
-    this.stats.dom.style.top = '';
-    this.stats.dom.style.bottom = '0';
-    document.body.append(this.stats.dom);
-    this.stats.showPanel(0);
   }
 
   private checkPerformance(): void {
@@ -331,27 +316,13 @@ export class ConcreteStage {
 
     Logger.debug('Starting...');
 
-    if (CoreDebug.showStats() && this.stats) {
-      GSAPTicker.add(this.debugRender);
-      this.stats.begin();
-    } else {
-      GSAPTicker.add(this.render);
-    }
+    GSAPTicker.add(this.render);
   }
 
   @Bind()
   private render(): void {
     this.sharedTicker.update(GSAPTicker.time * 1000);
     this.renderer.render(this._view);
-  }
-
-  @Bind()
-  private debugRender(): void {
-    this.render();
-
-    if (this.stats) {
-      this.stats.update();
-    }
   }
 
   // RESIZE
@@ -419,10 +390,6 @@ export class ConcreteStage {
 
     if (!this.firstResize) {
       PubSub.publish(AppEvent.RESIZED, info, true);
-    }
-
-    if (this.stats) {
-      this.stats.dom.style.left = `${this.position.x - 1}px`;
     }
 
     this.firstResize = false;
