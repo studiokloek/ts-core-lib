@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
+
     
     "rootDir": "./src/",
     "baseUrl": "./src",
@@ -19,7 +20,7 @@
     
     "forceConsistentCasingInFileNames": true,
 
-    "importHelpers": false,
+    "importHelpers": true,
     "skipLibCheck": false,
   
     "esModuleInterop": true,
@@ -30,8 +31,7 @@
     
     "declaration": true,
     "pretty": true,
-    "sourceMap": true,
-    "inlineSources": true,
+    "inlineSourceMap": true,
     "removeComments": false,
 
     "downlevelIteration": false,
