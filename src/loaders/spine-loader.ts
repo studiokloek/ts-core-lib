@@ -1,5 +1,5 @@
 import { last, split } from 'lodash-es';
-import { PIXI } from 'pixi-spine';
+import { SkeletonData } from 'pixi-spine';
 import { Loader, Texture } from 'pixi.js';
 import { AssetLoaderInterface } from '.';
 import { getLogger } from '../logger';
@@ -9,7 +9,7 @@ const Logger = getLogger('loader > spine');
 
 export interface SpineAsset {
   id: string;
-  skeleton: PIXI.spine.core.SkeletonData;
+  skeleton: SkeletonData;
 }
 
 export interface SpineAssetInfo {
