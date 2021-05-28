@@ -13,6 +13,8 @@ const Logger = getLogger('mediator > view');
 
 export interface ViewOptions {
   target?: Container;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 export interface ViewInterface extends Container {
@@ -25,18 +27,18 @@ export interface ViewInterface extends Container {
 }
 
 export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin) implements ViewInterface, PrepareCleanupInterface {
-  protected options: Record<string, unknown>;
+  protected options: ViewOptions;
   protected views: ViewInterface[] = [];
   protected target: Container | undefined;
   protected isPrepared = false;
   protected isActive = false;
 
-  public constructor(_options?: {}) {
+  public constructor(_options?: ViewOptions) {
     super();
     this.options = { ..._options };
   }
 
-  public addView(_viewClass: Type<ViewInterface>, _options?: Record<string, unknown>, _register = true): ViewInterface {
+  public addView(_viewClass: Type<ViewInterface>, _options?: ViewOptions, _register = true): ViewInterface {
     const view: ViewInterface = new _viewClass(_options);
 
     const target = get(_options, 'target') as Container;
