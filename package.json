@@ -4,7 +4,7 @@
   "description": "Core TypeScript lib for our projects.",
   "author": "Martijn Swart <opensource@studiokloek.nl> (https://studiokloek.nl)",
   "license": "MIT",
-  "main": "lib/index.js",
+  "exports": "./lib/index.js",
   "types": "lib/index.d.ts",
   "repository": "github:studiokloek/ts-core-lib",
   "bugs": {
@@ -23,9 +23,9 @@
     "yarn": false,
     "tests": false
   },
+  "type": "module",
   "engines": {
-    "node": ">=12.20.1",
-    "npm": ">=7.5.6"
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "files": [
     "lib/*"
