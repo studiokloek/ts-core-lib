@@ -6,6 +6,7 @@ const Logger = getLogger('data > stats');
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/ban-types
     ga?: Function;
   }
 }
@@ -43,12 +44,12 @@ function initStats(_ua: string): void {
         clientId: window.localStorage.getItem('ga_clientId'),
       });
 
-      // zorg er voor dat analicts ook werkt onder capacitor://
-      window.ga('set', 'checkProtocolTask', function() {
+      // zorg er voor dat analytics ook werkt onder capacitor://
+      window.ga('set', 'checkProtocolTask', function () {
         /* nothing */
       });
 
-      window.ga(function(tracker: any) {
+      window.ga(function (tracker: any) {
         window.localStorage.setItem('ga_clientId', tracker.get('clientId'));
       });
     } else {
