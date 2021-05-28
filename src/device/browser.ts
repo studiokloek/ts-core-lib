@@ -115,7 +115,7 @@ export const isStandaloneBrowser = (): boolean => {
   }
 
   if (isPlatform(Platform.IOS)) {
-    return 'standalone' in window.navigator && window.navigator['standalone'];
+    return 'standalone' in window.navigator && (window.navigator as any)['standalone'];
   }
 
   let isStandAlone = window.matchMedia('(display-mode: standalone)').matches;
