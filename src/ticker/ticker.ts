@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { Bind } from 'lodash-decorators';
+import { Bind } from 'lodash-decorators-esm';
 import { round } from 'lodash-es';
 import { CoreDebug } from '../debug';
 import { getLogger } from '../logger';
@@ -58,8 +58,8 @@ export class ConcreteTicker {
 
     let needRemove = false;
 
-    for (let i = 0; i < this.numberOfItems; i++) {
-      const item = this.items[i];
+    for (let index = 0; index < this.numberOfItems; index++) {
+      const item = this.items[index];
 
       if (item.active) {
         // time, delay, running
@@ -70,11 +70,11 @@ export class ConcreteTicker {
     }
 
     if (needRemove) {
-      for (let i = this.items.length - 1; i >= 0; --i) {
-        const item = this.items[i];
+      for (let index = this.items.length - 1; index >= 0; --index) {
+        const item = this.items[index];
 
         if (!item.active) {
-          this.items.splice(i, 1);
+          this.items.splice(index, 1);
         }
       }
 
@@ -134,9 +134,9 @@ export class ConcreteTicker {
   public remove(callback: TickerCallback | TickerCallback[]): void {
     // meerdere callbacks?
     if (Array.isArray(callback)) {
-      callback.forEach((item) => {
+      for (const item of callback) {
         this.remove(item);
-      });
+      }
 
       return;
     }
@@ -220,7 +220,7 @@ export class ConcreteTicker {
 
   public set timeScale(_value: number) {
     // helemaal 0 kan niet...
-    _value = _value || 0.0000000001;
+    _value = _value || 0.000_000_000_1;
 
     if (!this.isRunning) {
       this.beforeSleepTimeScale = _value;

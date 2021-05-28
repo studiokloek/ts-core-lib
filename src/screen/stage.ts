@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { Bind } from 'lodash-decorators';
+import { Bind } from 'lodash-decorators-esm';
 import { ceil, get, round } from 'lodash-es';
 import {
   AbstractRenderer,
@@ -94,7 +94,7 @@ export interface MultiSizeOptions {
 const DefaultStageOptions: StageOptions = {
   fps: 60,
   antialias: false,
-  backgroundColor: 0x000000,
+  backgroundColor: 0x00_00_00,
   target: '#app',
 };
 
@@ -297,7 +297,7 @@ export class ConcreteStage {
       antialias: this.options?.antialias === true ? true : false,
       resolution: this._rendererResolution,
       forceCanvas: !gpuInfo.isWebGLSupported,
-      backgroundColor: this.options ? this.options.backgroundColor : 0x000000,
+      backgroundColor: this.options ? this.options.backgroundColor : 0x00_00_00,
     };
 
     Logger.info('Render options:', renderOptions);

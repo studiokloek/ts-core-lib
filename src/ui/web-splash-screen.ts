@@ -1,5 +1,5 @@
 import { Plugins } from '@capacitor/core';
-import { Bind } from 'lodash-decorators';
+import { Bind } from 'lodash-decorators-esm';
 import { isFunction, round } from 'lodash-es';
 import { SyncEvent } from 'ts-events';
 import { CoreDebug } from '../debug';
