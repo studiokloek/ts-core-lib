@@ -95,7 +95,7 @@ export class SoundsLoader implements AssetLoaderInterface {
     Logger.debug(`Start loading #${this.numberToLoad} sounds for '${this.options.assetName}'`);
 
     // max 8 tegelijkertijd inladen?
-    for (let i = 0; i < 8; i++) {
+    for (let numberOfLoaders = 0; numberOfLoaders < 8; numberOfLoaders++) {
       this.preloadNextSoundAsset();
     }
 

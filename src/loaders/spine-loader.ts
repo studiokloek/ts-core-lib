@@ -31,7 +31,7 @@ export interface SpineLoaderOptions {
 }
 
 const OptionDefaults: SpineLoaderOptions = {
-  assetDirectory: './assets/',
+  assetDirectory: './',
   numberOfParts: 1,
 };
 
@@ -173,7 +173,7 @@ export function createSpineLoader(asset: SpineAssetInfo): SpineLoader {
   const loader = new SpineLoader({
     assetId: asset.id,
     assetName: asset.fileName,
-    assetDirectory: './assets/spine/',
+    assetDirectory: './spine/',
     numberOfParts: asset.numberOfParts,
   });
 

@@ -36,7 +36,7 @@ interface SpriteLoaderOptions {
 }
 
 const OptionDefaults: SpriteLoaderOptions = {
-  assetDirectory: './assets/',
+  assetDirectory: './',
   numberOfParts: 1,
 };
 
@@ -203,7 +203,7 @@ export class SpriteLoader implements AssetLoaderInterface {
 export function createSpriteLoader(assetInfo: SpriteAssetInfo): SpriteLoader {
   const loader = new SpriteLoader({
     assetName: assetInfo.fileName,
-    assetDirectory: './assets/sprites/',
+    assetDirectory: './sprites/',
     numberOfParts: assetInfo.numberOfParts,
     resolution: assetInfo.resolution,
   });

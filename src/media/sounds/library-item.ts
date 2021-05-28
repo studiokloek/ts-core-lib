@@ -48,7 +48,7 @@ export class SoundLibraryItem {
   }
 
   private createPlayer(): Howl {
-    const file = `./assets/sounds/${this.asset.id}`,
+    const file = `./sounds/${this.asset.id}`,
       source = isApp() ? [`${file}.m4a`] : [`${file}.m4a`, `${file}.ogg`, `${file}.mp3`]; // app gebruikt alleen m4a
 
     // opties
