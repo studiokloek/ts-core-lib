@@ -35,12 +35,12 @@
     "access": "public"
   },
   "peerDependencies": {
+    "@capacitor/core": "^2.4.7",
     "@types/fontfaceobserver": "0.0.6",
     "@types/howler": "^2.2.2",
     "@types/lodash-es": "^4.17.4",
     "@types/stats.js": "^0.17.0",
     "@types/superagent": "^4.1.11",
-    "@capacitor/core": "^2.4.7",
     "bowser": "^2.11.0",
     "fontfaceobserver": "^2.1.0",
     "gsap": "^3.6.1",
@@ -53,6 +53,7 @@
     "random-js": "^2.1.0",
     "slugify": "^1.5.3",
     "superagent": "^6.1.0",
+    "ress": "^4.0.0",
     "ts-events": "^3.4.0",
     "ts-mixer": "^5.4.1",
     "tslib": "^2.2.0"
