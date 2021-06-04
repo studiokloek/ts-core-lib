@@ -50,7 +50,7 @@
     "howler": "^2.2.1",
     "lodash-decorators-esm": "^6.1.1",
     "lodash-es": "^4.17.21",
-    "pixi-spine": "^3.0.1",
+    "pixi-spine": "^3.0.3",
     "pixi.js-legacy": "^6.0.4",
     "pubsub-js": "^1.9.3",
     "random-js": "^2.1.0",
