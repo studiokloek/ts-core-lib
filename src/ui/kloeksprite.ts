@@ -17,6 +17,7 @@ export interface KloekSpriteDefaults {
   anchor?: { x: number; y: number };
   tint?: number;
   visible?: boolean;
+  zIndex?:number;
 }
 
 export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCleanupInterface {
@@ -28,9 +29,6 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
 
   public constructor(_asset?: SpriteAsset, _defaults?: KloekSpriteDefaults) {
     super();
-
-    // Waarom is dit nodig bij V5?
-    // this.scale.set(1);
 
     this.setAsset(_asset);
 
@@ -146,6 +144,10 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     if (this.defaults.visible !== undefined) {
       this.previousDefaults.visible = this.visible;
     }
+
+    if (this.defaults.zIndex !== undefined) {
+      this.previousDefaults.zIndex = this.zIndex;
+    }
   }
 
   protected applyDefaults(): void {
@@ -193,6 +195,12 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
       this.visible = this.defaults.visible;
     } else if (this.previousDefaults.visible !== undefined) {
       this.visible = this.previousDefaults.visible;
+    }
+
+    if (this.defaults.zIndex !== undefined) {
+      this.zIndex = this.defaults.zIndex;
+    } else if (this.previousDefaults.zIndex !== undefined) {
+      this.zIndex = this.previousDefaults.zIndex;
     }
 
     if (this.defaults.tint !== undefined) {
