@@ -23,6 +23,10 @@ export function isSpriteAsset(_info: SpriteAsset): _info is SpriteAsset {
   return _info && (_info as SpriteAsset).id !== undefined;
 }
 
+export function isSpriteAssetWithMeta(_info: SpriteAssetWithMeta): _info is SpriteAssetWithMeta {
+  return isSpriteAsset(_info) && (_info as SpriteAssetWithMeta).zIndex !== undefined;
+}
+
 export interface SpriteAssetList {
   [key: string]: SpriteAsset | SpriteAssetList;
 }
