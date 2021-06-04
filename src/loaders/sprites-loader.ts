@@ -12,6 +12,13 @@ export interface SpriteAsset {
   height: number;
 }
 
+export interface SpriteAssetWithMeta extends SpriteAsset {
+  x: number;
+  y: number;
+  zIndex: number;
+  opacity: number;
+}
+
 export function isSpriteAsset(_info: SpriteAsset): _info is SpriteAsset {
   return _info && (_info as SpriteAsset).id !== undefined;
 }
