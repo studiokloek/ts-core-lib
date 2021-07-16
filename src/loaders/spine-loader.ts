@@ -1,4 +1,4 @@
-import { CoreLibraryOptions } from 'index';
+import { CoreLibraryOptions } from '../';
 import { last, split } from 'lodash-es';
 import { ISkeletonData } from 'pixi-spine';
 import { Loader, Texture } from 'pixi.js';

@@ -3,7 +3,7 @@ import type { HowlOptions } from 'howler';
 import { pull } from 'lodash-es';
 import { isApp } from '../../device';
 import { SoundAsset } from '../../loaders';
-import { CoreLibraryOptions } from 'index';
+import { CoreLibraryOptions } from '../../';
 
 // const Logger = getLogger('core > sounds > library > item');
 export interface SoundLibraryItemOptions {

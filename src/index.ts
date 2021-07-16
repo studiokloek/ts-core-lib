@@ -27,8 +27,6 @@ import { initNetworkStatusDetection, getDeviceInfo } from './device';
 import { initScreen } from './screen';
 import { initLogger } from './logger';
 
-  
-
 interface ICoreLibraryOptions {
   assetsBasePath:string;
 }

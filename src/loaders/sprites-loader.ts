@@ -1,9 +1,9 @@
-import { CoreLibraryOptions } from 'index';
 import { concat, last, merge, split } from 'lodash-es';
 import { Loader, Texture } from 'pixi.js';
 import { AssetLoaderInterface } from '.';
 import { getLogger } from '../logger';
 import { Stage } from '../screen';
+import { CoreLibraryOptions } from '../';
 
 const Logger = getLogger('loader > sprite');
 
