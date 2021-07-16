@@ -27,7 +27,20 @@ import { initNetworkStatusDetection, getDeviceInfo } from './device';
 import { initScreen } from './screen';
 import { initLogger } from './logger';
 
-export async function initCoreLibrary(): Promise<void> {
+  
+
+interface ICoreLibraryOptions {
+  assetsBasePath:string;
+}
+
+export const CoreLibraryOptions = {
+  ASSET_BASE_PATH: './'
+}
+  
+export async function initCoreLibrary(_options:ICoreLibraryOptions): Promise<void> {
+  // set options
+  CoreLibraryOptions.ASSET_BASE_PATH = _options.assetsBasePath ??  CoreLibraryOptions.ASSET_BASE_PATH;
+
   await Promise.all([initNetworkStatusDetection(), getDeviceInfo()]);
   initScreen();
   initLogger();

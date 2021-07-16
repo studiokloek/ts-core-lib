@@ -3,6 +3,7 @@ import type { HowlOptions } from 'howler';
 import { pull } from 'lodash-es';
 import { isApp } from '../../device';
 import { SoundAsset } from '../../loaders';
+import { CoreLibraryOptions } from 'index';
 
 // const Logger = getLogger('core > sounds > library > item');
 export interface SoundLibraryItemOptions {
@@ -48,7 +49,7 @@ export class SoundLibraryItem {
   }
 
   private createPlayer(): Howl {
-    const file = `./sounds/${this.asset.id}`,
+    const file = `${CoreLibraryOptions.ASSET_BASE_PATH}sounds/${this.asset.id}`,
       source = isApp() ? [`${file}.m4a`] : [`${file}.m4a`, `${file}.ogg`, `${file}.mp3`]; // app gebruikt alleen m4a
 
     // opties

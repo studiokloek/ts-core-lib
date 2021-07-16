@@ -1,3 +1,4 @@
+import { CoreLibraryOptions } from 'index';
 import { concat, last, merge, split } from 'lodash-es';
 import { Loader, Texture } from 'pixi.js';
 import { AssetLoaderInterface } from '.';
@@ -46,10 +47,6 @@ interface SpriteLoaderOptions {
   resolution?: number;
 }
 
-const OptionDefaults: SpriteLoaderOptions = {
-  assetDirectory: './',
-  numberOfParts: 1,
-};
 
 export class SpriteLoader implements AssetLoaderInterface {
   private options: SpriteLoaderOptions;
@@ -67,7 +64,10 @@ export class SpriteLoader implements AssetLoaderInterface {
   private loadedResolver!: (value: any | undefined) => void;
 
   public constructor(_options: SpriteLoaderOptions) {
-    this.options = { ...OptionDefaults, ..._options };
+    this.options = { ...{
+      assetDirectory: `${CoreLibraryOptions.ASSET_BASE_PATH}`,
+      numberOfParts: 1,
+    }, ..._options };
 
     this.loader = new Loader();
     this.loader.onError.add((loader, resource) => {
@@ -214,7 +214,7 @@ export class SpriteLoader implements AssetLoaderInterface {
 export function createSpriteLoader(assetInfo: SpriteAssetInfo): SpriteLoader {
   const loader = new SpriteLoader({
     assetName: assetInfo.fileName,
-    assetDirectory: './sprites/',
+    assetDirectory: `${CoreLibraryOptions.ASSET_BASE_PATH}sprites/`,
     numberOfParts: assetInfo.numberOfParts,
     resolution: assetInfo.resolution,
   });

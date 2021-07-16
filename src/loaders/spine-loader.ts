@@ -1,3 +1,4 @@
+import { CoreLibraryOptions } from 'index';
 import { last, split } from 'lodash-es';
 import { ISkeletonData } from 'pixi-spine';
 import { Loader, Texture } from 'pixi.js';
@@ -30,11 +31,6 @@ export interface SpineLoaderOptions {
   numberOfParts: number;
 }
 
-const OptionDefaults: SpineLoaderOptions = {
-  assetDirectory: './',
-  numberOfParts: 1,
-};
-
 export class SpineLoader implements AssetLoaderInterface {
   private options: SpineLoaderOptions;
   private loader: Loader;
@@ -49,7 +45,10 @@ export class SpineLoader implements AssetLoaderInterface {
   private loadedResolver!: (value: any | undefined) => void;
 
   public constructor(_options: SpineLoaderOptions) {
-    this.options = { ...OptionDefaults, ..._options };
+    this.options = { ...{
+      assetDirectory: `${CoreLibraryOptions.ASSET_BASE_PATH}`,
+      numberOfParts: 1,
+    }, ..._options };
 
     this.loader = new Loader();
     // this.loader.defaultQueryString = Settings.version ? Settings.version : '';
@@ -173,7 +172,7 @@ export function createSpineLoader(asset: SpineAssetInfo): SpineLoader {
   const loader = new SpineLoader({
     assetId: asset.id,
     assetName: asset.fileName,
-    assetDirectory: './spine/',
+    assetDirectory: `${CoreLibraryOptions.ASSET_BASE_PATH}spine/`,
     numberOfParts: asset.numberOfParts,
   });
 
