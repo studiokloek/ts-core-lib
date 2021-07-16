@@ -8,7 +8,6 @@ export interface CoreDebugSettings {
   isEnabled?: boolean;
   minLogLevel: number;
   globalTimescale: number;
-  showStats: boolean;
   forceLowResolution: boolean;
   disableSounds: boolean;
   skipMediaTrigger: boolean;
@@ -18,7 +17,6 @@ const values = {
   isEnabled: parameters.has('debug'),
   minLogLevel: LogLevels.WARN,
   globalTimescale: 1,
-  showStats: false,
   disableSounds: false,
   forceLowResolution: false,
   skipMediaTrigger: false,
@@ -52,11 +50,5 @@ export const CoreDebug = {
       return values.globalTimescale;
     }
     return 1;
-  },
-  showStats(): boolean {
-    if (values.isEnabled) {
-      return values.showStats;
-    }
-    return false;
   },
 };
