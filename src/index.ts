@@ -37,7 +37,7 @@ export const CoreLibraryOptions = {
   
 export async function initCoreLibrary(_options:ICoreLibraryOptions): Promise<void> {
   // set options
-  CoreLibraryOptions.ASSET_BASE_PATH = _options.assetsBasePath ??  CoreLibraryOptions.ASSET_BASE_PATH;
+  CoreLibraryOptions.ASSET_BASE_PATH = _options?.assetsBasePath ??  CoreLibraryOptions.ASSET_BASE_PATH;
 
   await Promise.all([initNetworkStatusDetection(), getDeviceInfo()]);
   initScreen();
