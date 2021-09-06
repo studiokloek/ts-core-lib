@@ -34,7 +34,10 @@ export const LoaderAssetTypes = {
 export type AssetLoaderInfo = SpriteAssetInfo | SoundsAssetInfo | SpineAssetInfo | FontAssetInfo;
 
 export interface LoaderAssets {
-  [key: string]: AssetLoaderInfo[] | (() => AssetLoaderInfo[]);
+  sprites?: SpriteAssetInfo[] | (() => SpriteAssetInfo[]);
+  fonts?: FontAssetInfo[] | (() => FontAssetInfo[]);
+  sounds?: SoundsAssetInfo[] | (() => SoundsAssetInfo[]);
+  spine?: SpineAssetInfo[] | (() => SpineAssetInfo[]);
 }
 
 const DefaultLoaderAssets: LoaderAssets = {
