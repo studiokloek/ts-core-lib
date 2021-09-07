@@ -41,9 +41,9 @@ function getStyle(_base?: TextStyle | Record<string, unknown> | string, _overwri
 }
 
 export class KloekText extends Text implements PrepareCleanupInterface {
+  protected isPrepared = false;
   private _value: string;
   protected target: Container | undefined;
-
 
   public constructor(_text = '', _style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>) {
     super('', getStyle(_style, _styleOverwrite));
@@ -53,11 +53,21 @@ export class KloekText extends Text implements PrepareCleanupInterface {
   }
 
   public prepareAfterLoad(): void {
+    if (this.isPrepared) {
+      return;
+    }
+    this.isPrepared = true;
+
     this.determineResolution();
     this.text = this._value;
   }
 
   public cleanupBeforeUnload(): void {
+    if (!this.isPrepared) {
+      return;
+    }
+    this.isPrepared = false;
+
     this.resolution = 1;
     this._value = this.text;
     this.text = '';
