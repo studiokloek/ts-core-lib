@@ -11,10 +11,10 @@ const Logger = getLogger('ui > kloeksprite');
 export interface KloekSpriteDefaults {
   x?: number;
   y?: number;
-  scale?: number;
+  scale?: number | { x: number; y: number };
   alpha?: number;
   rotation?: number;
-  anchor?: { x: number; y: number };
+  anchor?: number | { x: number; y: number };
   tint?: number;
   visible?: boolean;
   zIndex?:number;
@@ -182,15 +182,31 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     }
 
     if (this.defaults.anchor !== undefined) {
-      this.anchor.set(this.defaults.anchor.x, this.defaults.anchor.y);
+      if (typeof this.defaults.anchor === 'number') {
+        this.scale.set(this.defaults.anchor);
+      } else {
+        this.anchor.set(this.defaults.anchor.x, this.defaults.anchor.y);
+      }
     } else if (this.previousDefaults.anchor !== undefined) {
-      this.anchor.set(this.previousDefaults.anchor.x, this.previousDefaults.anchor.y);
+      if (typeof this.previousDefaults.anchor === 'number') { 
+        this.anchor.set(this.previousDefaults.anchor);
+      } else {
+        this.anchor.set(this.previousDefaults.anchor.x, this.previousDefaults.anchor.y);
+      }
     }
 
     if (this.defaults.scale !== undefined) {
-      this.scale.set(this.defaults.scale);
+      if (typeof this.defaults.scale === 'number') {
+        this.scale.set(this.defaults.scale);
+      } else {
+        this.scale.set(this.defaults.scale.x, this.defaults.scale.y);
+      }
     } else if (this.previousDefaults.scale !== undefined) {
-      this.scale.set(this.previousDefaults.scale);
+      if (typeof this.previousDefaults.scale === 'number') {
+        this.scale.set(this.previousDefaults.scale);
+      } else {
+        this.scale.set(this.previousDefaults.scale.x, this.previousDefaults.scale.y);
+      }
     }
 
     if (this.defaults.rotation !== undefined) {
