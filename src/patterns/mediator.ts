@@ -49,12 +49,17 @@ export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) impl
     return mediator;
   }
 
-  protected addView<T extends View>(_viewClass: Type<T>, _options?: ViewOptions, _register = true): T {
+  protected addView<T extends View>(_viewClass: Type<T>, _options?: ViewOptions, _add = true, _register = true): T {
     const view: T = new _viewClass(_options);
 
     const target = get(_options, 'target') as Container;
     if (target) {
       view.setTarget(target);
+    
+      // ook toevoegen?
+      if (_add) {
+        view.addToTarget();
+      }
     }
 
     if (_register) {

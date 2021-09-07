@@ -42,7 +42,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     this.options = { ..._options };
   }
 
-  public addView<T extends View>(_viewClass: Type<T>, _options?: ViewOptions, _register = true): T {
+  public addView<T extends View>(_viewClass: Type<T>, _options?: ViewOptions, _add = true, _register = true): T {
     const view: T = new _viewClass(_options);
 
     const target = get(_options, 'target') as Container;
@@ -50,6 +50,11 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
       view.setTarget(target);
     } else {
       view.setTarget(this);
+    }
+
+    // ook toevoegen?
+    if (_add) {
+      view.addToTarget();
     }
 
     if (_register) {
@@ -61,13 +66,21 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     return view;
   }
 
-  public addSprite(_asset: SpriteAsset, _defaults?: KloekSpriteDefaults, _target?:Container, _register = true): KloekSprite {
+  public addSprite(_asset: SpriteAsset, _defaults?: KloekSpriteDefaults, _targetOrAdd: Container | boolean = true, _add = true, _register = true): KloekSprite {
     const sprite = KloekSprite.create(_asset, _defaults);
 
-    if (_target) {
-      sprite.setTarget(_target);
-    } else {
-      sprite.setTarget(this);
+    if (_targetOrAdd === true) {
+      // true? dan toevoegen aan deze view
+        sprite.setTarget(this);
+        sprite.addToTarget();
+    } else if (_targetOrAdd) {
+      // andere target
+      sprite.setTarget(_targetOrAdd);
+      
+      // ook toevoegen?
+      if (_add) {
+        sprite.addToTarget();
+      }
     }
 
     if (_register) {
