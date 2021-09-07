@@ -138,9 +138,9 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     if (this.defaults.anchor !== undefined) {
       this.previousDefaults.anchor = { x: this.anchor.x, y: this.anchor.y };
     }
-
+    
     if (this.defaults.scale !== undefined) {
-      this.previousDefaults.scale = this.scale.x;
+      this.previousDefaults.scale = { x: this.scale.x, y: this.scale.y };
     }
 
     if (this.defaults.rotation !== undefined) {
@@ -183,7 +183,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
 
     if (this.defaults.anchor !== undefined) {
       if (typeof this.defaults.anchor === 'number') {
-        this.scale.set(this.defaults.anchor);
+        this.anchor.set(this.defaults.anchor);
       } else {
         this.anchor.set(this.defaults.anchor.x, this.defaults.anchor.y);
       }
