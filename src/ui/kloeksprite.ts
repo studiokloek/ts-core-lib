@@ -1,4 +1,4 @@
-import { Sprite, Texture } from 'pixi.js';
+import { Container, Sprite, Texture } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
 import { isSpriteAsset } from '../loaders';
 import type { SpriteAsset } from '../loaders';
@@ -22,8 +22,10 @@ export interface KloekSpriteDefaults {
 
 export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCleanupInterface {
   protected _isFilled = false;
+  protected isPrepared = false;
   protected textureId?: string;
   protected asset?: SpriteAsset;
+  protected target: Container | undefined;
   protected defaults?: KloekSpriteDefaults;
   protected previousDefaults: KloekSpriteDefaults = {};
 
@@ -58,11 +60,21 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
   }
 
   public prepareAfterLoad(): void {
+    if (this.isPrepared) {
+      return;
+    }
+    this.isPrepared = true;
+  
     this.fillTexture();
     this.applyDefaults();
   }
 
-  public cleanupBeforeUnload(): void {
+  public cleanupBeforeUnload(): void { 
+    if (!this.isPrepared) {
+      return;
+    }
+    this.isPrepared = false;
+
     this.killTweens();
     this.emptyTexture();
   }
@@ -97,6 +109,8 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
 
   public destroy(options?: { children?: boolean; texture?: boolean; baseTexture?: boolean }): void {
     this.cleanupBeforeUnload();
+    this.removeFromTarget();
+    this.target = undefined;
     super.destroy(options);
   }
 
@@ -281,5 +295,22 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
 
     const scale = value / maxSide;
     this.scale.set(scale);
+  }
+
+  // target
+  public setTarget(_target: Container | undefined): void {
+    this.target = _target;
+  }
+
+  public addToTarget(): void {
+    if (this.target) {
+      this.target.addChild(this);
+    }
+  }
+
+  public removeFromTarget(): void {
+    if (this.target && this.parent) {
+      this.target.removeChild(this);
+    }
   }
 }

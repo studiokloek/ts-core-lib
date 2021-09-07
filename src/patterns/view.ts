@@ -8,6 +8,9 @@ import { TweenMixin } from '../tween';
 import { Type } from '../util';
 import { isPrepareCleanup } from './preparecleanup';
 import type { PrepareCleanupInterface } from './preparecleanup';
+import { KloekSprite, KloekSpriteDefaults } from '../ui';
+import { SpriteAsset } from '../loaders';
+
 
 const Logger = getLogger('mediator > view');
 
@@ -29,6 +32,7 @@ export interface ViewInterface extends Container {
 export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin) implements ViewInterface, PrepareCleanupInterface {
   protected options: ViewOptions;
   protected views: ViewInterface[] = [];
+  protected kloeksprites: KloekSprite[] = [];
   protected target: Container | undefined;
   protected isPrepared = false;
   protected isActive = false;
@@ -38,8 +42,8 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     this.options = { ..._options };
   }
 
-  public addView(_viewClass: Type<ViewInterface>, _options?: ViewOptions, _register = true): ViewInterface {
-    const view: ViewInterface = new _viewClass(_options);
+  public addView<T extends View>(_viewClass: Type<T>, _options?: ViewOptions, _register = true): T {
+    const view: T = new _viewClass(_options);
 
     const target = get(_options, 'target') as Container;
     if (target) {
@@ -55,6 +59,22 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     view.init();
 
     return view;
+  }
+
+  public addSprite(_asset: SpriteAsset, _defaults?: KloekSpriteDefaults, _target?:Container, _register = true): KloekSprite {
+    const sprite = KloekSprite.create(_asset, _defaults);
+
+    if (_target) {
+      sprite.setTarget(_target);
+    } else {
+      sprite.setTarget(this);
+    }
+
+    if (_register) {
+      this.kloeksprites.push(sprite);
+    }
+
+    return sprite;
   }
 
   // TARGET
@@ -88,6 +108,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     this.isPrepared = true;
 
     for (const view of this.views) view.prepareAfterLoad();
+    for (const sprite of this.kloeksprites) sprite.prepareAfterLoad();
 
     for (const child of this.children) {
       // geen view, maar wel preparecleanup type?
@@ -108,6 +129,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     this.killDelays();
 
     for (const view of this.views) view.cleanupBeforeUnload();
+    for (const sprite of this.kloeksprites) sprite.cleanupBeforeUnload();
 
     for (const child of this.children) {
       // geen view, maar wel preparecleanup type?
