@@ -1,4 +1,4 @@
-import { get } from 'lodash-es';
+import { get, isPlainObject } from 'lodash-es';
 import { Container } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
 import { DelayedMixin } from '../delay';
@@ -91,21 +91,18 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     return sprite;
   }
 
-  public addText(_text: string, _style: string, _targetOrAdd: Container | boolean = true, _add = true, _register = true): KloekText {
-    const text =  KloekText.create(_text, _style);
+  public addText(_text: string, _style: string, _styleOverwriteOrTargetOrAdd: Record<string, unknown> | Container | boolean = true, _targetOrAdd = true, _add = true, _register = true): KloekText {
+    const styleOverwrite =  isPlainObject(_styleOverwriteOrTargetOrAdd) ? _styleOverwriteOrTargetOrAdd as Record<string, unknown> : undefined,
+     text =  KloekText.create(_text, _style, styleOverwrite);
+    
+    const target = _styleOverwriteOrTargetOrAdd && !styleOverwrite && typeof _styleOverwriteOrTargetOrAdd !== 'boolean' ? _styleOverwriteOrTargetOrAdd as Container : this,
+      add = _styleOverwriteOrTargetOrAdd !== false && _add !== false;    
 
-    if (_targetOrAdd === true) {
-      // true? dan toevoegen aan deze view
-      text.setTarget(this);
+    text.setTarget(target);
+
+    // ook toevoegen?
+    if (add) {
       text.addToTarget();
-    } else if (_targetOrAdd) {
-      // andere target
-      text.setTarget(_targetOrAdd);
-      
-      // ook toevoegen?
-      if (_add) {
-        text.addToTarget();
-      }
     }
 
     if (_register) {
