@@ -91,7 +91,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     return sprite;
   }
 
-  public addText(_text: string, _style: string, _styleOverwriteOrTargetOrAdd: Record<string, unknown> | Container | boolean = true, _targetOrAdd = true, _add = true, _register = true): KloekText {
+  public addText(_text: string, _style: string, _styleOverwriteOrTargetOrAdd: Record<string, unknown> | Container | boolean = true, _targetOrAdd: Container | boolean = true, _add = true, _register = true): KloekText {
     const styleOverwrite =  isPlainObject(_styleOverwriteOrTargetOrAdd) ? _styleOverwriteOrTargetOrAdd as Record<string, unknown> : undefined,
      text =  KloekText.create(_text, _style, styleOverwrite);
     
