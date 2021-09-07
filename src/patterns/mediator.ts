@@ -1,3 +1,6 @@
+import { get } from 'lodash';
+import { View } from '../patterns';
+import { Container } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
 import { Delayed, DelayedMixin } from '../delay';
 import { PubSubMixin } from '../events';
@@ -32,8 +35,8 @@ export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) impl
   }
 
   // MEDIATORS & VIEWS
-  protected async addMediator(_mediatorClass: Type<MediatorInterface>, _options?: {}, _register = true): Promise<MediatorInterface> {
-    const mediator: MediatorInterface = new _mediatorClass(_options);
+  protected async addMediator<T extends Mediator>(_mediatorClass: Type<T>, _options?: {}, _register = true): Promise<T> {
+    const mediator: T = new _mediatorClass(_options);
 
     if (_register) {
       this.mediators.push(mediator);
@@ -46,14 +49,12 @@ export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) impl
     return mediator;
   }
 
-  protected addView(_viewClass: Type<ViewInterface>, _options?: {}, _register = true): ViewInterface {
-    const view: ViewInterface = new _viewClass(_options);
+  protected addView<T extends View>(_viewClass: Type<T>, _options?: ViewOptions, _register = true): T {
+    const view: T = new _viewClass(_options);
 
-    if (_options) {
-      const target = (_options as ViewOptions).target;
-      if (target) {
-        view.setTarget(target);
-      }
+    const target = get(_options, 'target') as Container;
+    if (target) {
+      view.setTarget(target);
     }
 
     if (_register) {
