@@ -1,5 +1,5 @@
 import { isPlainObject, set } from 'lodash-es';
-import { Text, TextStyle } from 'pixi.js';
+import { Container, Text, TextStyle } from 'pixi.js';
 import { getLogger } from '../logger';
 import { PrepareCleanupInterface } from '../patterns';
 import { Stage } from '../screen';
@@ -42,6 +42,8 @@ function getStyle(_base?: TextStyle | Record<string, unknown> | string, _overwri
 
 export class KloekText extends Text implements PrepareCleanupInterface {
   private _value: string;
+  protected target: Container | undefined;
+
 
   public constructor(_text = '', _style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>) {
     super('', getStyle(_style, _styleOverwrite));
@@ -64,6 +66,23 @@ export class KloekText extends Text implements PrepareCleanupInterface {
   private determineResolution(): void {
     this.resolution = Stage.textureResolution;
     // this.resolution = Math.max(Stage.textureResolution, Math.round(Stage.textureResolution * Stage.scale.x));
+  }
+
+  // target
+  public setTarget(_target: Container | undefined): void {
+    this.target = _target;
+  }
+
+  public addToTarget(): void {
+    if (this.target) {
+      this.target.addChild(this);
+    }
+  }
+
+  public removeFromTarget(): void {
+    if (this.target && this.parent) {
+      this.target.removeChild(this);
+    }
   }
 
   public static create(_text: string, _style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>): KloekText {
