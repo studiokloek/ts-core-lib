@@ -1,4 +1,5 @@
-import { Plugins } from '@capacitor/core';
+
+import { SplashScreen } from '@capacitor/splash-screen';
 import { Bind } from 'lodash-decorators-esm';
 import { isFunction, round } from 'lodash-es';
 import { SyncEvent } from 'ts-events';
@@ -12,7 +13,6 @@ import { Screen, Stage } from '../screen';
 import { Tween, Easing } from '../tween';
 import { constrainNumber, mapNumber, randomBetween } from '../util/math';
 
-const { SplashScreen } = Plugins;
 
 type ManualSplashLayout = boolean | ((ui: { element: HTMLElement | null; logo: HTMLElement | null }) => void);
 interface WebSplashScreenOptions {

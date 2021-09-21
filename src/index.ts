@@ -23,7 +23,8 @@ export * from './ui';
 export * from './input';
 export * from './util';
 
-import { initNetworkStatusDetection, getDeviceInfo } from './device';
+import { initNetworkStatusDetection, initDeviceInfo } from './device';
+import { initAppInfo } from './app';
 import { initScreen } from './screen';
 import { initLogger } from './logger';
 
@@ -39,7 +40,8 @@ export async function initCoreLibrary(_options:ICoreLibraryOptions): Promise<voi
   // set options
   CoreLibraryOptions.ASSET_BASE_PATH = _options?.assetsBasePath ??  CoreLibraryOptions.ASSET_BASE_PATH;
 
-  await Promise.all([initNetworkStatusDetection(), getDeviceInfo()]);
+  // init capacitor plugins
+  await Promise.all([initNetworkStatusDetection(), initDeviceInfo(), initAppInfo()]);
   initScreen();
   initLogger();
 }

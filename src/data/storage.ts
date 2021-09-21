@@ -1,10 +1,11 @@
-import { Plugins } from '@capacitor/core';
-import { getValueFromJSON } from './util';
-import { getLogger } from '../logger';
 
-const { Storage } = Plugins;
+import { Storage } from '@capacitor/storage';
+import { getLogger } from '../logger';
+import { getValueFromJSON } from './util';
 
 const Logger = getLogger('data > localstorage');
+
+const IS_MIGRATED_KEY = 'capacitor-storage-migrated';
 
 class ConcreteStorage {
   public constructor() {}
@@ -70,6 +71,24 @@ class ConcreteStorage {
   public async clear(): Promise<void> {
     await Storage.clear();
     Logger.verbose('cleared all storage!');
+  }
+
+  public async migrate(): Promise<void> {
+    Logger.verbose('migrate() -> start...');
+ 
+    if (await this.get(IS_MIGRATED_KEY)) {
+      Logger.verbose('migrate() -> allready migrated!');
+      return;
+    }
+
+    await Storage.migrate();
+    
+    Logger.verbose('migrate() -> removing old data...');
+    await Storage.removeOld();
+
+    this.set(IS_MIGRATED_KEY, true);
+
+    Logger.verbose('migrate() -> done!');
   }
 }
 

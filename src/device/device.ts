@@ -1,25 +1,26 @@
-import { Plugins } from '@capacitor/core';
-import type { DeviceInfo } from '@capacitor/core';
 
-const { Device } = Plugins;
+import { Capacitor } from '@capacitor/core';
+import { Device, DeviceId, DeviceInfo } from '@capacitor/device';
 
-let deviceInfo: DeviceInfo;
-export async function getDeviceInfo(): Promise<DeviceInfo> {
-  if (deviceInfo) {
-    return deviceInfo;
+let info: DeviceInfo,
+id: DeviceId;
+export async function initDeviceInfo(): Promise<DeviceInfo> {
+  if (info) {
+    return info;
   }
 
-  deviceInfo = await Device.getInfo();
+  info = await Device.getInfo();
+  id = await Device.getId();
 
-  return deviceInfo;
+  return info;
 }
 
 export const isApp = (): boolean => {
-  return deviceInfo.platform === 'ios' || deviceInfo.platform === 'android';
+  return Capacitor.isNativePlatform();
 };
 
 export const getDeviceId = (): string => {
-  return `${deviceInfo.platform}-${deviceInfo.uuid}`;
+  return `${info.platform}-${id.uuid}`;
 };
 
 export const Platform = {
@@ -27,19 +28,12 @@ export const Platform = {
   ANDROID: 'android',
 };
 
+const platform = Capacitor.getPlatform();
 export const isPlatform = (_name: string): boolean => {
-  if (deviceInfo.platform === 'web') {
-    return deviceInfo.operatingSystem === _name;
+  if (platform === 'web') {
+    return info.operatingSystem === _name;
   }
-  return deviceInfo.platform === _name;
+  return platform === _name;
 };
 
-export const getAppVersion = (): string => {
-  if (isApp()) {
-    return deviceInfo.appVersion;
-  } else if (window.APP) {
-    return window.APP.version;
-  } else {
-    return 'unknown';
-  }
-};
+

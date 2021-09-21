@@ -1,3 +1,4 @@
+
 interface AppSettings {
   inited: boolean;
   version: string;
@@ -10,4 +11,6 @@ declare global {
   }
 }
 
+
+export * from './info';
 export * from './is-reloaded';

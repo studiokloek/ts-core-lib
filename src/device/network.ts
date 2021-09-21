@@ -1,15 +1,14 @@
+import { ConnectionStatus, Network } from '@capacitor/network';
 import { PubSub, AppEvent } from '../events';
-import { NetworkStatus, Plugins } from '@capacitor/core';
 import { getLogger } from '../logger';
 
 const Logger = getLogger('device > network');
-const { Network } = Plugins;
 
 Network.addListener('networkStatusChange', reportStatus);
 
-let currentStatus: NetworkStatus;
+let currentStatus: ConnectionStatus;
 
-function reportStatus(status: NetworkStatus): void {
+function reportStatus(status: ConnectionStatus): void {
   if (!status) {
     return;
   }
