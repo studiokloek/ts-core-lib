@@ -21,7 +21,7 @@ export interface ResponseError {
 
 export interface ResponseResult {
   error?: ResponseError;
-  body?: {} | string;
+  body?: Record<string, unknown> | string;
 }
 
 function getResponseError(_responseError: request.ResponseError): ResponseError {
@@ -71,7 +71,7 @@ export async function getLocalUrlContents(_url: string): Promise<ResponseResult>
     return result;
   } catch (error) {
     Logger.error(`getLocalUrlContents() Could not load contents of ${_url}...`);
-    result.error = getResponseError(error);
+    result.error = getResponseError(error as request.ResponseError);
   }
 
   return result;
@@ -100,7 +100,7 @@ export async function getAPIRequest(_url: string): Promise<ResponseResult> {
     return result;
   } catch (error) {
     Logger.error(`getAPIRequest() Could not load contents of ${_url}...`);
-    result.error = getResponseError(error);
+    result.error = getResponseError(error as request.ResponseError);
   }
 
   return result;
@@ -134,7 +134,7 @@ export async function postAPIRequest(_url: string, _body?: {}): Promise<Response
     return result;
   } catch (error) {
     Logger.error(`postAPIRequest() Could not post to ${_url}...`);
-    result.error = getResponseError(error);
+    result.error = getResponseError(error as request.ResponseError);
   }
 
   return result;
