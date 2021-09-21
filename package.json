@@ -12,7 +12,7 @@
   },
   "scripts": {
     "clean": "rimraf ./lib",
-    "release": "npm run build && np",
+    "release": "npm run build && np --any-branch",
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
     "build": "npm run clean && npm run build:types && npm run build:js",
