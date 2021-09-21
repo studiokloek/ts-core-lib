@@ -26,6 +26,8 @@ interface GoogleTagEvent {
   title: string;
 }
 
+let inited = false;
+
 function initStats(_ua: string): void {
   if (!_ua) {
     Logger.warn('initStats() No UA id provided.');
@@ -44,11 +46,11 @@ function initStats(_ua: string): void {
       });
 
       // zorg er voor dat analicts ook werkt onder capacitor://
-      window.ga('set', 'checkProtocolTask', function() {
+      window.ga('set', 'checkProtocolTask', function () {
         /* nothing */
       });
 
-      window.ga(function(tracker: any) {
+      window.ga(function (tracker: any) {
         window.localStorage.setItem('ga_clientId', tracker.get('clientId'));
       });
     } else {
@@ -58,9 +60,16 @@ function initStats(_ua: string): void {
     // meer privacy voor de kids
     window.ga('set', 'allowAdFeatures', false);
     window.ga('set', 'anonymizeIp', true);
+
+    inited = true;
   }
 }
+
 function doTrack(_event: GoogleTagEvent): void {
+  if (!inited) {
+    return;
+  }
+
   Logger.info('doTrack', _event);
 
   if (typeof window.ga === 'function') {
