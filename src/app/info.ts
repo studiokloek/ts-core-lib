@@ -1,23 +1,27 @@
 import { App, AppInfo } from '@capacitor/app';
+import { AppData } from '.';
+import { isApp } from '../device';
 
+let info: AppInfo;
+export async function initAppInfo(): Promise<void> {
+  if (!isApp()) {
+    return;
+  }
 
-let info: AppInfo
-export async function initAppInfo(): Promise<AppInfo> {
   if (info) {
-    return info;
+    return;
   }
 
   info = await App.getInfo();
-
-  return info;
 }
 
 export const getAppVersion = (): string => {
   if (info && info.version) {
     return info.version;
-  } else if (window.APP) {
-    return window.APP.version;
-  } else {
-    return 'unknown';
+  } else if (AppData) {
+    const { info } = AppData;
+    return info.version ? `v${info.version}` : 'unknown';
   }
+
+  return 'unknown';
 };

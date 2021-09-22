@@ -1,8 +1,24 @@
-
 interface AppSettings {
   inited: boolean;
-  version: string;
-  title: string;
+
+  info: {
+    id: string;
+    version: number;
+    client: string;
+    year: number;
+  };
+
+  meta: {
+    title: string;
+    description: string;
+    apptitle: string;
+  };
+
+  options: {
+    backgroundColor: string;
+    orientation: string;
+    fullscreen: string;
+  };
 }
 
 declare global {
@@ -11,6 +27,7 @@ declare global {
   }
 }
 
+export const AppData = global.window.APP as AppSettings;
 
 export * from './info';
 export * from './is-reloaded';

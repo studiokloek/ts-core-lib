@@ -1,18 +1,15 @@
-
 import { Capacitor } from '@capacitor/core';
 import { Device, DeviceId, DeviceInfo } from '@capacitor/device';
 
-let info: DeviceInfo,
-id: DeviceId;
-export async function initDeviceInfo(): Promise<DeviceInfo> {
+let info: DeviceInfo, id: DeviceId;
+
+export async function initDeviceInfo(): Promise<void> {
   if (info) {
-    return info;
+    return;
   }
 
   info = await Device.getInfo();
   id = await Device.getId();
-
-  return info;
 }
 
 export const isApp = (): boolean => {
@@ -35,5 +32,3 @@ export const isPlatform = (_name: string): boolean => {
   }
   return platform === _name;
 };
-
-
