@@ -27,7 +27,7 @@ declare global {
   }
 }
 
-export const AppData = global.window.APP as AppSettings;
+export const AppData = window.APP as AppSettings;
 
 export * from './info';
 export * from './is-reloaded';
