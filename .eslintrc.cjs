@@ -4,21 +4,14 @@ module.exports = {
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
     sourceType: 'module', // Allows for the use of imports
   },
-  plugins: [
-    '@typescript-eslint/eslint-plugin',
-    'eslint-comments',
-    'promise',
-    // "prettier",
-    'unicorn',
-  ],
+  plugins: ['@typescript-eslint/eslint-plugin', 'eslint-comments', 'promise', 'unicorn'],
   extends: [
-    // "airbnb-typescript",
     'plugin:@typescript-eslint/recommended',
     'plugin:eslint-comments/recommended',
     'plugin:promise/recommended',
     'plugin:import/recommended',
+    'plugin:import/typescript',
     'plugin:unicorn/recommended',
-    // "prettier",
     'plugin:prettier/recommended',
     'prettier',
   ],
@@ -33,10 +26,6 @@ module.exports = {
 
     // Too restrictive, writing ugly code to defend against a very unlikely scenario: https://eslint.org/docs/rules/no-prototype-builtins
     'no-prototype-builtins': 'off',
-
-    // https://basarat.gitbooks.io/typescript/docs/tips/defaultIsBad.html
-    'import/prefer-default-export': 'off',
-    'import/no-default-export': 'error',
 
     // Use function hoisting to improve code readability
     'no-use-before-define': ['error', { functions: false, classes: true, variables: true }],
