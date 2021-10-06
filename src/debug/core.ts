@@ -40,9 +40,6 @@ export const CoreDebug = {
     return values.isEnabled && values.forceLowResolution;
   },
   getLogLevel(): number {
-    if (values.isEnabled) {
-      return LogLevels.DEBUG;
-    }
     return values.minLogLevel;
   },
   getGlobalTimescale(): number {
