@@ -64,8 +64,6 @@ export class SpriteLoader implements AssetLoaderInterface {
 
   public constructor(_options: SpriteLoaderOptions) {
     this.options = {
-      assetDirectory: `${CoreLibraryOptions.ASSET_BASE_PATH}`,
-      numberOfParts: 1,
       ..._options,
     };
 
