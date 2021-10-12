@@ -9,8 +9,7 @@ import { Type } from '../util';
 import { isPrepareCleanup } from './preparecleanup';
 import type { PrepareCleanupInterface } from './preparecleanup';
 import { KloekSprite, KloekText, KloekSpriteDefaults } from '../ui';
-import { SpriteAsset } from '../loaders';
-
+import { SpriteAsset, SpriteAssetWithMeta } from '../loaders';
 
 const Logger = getLogger('mediator > view');
 
@@ -67,17 +66,23 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     return view;
   }
 
-  public addSprite(_asset: SpriteAsset, _defaults?: KloekSpriteDefaults, _targetOrAdd: Container | boolean = true, _add = true, _register = true): KloekSprite {
+  public addSprite(
+    _asset: SpriteAsset | SpriteAssetWithMeta,
+    _defaults?: KloekSpriteDefaults,
+    _targetOrAdd: Container | boolean = true,
+    _add = true,
+    _register = true,
+  ): KloekSprite {
     const sprite = KloekSprite.create(_asset, _defaults);
 
     if (_targetOrAdd === true) {
       // true? dan toevoegen aan deze view
-        sprite.setTarget(this);
-        sprite.addToTarget();
+      sprite.setTarget(this);
+      sprite.addToTarget();
     } else if (_targetOrAdd) {
       // andere target
       sprite.setTarget(_targetOrAdd);
-      
+
       // ook toevoegen?
       if (_add) {
         sprite.addToTarget();
@@ -91,17 +96,27 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     return sprite;
   }
 
-  public addText(_text: string, _style: string, _styleOverwriteOrTargetOrAdd: Record<string, unknown> | Container | boolean = true, _targetOrAdd: Container | boolean = true, _add = true, _register = true): KloekText {
-    const styleOverwrite =  isPlainObject(_styleOverwriteOrTargetOrAdd) ? _styleOverwriteOrTargetOrAdd as Record<string, unknown> : undefined,
-     text =  KloekText.create(_text, _style, styleOverwrite);
-    
-    const target = _styleOverwriteOrTargetOrAdd && !styleOverwrite && typeof _styleOverwriteOrTargetOrAdd !== 'boolean' ? _styleOverwriteOrTargetOrAdd as Container : this,
-      add = _styleOverwriteOrTargetOrAdd !== false && _add !== false;    
+  public addText(
+    _text: string,
+    _style: string,
+    _styleOverwriteOrTargetOrAdd: Record<string, unknown> | Container | boolean = true,
+    _targetOrAdd: Container | boolean = true,
+    _add = true,
+    _register = true,
+  ): KloekText {
+    const styleOverwrite = isPlainObject(_styleOverwriteOrTargetOrAdd) ? (_styleOverwriteOrTargetOrAdd as Record<string, unknown>) : undefined,
+      text = KloekText.create(_text, _style, styleOverwrite);
 
-    text.setTarget(target);
+    if (_styleOverwriteOrTargetOrAdd && !styleOverwrite && typeof _styleOverwriteOrTargetOrAdd !== 'boolean') {
+      text.setTarget(_styleOverwriteOrTargetOrAdd as Container);
+    } else if (_targetOrAdd && typeof _targetOrAdd !== 'boolean') {
+      text.setTarget(_targetOrAdd);
+    } else {
+      text.setTarget(this);
+    }
 
     // ook toevoegen?
-    if (add) {
+    if (_styleOverwriteOrTargetOrAdd !== false && _targetOrAdd !== false && _add !== false) {
       text.addToTarget();
     }
 

@@ -44,11 +44,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     this.asset = _asset;
 
     if (this.asset) {
-      if (typeof this.asset === 'string') {
-        this.textureId = this.asset;
-      } else {
-        this.textureId = this.asset.id;
-      }
+      this.textureId = typeof this.asset === 'string' ? this.asset : this.asset.id;
     }
 
     if (this._isFilled) {
@@ -96,11 +92,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
       Logger.error(`Texture not found with id ${this.textureId}`);
     }
 
-    if (texture) {
-      this.texture = texture;
-    } else {
-      this.texture = Texture.EMPTY;
-    }
+    this.texture = texture ? texture : Texture.EMPTY;
   }
 
   protected emptyTexture(): void {

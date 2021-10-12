@@ -24,7 +24,7 @@ export function isSpriteAsset(_info: SpriteAsset): _info is SpriteAsset {
   return _info && (_info as SpriteAsset).id !== undefined;
 }
 
-export function isSpriteAssetWithMeta(_info: SpriteAssetWithMeta): _info is SpriteAssetWithMeta {
+export function isSpriteAssetWithMeta(_info: SpriteAsset | SpriteAssetWithMeta): _info is SpriteAssetWithMeta {
   return isSpriteAsset(_info) && (_info as SpriteAssetWithMeta).zIndex !== undefined;
 }
 
@@ -47,7 +47,6 @@ interface SpriteLoaderOptions {
   resolution?: number;
 }
 
-
 export class SpriteLoader implements AssetLoaderInterface {
   private options: SpriteLoaderOptions;
 
@@ -64,10 +63,11 @@ export class SpriteLoader implements AssetLoaderInterface {
   private loadedResolver!: (value: any | undefined) => void;
 
   public constructor(_options: SpriteLoaderOptions) {
-    this.options = { ...{
+    this.options = {
       assetDirectory: `${CoreLibraryOptions.ASSET_BASE_PATH}`,
       numberOfParts: 1,
-    }, ..._options };
+      ..._options,
+    };
 
     this.loader = new Loader();
     this.loader.onError.add((loader, resource) => {
