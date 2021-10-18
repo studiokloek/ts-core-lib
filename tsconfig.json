@@ -31,6 +31,7 @@
     "declaration": true,
     "pretty": true,
     "inlineSourceMap": true,
+    "inlineSources": true,
     "removeComments": false,
 
     "downlevelIteration": false,
