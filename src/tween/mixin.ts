@@ -29,7 +29,7 @@ export class TweenMixin {
       properties = propertiesOrSettings as GSAPTweenVars;
     }
 
-    let vars: GSAPTweenVars;
+    let variables: GSAPTweenVars;
 
     if (settings) {
       if ((target as DisplayObject).worldTransform !== undefined) {
@@ -44,17 +44,17 @@ export class TweenMixin {
           set(properties, 'rotation', rotation * (180 / Math.PI));
         }
 
-        vars = { ...{ pixi: properties }, ...settings };
+        variables = { pixi: properties, ...settings };
       } else {
-        vars = { ...properties, ...settings };
+        variables = { ...properties, ...settings };
       }
     } else {
-      vars = { ...properties };
+      variables = { ...properties };
     }
 
-    vars.duration = duration;
+    variables.duration = duration;
 
-    return { target, vars };
+    return { target, vars: variables };
   }
 
   private __registerTween(tween: GSAPTween): void {
@@ -130,14 +130,14 @@ export class TweenMixin {
     }
   }
 
-  protected killTweenOf(_target?: GSAPTweenTarget, _vars?: GSAPTweenVars): void {
+  protected killTweenOf(_target?: GSAPTweenTarget, _variables?: GSAPTweenVars): void {
     if (_target) {
       // haal uit lijst
       const tweensToKill = remove(this.__tweens, (item) => item.targets().includes(_target));
 
       // kill
       for (const tween of tweensToKill) {
-        tween.kill(_vars);
+        tween.kill(_variables);
       }
     }
   }

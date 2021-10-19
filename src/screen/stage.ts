@@ -2,6 +2,9 @@ import { gsap } from 'gsap';
 import { Bind } from 'lodash-decorators-esm';
 import { ceil, get, round } from 'lodash-es';
 import {
+  IPoint,
+  IRendererOptionsAuto,
+  MSAA_QUALITY,
   AbstractRenderer,
   autoDetectRenderer,
   Container,
@@ -18,8 +21,6 @@ import {
   Ticker as PixiTicker,
   utils,
 } from 'pixi.js';
-import type { IPoint, IRendererOptionsAuto } from 'pixi.js';
-import { Graphics } from 'pixi.js-legacy';
 import { Screen } from '.';
 import { CoreDebug } from '../debug';
 import { Delayed } from '../delay';
@@ -547,14 +548,11 @@ export class ConcreteStage {
   }
 
   public generateTexture(_displayObject: DisplayObject, _region?: Rectangle): Texture | RenderTexture {
-    if (typeof (_displayObject as Graphics).generateCanvasTexture === 'function') {
-      return (_displayObject as Graphics).generateCanvasTexture(settings.SCALE_MODE, this._generateResolution) as Texture;
-    }
-
     return this.renderer.generateTexture(_displayObject, {
       scaleMode: settings.SCALE_MODE,
       resolution: this._generateResolution,
       region: _region,
+      multisample: MSAA_QUALITY.MEDIUM,
     });
   }
 

@@ -27,8 +27,8 @@ export function isSpineAsset(_info: SpineAsset): _info is SpineAsset {
 export interface SpineLoaderOptions {
   assetId?: string;
   assetName?: string;
-  assetDirectory: string;
-  numberOfParts: number;
+  assetDirectory?: string;
+  numberOfParts?: number;
 }
 
 export class SpineLoader implements AssetLoaderInterface {
@@ -45,10 +45,11 @@ export class SpineLoader implements AssetLoaderInterface {
   private loadedResolver!: (value: any | undefined) => void;
 
   public constructor(_options: SpineLoaderOptions) {
-    this.options = { ...{
+    this.options = {
       assetDirectory: `${CoreLibraryOptions.ASSET_BASE_PATH}`,
       numberOfParts: 1,
-    }, ..._options };
+      ..._options,
+    };
 
     this.loader = new Loader();
     // this.loader.defaultQueryString = Settings.version ? Settings.version : '';
