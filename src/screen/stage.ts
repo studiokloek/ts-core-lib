@@ -551,7 +551,11 @@ export class ConcreteStage {
       return (_displayObject as Graphics).generateCanvasTexture(settings.SCALE_MODE, this._generateResolution) as Texture;
     }
 
-    return this.renderer.generateTexture(_displayObject, settings.SCALE_MODE, this._generateResolution, _region);
+    return this.renderer.generateTexture(_displayObject, {
+      scaleMode: settings.SCALE_MODE,
+      resolution: this._generateResolution,
+      region: _region,
+    });
   }
 
   public destroyTextureIn(_sprite: Sprite, _destroyBaseTexture?: boolean): void {
