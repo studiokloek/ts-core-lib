@@ -67,13 +67,13 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
   }
 
   public addSprite(
-    _asset: SpriteAsset | SpriteAssetWithMeta,
+    _asset?: SpriteAsset | SpriteAssetWithMeta,
     _defaults?: KloekSpriteDefaults,
     _targetOrAdd: Container | boolean = true,
     _add = true,
     _register = true,
   ): KloekSprite {
-    const sprite = KloekSprite.create(_asset, _defaults);
+    const sprite = !_asset ? new KloekSprite(undefined, _defaults) : KloekSprite.create(_asset, _defaults);
 
     if (_targetOrAdd === true) {
       // true? dan toevoegen aan deze view
