@@ -326,6 +326,10 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     }
   }
 
+  public set height(value: number) {
+    super.height = value;
+  }
+
   public get isFilled(): boolean {
     return this._isFilled;
   }
