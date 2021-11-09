@@ -13,7 +13,7 @@ export interface SoundAsset {
 }
 
 export interface SoundAssetList {
-  [key: string]: SoundAsset | { [key: string]: SoundAssetList };
+  [key: string]: SoundAsset | { [key: string]: SoundAsset | SoundAssetList };
 }
 
 export function isSoundAsset(_info: SoundAsset): _info is SoundAsset {
