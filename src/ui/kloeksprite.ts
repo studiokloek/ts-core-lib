@@ -192,7 +192,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     }
   }
 
-  protected applyDefaults(): void {
+  public applyDefaults(): void {
     if (!this.defaults) {
       return;
     }
