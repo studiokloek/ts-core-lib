@@ -25,6 +25,7 @@ class ConcreteSoundsPlayer {
   };
 
   private playingSounds: { [key: number]: Howl } = {};
+  private delayedCalls: Map<SoundAsset, Record<number, gsap.core.Tween | undefined>> = new Map();
 
   public play(asset: SoundAsset, volume = -1, delay = 0, options?: AudioFXOptions): number | undefined {
     const item = SoundLibrary.getItemByAsset(asset);
@@ -52,7 +53,15 @@ class ConcreteSoundsPlayer {
 
     // delay?
     if (delay > 0) {
-      Delayed.call(this.doPlay, delay, [player, id, volume, options]);
+      // delayed call
+      const delayedCall = Delayed.call(this.doPlay, delay, [player, id, volume, options]);
+
+      // haal bestaande op in lijst
+      const list = this.delayedCalls.get(asset) ?? {};
+      list[id] = delayedCall;
+
+      // bewaar
+      this.delayedCalls.set(asset, list);
     } else {
       this.doPlay(player, id, volume, options);
     }
@@ -104,7 +113,7 @@ class ConcreteSoundsPlayer {
     player.off('stop', undefined, id);
   }
 
-  public stop(asset: SoundAsset, options?: AudioFXOptions, id?: number): void {
+  public stop(asset: SoundAsset, optionsOrId?: AudioFXOptions | number, id?: number): void {
     const item = SoundLibrary.getItemByAsset(asset);
 
     if (!item) {
@@ -117,9 +126,24 @@ class ConcreteSoundsPlayer {
       return;
     }
 
-    // als er geen specifieke is meegegeven, stoppen we alle audio, dus dan ook alle delays
-    if (!id) {
-      Delayed.kill(this.doPlay);
+    let options;
+    if (typeof optionsOrId === 'number') {
+      id = options;
+    } else {
+      options = optionsOrId;
+    }
+
+    // kill juiste delayed calls
+    const delayedCallList = this.delayedCalls.get(asset) ?? {};
+
+    // als er een specifieke is meegegeven, stoppen we alleen die audio
+    if (id) {
+      delayedCallList[id]?.kill();
+    } else {
+      // anders alle andere en dus ook die delays
+      for (const delayedCall of Object.values(delayedCallList)) {
+        delayedCall?.kill();
+      }
     }
 
     if (options && options.fade && options.fade > 0) {
