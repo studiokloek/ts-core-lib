@@ -64,7 +64,7 @@ export function getDayDate(date?: Date): Date {
     date = new Date();
   }
 
-  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
 }
 
 export function isBeforeToday(before: Date): boolean {

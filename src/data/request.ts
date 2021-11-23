@@ -21,7 +21,7 @@ export interface ResponseError {
 
 export interface ResponseResult {
   error?: ResponseError;
-  body?: {} | string;
+  body?: Record<string, any> | any[] | string;
 }
 
 function getResponseError(_responseError: request.ResponseError): ResponseError {

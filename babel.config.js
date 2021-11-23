@@ -19,6 +19,7 @@ module.exports = {
     ['@babel/proposal-class-properties', { loose: true }],
     ['@babel/proposal-private-methods', { loose: true }],
     ['@babel/proposal-private-property-in-object', { loose: true }],
+    ['@babel/proposal-private-methods', { loose: true }],
     ['@babel/proposal-object-rest-spread'],
     ['@babel/proposal-nullish-coalescing-operator'],
     ['@babel/proposal-optional-chaining'],

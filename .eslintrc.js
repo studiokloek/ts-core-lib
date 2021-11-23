@@ -20,7 +20,7 @@ module.exports = {
     'plugin:unicorn/recommended',
     // "prettier",
     'plugin:prettier/recommended',
-    'prettier/@typescript-eslint',
+    // 'prettier/@typescript-eslint',
   ],
   env: {
     node: true,
