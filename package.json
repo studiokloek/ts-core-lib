@@ -51,7 +51,7 @@
     "stats.js": "^0.17.0",
     "superagent": "^6.1.0",
     "ts-events": "^3.4.0",
-    "ts-mixer": "^5.4.1"
+    "ts-mixer": "5.4.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
