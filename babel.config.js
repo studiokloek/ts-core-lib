@@ -17,7 +17,6 @@ module.exports = {
   plugins: [
     ['@babel/proposal-decorators', { legacy: true }],
     ['@babel/proposal-class-properties', { loose: true }],
-    ['@babel/proposal-private-methods', { loose: true }],
     ['@babel/proposal-private-property-in-object', { loose: true }],
     ['@babel/proposal-private-methods', { loose: true }],
     ['@babel/proposal-object-rest-spread'],
