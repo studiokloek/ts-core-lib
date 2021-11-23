@@ -7,6 +7,7 @@ import { Stage } from '../../screen';
 import { Easing, Tween } from '../../tween';
 import { KloekRandom } from '../../util';
 import { SoundLibrary } from './library';
+import { SoundLibraryItem } from './library-item';
 
 // we regelen zelf suspend
 Howler.autoSuspend = false;
@@ -54,7 +55,7 @@ class ConcreteSoundsPlayer {
     // delay?
     if (delay > 0) {
       // delayed call
-      const delayedCall = Delayed.call(this.doPlay, delay, [player, id, volume, options]);
+      const delayedCall = Delayed.call(this.doPlay, delay, [item, player, id, volume, options]);
 
       // haal bestaande op in lijst
       const list = this.delayedCalls.get(asset) ?? {};
@@ -63,14 +64,14 @@ class ConcreteSoundsPlayer {
       // bewaar
       this.delayedCalls.set(asset, list);
     } else {
-      this.doPlay(player, id, volume, options);
+      this.doPlay(item, player, id, volume, options);
     }
 
     return id;
   }
 
   @Bind
-  private doPlay(player: Howl, id: number, volume = -1, options?: AudioFXOptions): void {
+  private doPlay(item: SoundLibraryItem, player: Howl, id: number, volume = -1, options?: AudioFXOptions): void {
     // in loop afspelen?
     player.loop(options?.loop ?? false, id);
 
@@ -92,7 +93,7 @@ class ConcreteSoundsPlayer {
 
     // infaden van volume?
     const targetVolume = volume === -1 ? 0.5 : volume;
-    if (options?.fade) {
+    if (!item.isBuffered && options?.fade) {
       player.once('fade', (id) => player.volume(targetVolume, id));
       player.fade(0, targetVolume, options.fade * 1000, id);
     } else {
@@ -146,7 +147,7 @@ class ConcreteSoundsPlayer {
       }
     }
 
-    if (options && options.fade && options.fade > 0) {
+    if (!item.isBuffered && options && options.fade && options.fade > 0) {
       player.once('fade', (id) => player.stop(id));
       const volume = id ? (player.volume(id) as number) : player.volume();
       player.fade(volume, 0, options.fade * 1000, id);
@@ -154,7 +155,6 @@ class ConcreteSoundsPlayer {
       player.stop(id);
     }
   }
-
 
   public pause(asset: SoundAsset, options?: AudioFXOptions, id?: number): void {
     const item = SoundLibrary.getItemByAsset(asset);
@@ -178,15 +178,15 @@ class ConcreteSoundsPlayer {
     } else {
       // anders alle andere en dus ook die delays
       for (const delayedCall of Object.values(delayedCallList)) {
-          delayedCall?.kill();
+        delayedCall?.kill();
       }
     }
-   
+
     const volume = id ? (player.volume(id) as number) : player.volume();
-    if (options && options.fade && options.fade > 0) {
+    if (!item.isBuffered && options && options.fade && options.fade > 0) {
       player.once('fade', (id) => {
         // pause
-        player.pause(id)
+        player.pause(id);
 
         // reset volume zodat we die bij resume weer kunnen opvragen
         player.volume(volume, id);
@@ -197,7 +197,7 @@ class ConcreteSoundsPlayer {
     }
   }
 
-  public resume(asset: SoundAsset,  id: number,options?: AudioFXOptions): void {
+  public resume(asset: SoundAsset, id: number, options?: AudioFXOptions): void {
     const item = SoundLibrary.getItemByAsset(asset);
 
     if (!item) {
@@ -210,13 +210,12 @@ class ConcreteSoundsPlayer {
       return;
     }
 
-    
-    if (options && options.fade && options.fade > 0) {
-     const volume = player.volume(id) as number;
-     player.volume(0, id); 
-     player.fade(volume, 0, options.fade * 1000, id);
-    } 
-    
+    if (!item.isBuffered && options && options.fade && options.fade > 0) {
+      const volume = player.volume(id) as number;
+      player.volume(0, id);
+      player.fade(volume, 0, options.fade * 1000, id);
+    }
+
     player.play(id);
   }
 

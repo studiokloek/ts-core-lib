@@ -124,6 +124,10 @@ export class SoundLibraryItem {
     return this.asset.id;
   }
 
+  public get isBuffered(): boolean {
+    return this.options?.buffer === true;
+  }
+
   public getPlayer(): Howl | undefined {
     return this.player;
   }
