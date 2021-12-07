@@ -1,12 +1,12 @@
-import { memoize } from 'lodash-es';
+import { memoize, isNil } from 'lodash-es';
 
 export const isInFrame = memoize(() => {
   let inFrame = false;
 
   try {
-    inFrame = window.frameElement !== undefined || window.self !== window.top;
+    inFrame = isNil(window.frameElement) === false || window.self !== window.top;
   } catch {
-    return false;
+    return true;
   }
 
   return inFrame;
