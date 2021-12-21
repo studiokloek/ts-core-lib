@@ -52,6 +52,11 @@ export class KloekText extends Text implements PrepareCleanupInterface {
     this._value = this.text;
   }
 
+  public updateStyle(_style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>): void {
+    const style = getStyle(_style, _styleOverwrite);
+    this.style = style ? style : new TextStyle();
+  }
+
   public prepareAfterLoad(): void {
     if (this.isPrepared) {
       return;
