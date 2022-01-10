@@ -61,7 +61,7 @@
     "random-js": "^2.1.0",
     "ress": "^4.0.0",
     "slugify": "^1.6.5",
-    "superagent": "^7.0.1",
+    "superagent": "^6.1.0",
     "ts-events": "^3.4.0",
     "ts-mixer": "^6.0.0",
     "tslib": "^2.3.1"
