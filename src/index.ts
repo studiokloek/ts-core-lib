@@ -29,14 +29,14 @@ import { initScreen } from './screen';
 import { initLogger } from './logger';
 
 interface ICoreLibraryOptions {
-  assetsBasePath: string;
+  assetsBasePath?: string;
 }
 
 export const CoreLibraryOptions = {
   ASSET_BASE_PATH: './',
 };
 
-export async function initCoreLibrary(_options: ICoreLibraryOptions): Promise<void> {
+export async function initCoreLibrary(_options?: ICoreLibraryOptions): Promise<void> {
   // set options
   CoreLibraryOptions.ASSET_BASE_PATH = _options?.assetsBasePath ?? CoreLibraryOptions.ASSET_BASE_PATH;
 
