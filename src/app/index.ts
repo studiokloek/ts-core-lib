@@ -3,6 +3,7 @@ interface AppSettings {
 
   info: {
     id: string;
+    page?: string;
     version: number;
     client: string;
     year: number;
