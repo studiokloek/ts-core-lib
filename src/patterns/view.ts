@@ -75,22 +75,31 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
   ): KloekSprite {
     const sprite = !_asset ? new KloekSprite(undefined, _defaults) : KloekSprite.create(_asset, _defaults);
 
+    let addToTarget = false;
+
     if (_targetOrAdd === true) {
       // true? dan toevoegen aan deze view
       sprite.setTarget(this);
-      sprite.addToTarget();
+      addToTarget = true;
     } else if (_targetOrAdd) {
       // andere target
       sprite.setTarget(_targetOrAdd);
 
-      // ook toevoegen?
-      if (_add) {
-        sprite.addToTarget();
-      }
+      addToTarget = _add === true;
     }
 
     if (_register) {
       this.kloeksprites.push(sprite);
+    }
+
+    if (addToTarget) {
+      // ook toevoegen?
+      sprite.addToTarget();
+
+      // als we al klaar zijn, gelijk laten zien
+      if (this.isPrepared) {
+        sprite.prepareAfterLoad();
+      }
     }
 
     return sprite;
