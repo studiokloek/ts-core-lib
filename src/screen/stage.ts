@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { Bind } from 'lodash-decorators-esm';
+import { Bind } from 'lodash-decorators';
 import { ceil, get, round } from 'lodash-es';
 import {
   IPoint,

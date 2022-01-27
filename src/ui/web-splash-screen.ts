@@ -1,6 +1,5 @@
-
 import { SplashScreen } from '@capacitor/splash-screen';
-import { Bind } from 'lodash-decorators-esm';
+import { Bind } from 'lodash-decorators';
 import { isFunction, round } from 'lodash-es';
 import { SyncEvent } from 'ts-events';
 import { CoreDebug } from '../debug';
@@ -12,7 +11,6 @@ import { Logger } from '../logger';
 import { Screen, Stage } from '../screen';
 import { Tween, Easing } from '../tween';
 import { constrainNumber, mapNumber, randomBetween } from '../util/math';
-
 
 type ManualSplashLayout = boolean | ((ui: { element: HTMLElement | null; logo: HTMLElement | null }) => void);
 interface WebSplashScreenOptions {
