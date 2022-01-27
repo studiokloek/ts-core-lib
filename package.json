@@ -53,7 +53,7 @@
     "fontfaceobserver": "^2.1.0",
     "gsap": "3.9.1",
     "howler": "^2.2.3",
-    "lodash-decorators": "^6.0.1",
+    "lodash-decorators-esm": "^6.1.1",
     "lodash-es": "^4.17.21",
     "pixi-spine": "^3.0.13",
     "pixi.js": "^6.2.2",

@@ -1,5 +1,5 @@
 // import { isMobile } from '../device';
-import { Bind, Throttle } from 'lodash-decorators';
+import { Bind, Throttle } from 'lodash-decorators-esm';
 import { AsyncEvent } from 'ts-events';
 import { OrientationMode, ResolutionMode } from './constants';
 import { determineResolution } from './resolution';
