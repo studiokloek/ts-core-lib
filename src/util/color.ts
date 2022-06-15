@@ -63,3 +63,11 @@ export function rgbTint(color: RGB, step: number): RGB {
     b: color.b + (255 - color.b) * step,
   };
 }
+
+export function hexToInt(s: string): number {
+  return (Number.parseInt(s.slice(1), 16) << 8) / 256;
+}
+
+export function rgbToInt(color: RGB): number {
+  return (color.r << 16) | (color.g << 8) | color.b;
+}
