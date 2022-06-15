@@ -1,33 +1,31 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    
+
     "rootDir": "./src/",
     "baseUrl": "./src",
     "outDir": "./lib/",
-    
+
     "paths": {
       "*": ["@types/*"],
-      "mini-signals": [
-        "../node_modules/resource-loader/typings/mini-signals.d.ts"
-      ]
+      "mini-signals": ["../node_modules/resource-loader/typings/mini-signals.d.ts"]
     },
 
     "target": "esnext",
     "module": "esnext",
     "lib": ["dom", "dom.iterable", "webworker.importscripts", "scripthost", "esnext"],
-    
+
     "forceConsistentCasingInFileNames": true,
 
     "importHelpers": true,
     "skipLibCheck": false,
-  
+
     "esModuleInterop": true,
     "isolatedModules": true,
     "importsNotUsedAsValues": "remove",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    
+
     "declaration": true,
     "pretty": true,
     "inlineSourceMap": true,
@@ -36,7 +34,7 @@
 
     "downlevelIteration": false,
     "experimentalDecorators": true,
-    
+
     "strict": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
@@ -47,8 +45,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
-    "noImplicitAny": true,
-
+    "noImplicitAny": true
   },
   "exclude": ["node_modules", "lib"],
   "include": ["src/**/*.ts"]

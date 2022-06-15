@@ -8,6 +8,7 @@
     ".": "./lib/index.js",
     "./package.json": "./package.json"
   },
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": "github:studiokloek/ts-core-lib",
   "bugs": {
@@ -37,9 +38,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@capacitor/app": "^1.1.1",
-    "@capacitor/core": "^3.4.3",
+    "@capacitor/core": "^3.5.1",
     "@capacitor/device": "^1.1.2",
     "@capacitor/network": "^1.0.7",
     "@capacitor/splash-screen": "^1.2.2",
@@ -50,41 +51,41 @@
     "@types/lodash-es": "^4.17.6",
     "@types/superagent": "^4.1.15",
     "bowser": "^2.11.0",
-    "fontfaceobserver": "^2.1.0",
-    "gsap": "3.9.1",
+    "fontfaceobserver": "^2.3.0",
+    "gsap": "3.10.4",
     "howler": "^2.2.3",
     "lodash-decorators-esm": "^6.1.1",
     "lodash-es": "^4.17.21",
-    "pixi-spine": "^3.0.13",
-    "pixi.js": "^6.3.0",
+    "pixi-spine": "^3.0.15",
+    "pixi.js": "^6.4.2",
     "pubsub-js": "^1.9.4",
     "random-js": "^2.1.0",
     "ress": "^5.0.2",
     "slugify": "^1.6.5",
-    "superagent": "^7.1.1",
+    "superagent": "^7.1.6",
     "ts-events": "^3.4.1",
     "ts-mixer": "^6.0.1",
-    "tslib": "^2.3.1"
+    "tslib": "^2.4.0"
   },
   "devDependencies": {
-    "@capacitor/cli": "^3.4.3",
-    "@typescript-eslint/eslint-plugin": "^5.16.0",
-    "@typescript-eslint/parser": "^5.16.0",
-    "eslint": "^8.12.0",
+    "@capacitor/cli": "^3.5.1",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-formatter-pretty": "^4.1.0",
-    "eslint-import-resolver-typescript": "^2.7.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
     "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-unicorn": "^41.0.1",
+    "eslint-plugin-unicorn": "^42.0.0",
     "np": "^7.6.1",
-    "npm": "8.5.5",
-    "prettier": "^2.6.1",
+    "npm": "8.12.1",
+    "prettier": "^2.7.0",
     "prettier-package-json": "^2.6.3",
     "rimraf": "^3.0.2",
-    "typescript": "^4.6.3"
+    "typescript": "^4.7.3"
   },
   "browserslist": [
     "last 2 Chrome versions",
