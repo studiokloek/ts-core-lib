@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Container, Sprite, Texture } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
-import { isSpriteAsset, isSpriteAssetWithMeta } from '../loaders';
 import type { SpriteAsset, SpriteAssetWithMeta } from '../loaders';
+import { isSpriteAsset, isSpriteAssetWithMeta } from '../loaders';
 import { getLogger } from '../logger';
 import { PrepareCleanupInterface } from '../patterns';
 import { TweenMixin } from '../tween';
-import { round } from 'lodash-es';
 
 const Logger = getLogger('ui > kloeksprite');
 
