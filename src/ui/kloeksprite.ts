@@ -131,7 +131,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
           x: defaults.x ?? (asset.x + asset.width * anchor.x) * scale.x,
           y: defaults.y ?? (asset.y + asset.height * anchor.y) * scale.y,
           zIndex: defaults.zIndex ?? asset.zIndex,
-          alpha: defaults.alpha ?? round(asset.opacity / 100, 3),
+          alpha: defaults.alpha ?? asset.opacity,
         };
       } else {
         // niet dan alleen de standaard meta
@@ -139,7 +139,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
           x: asset.x,
           y: asset.y,
           zIndex: asset.zIndex,
-          alpha: round(asset.opacity / 100, 3),
+          alpha: asset.opacity,
         };
       }
     }
