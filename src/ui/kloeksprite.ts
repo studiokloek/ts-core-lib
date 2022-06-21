@@ -6,6 +6,7 @@ import type { SpriteAsset, SpriteAssetWithMeta } from '../loaders';
 import { getLogger } from '../logger';
 import { PrepareCleanupInterface } from '../patterns';
 import { TweenMixin } from '../tween';
+import { round } from 'lodash-es';
 
 const Logger = getLogger('ui > kloeksprite');
 
@@ -111,7 +112,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     // is en het een asset met meta?
     const asset = this.asset as SpriteAssetWithMeta;
     if (isSpriteAssetWithMeta(asset)) {
-      // defaults meegegeven? dan deze gebruikebn
+      // defaults meegegeven? dan deze gebruiken
       if (defaults !== undefined) {
         // check if anchor is set
         let anchor = { x: 0, y: 0 };
@@ -119,7 +120,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
           anchor = typeof defaults.anchor === 'number' ? { x: defaults.anchor, y: defaults.anchor } : defaults.anchor;
         }
         // scale
-        let scale = { x: 0, y: 0 };
+        let scale = { x: 1, y: 1 };
         if (defaults.scale !== undefined) {
           scale = typeof defaults.scale === 'number' ? { x: defaults.scale, y: defaults.scale } : defaults.scale;
         }
@@ -130,7 +131,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
           x: defaults.x ?? (asset.x + asset.width * anchor.x) * scale.x,
           y: defaults.y ?? (asset.y + asset.height * anchor.y) * scale.y,
           zIndex: defaults.zIndex ?? asset.zIndex,
-          alpha: defaults.alpha ?? asset.opacity,
+          alpha: defaults.alpha ?? round(asset.opacity / 100, 3),
         };
       } else {
         // niet dan alleen de standaard meta
@@ -138,7 +139,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
           x: asset.x,
           y: asset.y,
           zIndex: asset.zIndex,
-          alpha: asset.opacity,
+          alpha: round(asset.opacity / 100, 3),
         };
       }
     }
