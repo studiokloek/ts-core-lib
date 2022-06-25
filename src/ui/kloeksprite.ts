@@ -28,6 +28,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
   protected asset?: SpriteAsset | SpriteAssetWithMeta;
   protected target: Container | undefined;
   protected defaults?: KloekSpriteDefaults;
+  protected currentDefaults?: KloekSpriteDefaults;
   protected previousDefaults: KloekSpriteDefaults = {};
 
   public constructor(_asset?: SpriteAsset, _defaults?: KloekSpriteDefaults) {
@@ -50,6 +51,8 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     if (this._isFilled) {
       this.fillTexture();
     }
+
+    this.setDefaults(this.defaults, true);
   }
 
   public getAsset(): SpriteAsset | SpriteAssetWithMeta | undefined {
@@ -108,6 +111,8 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
   }
 
   public setDefaults(defaults?: KloekSpriteDefaults, apply = false): void {
+    this.defaults = defaults;
+
     // is en het een asset met meta?
     const asset = this.asset as SpriteAssetWithMeta;
     if (isSpriteAssetWithMeta(asset)) {
@@ -143,7 +148,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
       }
     }
 
-    this.defaults = defaults;
+    this.currentDefaults = defaults;
 
     if (apply) {
       this.applyDefaults();
@@ -151,69 +156,69 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
   }
 
   protected savePropertiesBeforeDefaults(): void {
-    if (!this.defaults) {
+    if (!this.currentDefaults) {
       return;
     }
 
-    if (this.defaults.x !== undefined) {
+    if (this.currentDefaults.x !== undefined) {
       this.previousDefaults.x = this.x;
     }
 
-    if (this.defaults.y !== undefined) {
+    if (this.currentDefaults.y !== undefined) {
       this.previousDefaults.y = this.y;
     }
 
-    if (this.defaults.anchor !== undefined) {
+    if (this.currentDefaults.anchor !== undefined) {
       this.previousDefaults.anchor = { x: this.anchor.x, y: this.anchor.y };
     }
 
-    if (this.defaults.scale !== undefined) {
+    if (this.currentDefaults.scale !== undefined) {
       this.previousDefaults.scale = { x: this.scale.x, y: this.scale.y };
     }
 
-    if (this.defaults.rotation !== undefined) {
+    if (this.currentDefaults.rotation !== undefined) {
       this.previousDefaults.rotation = this.rotation;
     }
 
-    if (this.defaults.tint !== undefined) {
+    if (this.currentDefaults.tint !== undefined) {
       this.previousDefaults.tint = this.tint;
     }
 
-    if (this.defaults.alpha !== undefined) {
+    if (this.currentDefaults.alpha !== undefined) {
       this.previousDefaults.alpha = this.alpha;
     }
 
-    if (this.defaults.visible !== undefined) {
+    if (this.currentDefaults.visible !== undefined) {
       this.previousDefaults.visible = this.visible;
     }
 
-    if (this.defaults.zIndex !== undefined) {
+    if (this.currentDefaults.zIndex !== undefined) {
       this.previousDefaults.zIndex = this.zIndex;
     }
   }
 
   public applyDefaults(): void {
-    if (!this.defaults) {
+    if (!this.currentDefaults) {
       return;
     }
 
-    if (this.defaults.x !== undefined) {
-      this.x = this.defaults.x;
+    if (this.currentDefaults.x !== undefined) {
+      this.x = this.currentDefaults.x;
     } else if (this.previousDefaults.x !== undefined) {
       this.x = this.previousDefaults.x;
     }
 
-    if (this.defaults.y !== undefined) {
-      this.y = this.defaults.y;
+    if (this.currentDefaults.y !== undefined) {
+      this.y = this.currentDefaults.y;
     } else if (this.previousDefaults.y !== undefined) {
       this.y = this.previousDefaults.y;
     }
 
-    if (this.defaults.anchor !== undefined) {
-      if (typeof this.defaults.anchor === 'number') {
-        this.anchor.set(this.defaults.anchor);
+    if (this.currentDefaults.anchor !== undefined) {
+      if (typeof this.currentDefaults.anchor === 'number') {
+        this.anchor.set(this.currentDefaults.anchor);
       } else {
-        this.anchor.set(this.defaults.anchor.x, this.defaults.anchor.y);
+        this.anchor.set(this.currentDefaults.anchor.x, this.currentDefaults.anchor.y);
       }
     } else if (this.previousDefaults.anchor !== undefined) {
       if (typeof this.previousDefaults.anchor === 'number') {
@@ -223,11 +228,11 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
       }
     }
 
-    if (this.defaults.scale !== undefined) {
-      if (typeof this.defaults.scale === 'number') {
-        this.scale.set(this.defaults.scale);
+    if (this.currentDefaults.scale !== undefined) {
+      if (typeof this.currentDefaults.scale === 'number') {
+        this.scale.set(this.currentDefaults.scale);
       } else {
-        this.scale.set(this.defaults.scale.x, this.defaults.scale.y);
+        this.scale.set(this.currentDefaults.scale.x, this.currentDefaults.scale.y);
       }
     } else if (this.previousDefaults.scale !== undefined) {
       if (typeof this.previousDefaults.scale === 'number') {
@@ -237,32 +242,32 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
       }
     }
 
-    if (this.defaults.rotation !== undefined) {
-      this.rotation = this.defaults.rotation * (Math.PI / 180);
+    if (this.currentDefaults.rotation !== undefined) {
+      this.rotation = this.currentDefaults.rotation * (Math.PI / 180);
     } else if (this.previousDefaults.rotation !== undefined) {
       this.rotation = this.previousDefaults.rotation;
     }
 
-    if (this.defaults.alpha !== undefined) {
-      this.alpha = this.defaults.alpha;
+    if (this.currentDefaults.alpha !== undefined) {
+      this.alpha = this.currentDefaults.alpha;
     } else if (this.previousDefaults.alpha !== undefined) {
       this.alpha = this.previousDefaults.alpha;
     }
 
-    if (this.defaults.visible !== undefined) {
-      this.visible = this.defaults.visible;
+    if (this.currentDefaults.visible !== undefined) {
+      this.visible = this.currentDefaults.visible;
     } else if (this.previousDefaults.visible !== undefined) {
       this.visible = this.previousDefaults.visible;
     }
 
-    if (this.defaults.zIndex !== undefined) {
-      this.zIndex = this.defaults.zIndex;
+    if (this.currentDefaults.zIndex !== undefined) {
+      this.zIndex = this.currentDefaults.zIndex;
     } else if (this.previousDefaults.zIndex !== undefined) {
       this.zIndex = this.previousDefaults.zIndex;
     }
 
-    if (this.defaults.tint !== undefined) {
-      this.tint = this.defaults.tint;
+    if (this.currentDefaults.tint !== undefined) {
+      this.tint = this.currentDefaults.tint;
     } else if (this.previousDefaults.tint !== undefined) {
       this.tint = this.previousDefaults.tint;
     }
