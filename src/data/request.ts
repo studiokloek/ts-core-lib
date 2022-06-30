@@ -77,7 +77,7 @@ export async function getLocalUrlContents(_url: string): Promise<ResponseResult>
   return result;
 }
 
-export async function getAPIRequest(_url: string, _timeout?: {response:number, deadline?:number}): Promise<ResponseResult> {
+export async function getAPIRequest(_url: string, _timeout?: { response: number; deadline?: number }): Promise<ResponseResult> {
   Logger.debug(`getAPIRequest() start loading '${_url}'`);
 
   const result: ResponseResult = {};
@@ -90,9 +90,9 @@ export async function getAPIRequest(_url: string, _timeout?: {response:number, d
   }
 
   const timeout = {
-    response: (_timeout?.response ?? 10) * 1000,  // Wait x seconds for the server to start sending,
-    deadline: (_timeout?.deadline) ? _timeout?.deadline * 1000 : undefined , // allow x seconds to finish loading.
-  }
+    response: (_timeout?.response ?? 10) * 1000, // Wait x seconds for the server to start sending,
+    deadline: _timeout?.deadline ? _timeout?.deadline * 1000 : undefined, // allow x seconds to finish loading.
+  };
 
   try {
     const response = await request.get(_url).accept('json').timeout(timeout);
@@ -111,7 +111,7 @@ export async function getAPIRequest(_url: string, _timeout?: {response:number, d
   return result;
 }
 
-export async function postAPIRequest(_url: string, _body?: {}, _timeout?: {response:number, deadline?:number}): Promise<ResponseResult> {
+export async function postAPIRequest(_url: string, _body?: {}, _timeout?: { response: number; deadline?: number }): Promise<ResponseResult> {
   Logger.debug(`postAPIRequest() posting to '${_url}' with body`, _body);
 
   const result: ResponseResult = {};
@@ -123,18 +123,14 @@ export async function postAPIRequest(_url: string, _body?: {}, _timeout?: {respo
     return result;
   }
 
-  // bepaal timeout, standaard 10 seconden 
+  // bepaal timeout, standaard 10 seconden
   const timeout = {
-    response: (_timeout?.response ?? 10) * 1000,  // Wait x seconds for the server to start sending,
-    deadline: (_timeout?.deadline) ? _timeout?.deadline * 1000 : undefined , // allow x seconds to finish loading.
-  }
+    response: (_timeout?.response ?? 10) * 1000, // Wait x seconds for the server to start sending,
+    deadline: _timeout?.deadline ? _timeout?.deadline * 1000 : undefined, // allow x seconds to finish loading.
+  };
 
   try {
-    const response = await request
-      .post(_url)
-      .send(_body)
-      .type('form')
-      .timeout(timeout); 
+    const response = await request.post(_url).send(_body).type('form').timeout(timeout);
 
     const contents = response.body;
 
