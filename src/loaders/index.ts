@@ -69,6 +69,7 @@ export class AssetLoader {
   private _isLoaded = false;
   private options: LoaderOptions;
   private assetsInited = false;
+  private allLoadedPromises: Promise<void>[] = [];
   private dynamicLoaders: AssetLoaderInterface[] = [];
   private dynamicAssets: (() => AssetLoaderInfo[])[] = [];
   private loaders: AssetLoaderInterface[] = [];
@@ -150,7 +151,12 @@ export class AssetLoader {
   }
 
   public async load(): Promise<void> {
-    if (this.isLoading || this.isLoaded) {
+    if (this.isLoaded) {
+      return;
+    }
+
+    if (this.isLoading) {
+      await Promise.all(this.allLoadedPromises);
       return;
     }
 
@@ -168,19 +174,21 @@ export class AssetLoader {
     // maak copy van loaders die we gaan inladen
     this.queue = [...this.loaders];
 
-    const concurrent = this.options.maxConcurrent || 1,
-      allLoadedPromises = this.loaders.map((loader) => loader.prepareForLoad());
+    const concurrent = this.options.maxConcurrent || 1;
+
+    this.allLoadedPromises = this.loaders.map((loader) => loader.prepareForLoad());
 
     for (let index = 0; index < concurrent; index++) {
       this.loadNext();
     }
 
-    await Promise.all(allLoadedPromises);
+    await Promise.all(this.allLoadedPromises);
 
     // done loading
-    this.loaded.post();
     this.isLoading = false;
     this._isLoaded = true;
+
+    this.loaded.post();
   }
 
   private async loadNext(): Promise<void> {
@@ -218,6 +226,8 @@ export class AssetLoader {
 
     this.isLoading = false;
     this._isLoaded = false;
+
+    this.allLoadedPromises.length = 0;
   }
 
   public get id(): string | undefined {
