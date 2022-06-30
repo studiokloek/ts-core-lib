@@ -1,16 +1,16 @@
 import { filter, find, isNil, remove, round } from 'lodash-es';
 import { Texture } from 'pixi.js';
-import { SyncEvent } from 'ts-events';
+import { AsyncEvent } from 'ts-events';
 import { getLogger } from '../logger';
 import { SoundLibraryItem } from '../media';
-import { createFontLoader } from './font-loader';
 import type { FontAsset, FontAssetInfo } from './font-loader';
-import { createSoundsLoader } from './sounds-loader';
+import { createFontLoader } from './font-loader';
 import type { SoundsAssetInfo } from './sounds-loader';
-import { createSpineLoader } from './spine-loader';
+import { createSoundsLoader } from './sounds-loader';
 import type { SpineAsset, SpineAssetInfo } from './spine-loader';
-import { createSpriteLoader } from './sprites-loader';
+import { createSpineLoader } from './spine-loader';
 import type { SpriteAssetInfo } from './sprites-loader';
+import { createSpriteLoader } from './sprites-loader';
 
 const Logger = getLogger('loader');
 
@@ -75,8 +75,8 @@ export class AssetLoader {
   private loaders: AssetLoaderInterface[] = [];
   private queue: AssetLoaderInterface[] = [];
 
-  public progressed: SyncEvent<number> = new SyncEvent();
-  public loaded: SyncEvent<void> = new SyncEvent();
+  public progressed: AsyncEvent<number> = new AsyncEvent({ condensed: true });
+  public loaded: AsyncEvent<void> = new AsyncEvent({ condensed: true });
 
   public constructor(assets?: LoaderAssets, options?: LoaderOptions) {
     this.assets = { ...DefaultLoaderAssets, ...assets };
@@ -156,7 +156,7 @@ export class AssetLoader {
     }
 
     if (this.isLoading) {
-      await Promise.all(this.allLoadedPromises);
+      await this.checkLoadDone();
       return;
     }
 
@@ -182,13 +182,23 @@ export class AssetLoader {
       this.loadNext();
     }
 
+    await this.checkLoadDone();
+  }
+
+  private async checkLoadDone(): Promise<void> {
     await Promise.all(this.allLoadedPromises);
 
-    // done loading
-    this.isLoading = false;
-    this._isLoaded = true;
+    if (!this.isLoading) {
+      return;
+    }
 
-    this.loaded.post();
+    // done loading
+    if (!this._isLoaded) {
+      this.loaded.post();
+    }
+
+    this._isLoaded = true;
+    this.isLoading = false;
   }
 
   private async loadNext(): Promise<void> {
@@ -216,6 +226,10 @@ export class AssetLoader {
   }
 
   public unload(): void {
+    this.isLoading = false;
+    this._isLoaded = false;
+    this.allLoadedPromises.length = 0;
+
     for (const loader of this.loaders) {
       loader.unload();
     }
@@ -223,11 +237,6 @@ export class AssetLoader {
     // remove dynamic ones from list
     remove(this.loaders, (loader) => this.dynamicLoaders.includes(loader));
     this.dynamicLoaders.length = 0;
-
-    this.isLoading = false;
-    this._isLoaded = false;
-
-    this.allLoadedPromises.length = 0;
   }
 
   public get id(): string | undefined {
