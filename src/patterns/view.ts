@@ -32,7 +32,7 @@ export interface ViewInterface extends Container {
 }
 
 export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin) implements ViewInterface, PrepareCleanupInterface {
-  protected options: ViewOptions | OtherViewOptions;
+  protected options: ViewOptions;
   protected views: ViewInterface[] = [];
   protected kloeksprites: KloekSprite[] = [];
   protected kloektexts: KloekText[] = [];
