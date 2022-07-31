@@ -15,8 +15,6 @@ const Logger = getLogger('mediator > view');
 
 export interface ViewOptions {
   target?: Container;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
 }
 
 export interface ViewInterface extends Container {
