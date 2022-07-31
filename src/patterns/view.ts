@@ -17,6 +17,11 @@ export interface ViewOptions {
   target?: Container;
 }
 
+interface OtherViewOptions extends ViewOptions {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+}
+
 export interface ViewInterface extends Container {
   init(): void;
   prepareAfterLoad(): void;
@@ -27,7 +32,7 @@ export interface ViewInterface extends Container {
 }
 
 export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin) implements ViewInterface, PrepareCleanupInterface {
-  protected options: ViewOptions;
+  protected options: ViewOptions | OtherViewOptions;
   protected views: ViewInterface[] = [];
   protected kloeksprites: KloekSprite[] = [];
   protected kloektexts: KloekText[] = [];
@@ -35,12 +40,12 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
   protected isPrepared = false;
   protected isActive = false;
 
-  public constructor(_options?: ViewOptions) {
+  public constructor(_options?: ViewOptions | OtherViewOptions) {
     super();
     this.options = { ..._options };
   }
 
-  public addView<T extends View>(_viewClass: Type<T>, _options?: ViewOptions, _add = true, _register = true): T {
+  public addView<T extends View>(_viewClass: Type<T>, _options?: ViewOptions | OtherViewOptions, _add = true, _register = true): T {
     const view: T = new _viewClass(_options);
 
     const target = get(_options, 'target') as Container;
