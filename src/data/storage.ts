@@ -1,5 +1,5 @@
 
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 import { getLogger } from '../logger';
 import { getValueFromJSON } from './util';
 
@@ -22,7 +22,7 @@ class ConcreteStorage {
       value = JSON.stringify(value);
     }
 
-    await Storage.set({ key, value });
+    await Preferences.set({ key, value });
 
     Logger.verbose('set', `${key}`, value);
   }
@@ -34,7 +34,7 @@ class ConcreteStorage {
       return;
     }
 
-    const returnValue = await Storage.get({ key });
+    const returnValue = await Preferences.get({ key });
 
     let value;
 
@@ -53,13 +53,13 @@ class ConcreteStorage {
       return;
     }
 
-    await Storage.remove({ key });
+    await Preferences.remove({ key });
 
     Logger.verbose('remove', `${key}`);
   }
 
   public async keys(): Promise<string[]> {
-    const returnValue = await Storage.keys();
+    const returnValue = await Preferences.keys();
 
     if (returnValue && returnValue.keys) {
       return returnValue.keys;
@@ -69,7 +69,7 @@ class ConcreteStorage {
   }
 
   public async clear(): Promise<void> {
-    await Storage.clear();
+    await Preferences.clear();
     Logger.verbose('cleared all storage!');
   }
 
@@ -81,10 +81,10 @@ class ConcreteStorage {
       return;
     }
 
-    await Storage.migrate();
+    await Preferences.migrate();
     
     Logger.verbose('migrate() -> removing old data...');
-    await Storage.removeOld();
+    await Preferences.removeOld();
 
     this.set(IS_MIGRATED_KEY, true);
 

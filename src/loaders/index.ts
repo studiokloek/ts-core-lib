@@ -84,7 +84,7 @@ export class AssetLoader {
   }
 
   private initAssets(): void {
-    // allready inited?
+    // already init-ed?
     if (this.assetsInited === true) {
       // add dynamic assets again
       for (const asset of this.dynamicAssets) this.addAsset(asset);
