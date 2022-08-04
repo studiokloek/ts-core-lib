@@ -42,18 +42,16 @@ function getStyle(_base?: TextStyle | Record<string, unknown> | string, _overwri
 
 export class KloekText extends Text implements PrepareCleanupInterface {
   protected isPrepared = false;
-  private _value: string;
+  private _value: string | number | undefined;
   protected target: Container | undefined;
 
-  public constructor(_text = '', _style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>) {
+  public constructor(_text: string | number, _style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>) {
     super('', getStyle(_style, _styleOverwrite));
-    this.determineResolution();
     this.text = _text;
-    this._value = this.text;
   }
 
   get text(): string {
-    return this._value;
+    return this._value?.toString() ?? '';
   }
 
   set text(text: string | number) {
@@ -67,7 +65,7 @@ export class KloekText extends Text implements PrepareCleanupInterface {
     }
 
     this.determineResolution();
-    super.text = this._value;
+    super.text = this._value ?? '';
   }
 
   public updateStyle(_style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>): void {
@@ -91,13 +89,11 @@ export class KloekText extends Text implements PrepareCleanupInterface {
     this.isPrepared = false;
 
     this.resolution = 1;
-    this._value = super.text;
-    this.text = '';
+    super.text = '';
   }
 
   private determineResolution(): void {
     this.resolution = Stage.textureResolution;
-    // this.resolution = Math.max(Stage.textureResolution, Math.round(Stage.textureResolution * Stage.scale.x));
   }
 
   // target
