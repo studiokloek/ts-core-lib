@@ -91,7 +91,7 @@ export class KloekText extends Text implements PrepareCleanupInterface {
     this.isPrepared = false;
 
     this.resolution = 1;
-    this._value = this.text;
+    this._value = super.text;
     this.text = '';
   }
 
