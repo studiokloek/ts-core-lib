@@ -52,9 +52,27 @@ export class KloekText extends Text implements PrepareCleanupInterface {
     this._value = this.text;
   }
 
+  get text(): string {
+    return this._value;
+  }
+
+  set text(text: string | number) {
+    this._value = text.toString();
+    this.updateTextField();
+  }
+
+  private updateTextField(): void {
+    if (!this.isPrepared) {
+      return;
+    }
+
+    this.determineResolution();
+    super.text = this._value;
+  }
+
   public updateStyle(_style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>): void {
     const style = getStyle(_style, _styleOverwrite);
-    this.style = style ? style : new TextStyle();
+    this.style = style ?? new TextStyle();
   }
 
   public prepareAfterLoad(): void {
@@ -63,8 +81,7 @@ export class KloekText extends Text implements PrepareCleanupInterface {
     }
     this.isPrepared = true;
 
-    this.determineResolution();
-    this.text = this._value;
+    this.updateTextField();
   }
 
   public cleanupBeforeUnload(): void {
