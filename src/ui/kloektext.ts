@@ -55,7 +55,7 @@ export class KloekText extends Text implements PrepareCleanupInterface {
   }
 
   set text(text: string | number) {
-    this._value = text.toString();
+    this._value = text;
     this.updateTextField();
   }
 

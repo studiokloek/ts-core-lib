@@ -29,7 +29,7 @@ function fixKey(): void {
   };
 
   Object.defineProperty(event, 'key', {
-    get: function() {
+    get: function () {
       if (!desc || !desc.get) {
         return;
       }
@@ -44,14 +44,12 @@ fixKey();
 
 const currentKeys: { [key: string]: boolean } = {};
 
-window.addEventListener('keydown', event => {
+window.addEventListener('keydown', (event) => {
   currentKeys[event.key.toLowerCase()] = true;
-  event.preventDefault();
 });
 
-window.addEventListener('keyup', event => {
+window.addEventListener('keyup', (event) => {
   currentKeys[event.key.toLowerCase()] = false;
-  event.preventDefault();
 });
 
 window.addEventListener('blur', () => {
@@ -72,5 +70,5 @@ export const Keyboard = {
   META: 'meta',
   SHIFT: 'shift',
   ALT: 'alt',
-  CTRL: 'ctrl'
+  CTRL: 'ctrl',
 };
