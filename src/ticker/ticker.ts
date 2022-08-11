@@ -13,6 +13,7 @@ export interface TickerCallback extends Function {
 interface TickerItem {
   callback: TickerCallback;
   startTime: number;
+  time: number;
   active: boolean;
 }
 
@@ -58,12 +59,15 @@ export class ConcreteTicker {
 
     let needRemove = false;
 
+    // tijd per item uitreken en in-crementen ipv de rekensom direct doorgeven
+
     for (let index = 0; index < this.numberOfItems; index++) {
       const item = this.items[index];
 
       if (item.active) {
         // time, delay, running
-        Reflect.apply(item.callback, undefined, [round((this._time - item.startTime) * this._timeScale * this._globalTimeScale, 5), delay, this._time]);
+        item.time = round(item.time + (this._time - item.time) * this._timeScale * this._globalTimeScale, 5);
+        Reflect.apply(item.callback, undefined, [item.time, delay, this._time]);
       } else {
         needRemove = true;
       }
@@ -121,6 +125,7 @@ export class ConcreteTicker {
     item = {
       callback,
       startTime: time,
+      time: 0,
       active: true,
     };
 
@@ -220,12 +225,12 @@ export class ConcreteTicker {
 
   public set timeScale(_value: number) {
     // helemaal 0 kan niet...
-    _value = _value || 0.000_000_000_1;
+    const value = _value ?? 0.000_000_000_1;
 
     if (!this.isRunning) {
-      this.beforeSleepTimeScale = _value;
+      this.beforeSleepTimeScale = value;
     } else {
-      this._timeScale = _value;
+      this._timeScale = value;
     }
   }
 
