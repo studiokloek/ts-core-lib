@@ -12,7 +12,6 @@ export interface TickerCallback extends Function {
 
 interface TickerItem {
   callback: TickerCallback;
-  startTime: number;
   time: number;
   active: boolean;
 }
@@ -52,21 +51,24 @@ export class ConcreteTicker {
       return;
     }
 
-    this._time = round((performance.now() - this.startTime) * 0.001, 5);
+    const timeScale = this._timeScale * this._globalTimeScale;
 
-    const delay = round((1000 * (this._time - this.previousTime)) / DELAY_FACTOR, 5) * this._timeScale * this._globalTimeScale;
-    this.previousTime = this._time;
+    const current = round((performance.now() - this.startTime) * 0.001, 3);
+    const difference = current - this.previousTime;
+    this.previousTime = current;
+
+    this._time = this._time + difference * timeScale;
+
+    const delay = round(((1000 * difference) / DELAY_FACTOR) * timeScale, 3);
 
     let needRemove = false;
-
-    // tijd per item uitreken en in-crementen ipv de rekensom direct doorgeven
 
     for (let index = 0; index < this.numberOfItems; index++) {
       const item = this.items[index];
 
       if (item.active) {
         // time, delay, running
-        item.time = round(item.time + (this._time - item.time) * this._timeScale * this._globalTimeScale, 5);
+        item.time = round(item.time + (this._time - item.time), 3);
         Reflect.apply(item.callback, undefined, [item.time, delay, this._time]);
       } else {
         needRemove = true;
@@ -112,11 +114,8 @@ export class ConcreteTicker {
     let item = this.hash[tickerCallbackId];
 
     if (item) {
-      // update starttime
-      item.startTime = time;
-
       if (CoreDebug.isEnabled()) {
-        Logger.warn('Ticker', `The callback '${callback.name}()' was allready added, updated startTime.`);
+        Logger.warn('Ticker', `The callback '${callback.name}()' was already added.`);
       }
 
       return time;
@@ -124,7 +123,6 @@ export class ConcreteTicker {
 
     item = {
       callback,
-      startTime: time,
       time: 0,
       active: true,
     };
