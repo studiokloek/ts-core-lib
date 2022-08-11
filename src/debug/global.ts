@@ -8,5 +8,7 @@ declare global {
   }
 }
 
+window.APP_DEBUG = {};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 PubSub.subscribe(AppEvent.DEBUG_VALUE, (debug: { name: string; value: any }) => (window.APP_DEBUG[debug.name] = debug.value));
