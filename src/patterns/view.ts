@@ -109,7 +109,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
   }
 
   public addText(
-    _text: string,
+    _text: string | number,
     _style: string,
     _styleOverwriteOrTargetOrAdd: Record<string, unknown> | Container | boolean = true,
     _targetOrAdd: Container | boolean = true,

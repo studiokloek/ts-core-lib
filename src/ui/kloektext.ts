@@ -113,7 +113,7 @@ export class KloekText extends Text implements PrepareCleanupInterface {
     }
   }
 
-  public static create(_text: string, _style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>): KloekText {
+  public static create(_text: string | number, _style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>): KloekText {
     return new KloekText(_text, _style, _styleOverwrite);
   }
 
