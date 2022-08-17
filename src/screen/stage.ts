@@ -163,7 +163,6 @@ export class ConcreteStage {
   public init(_options: StageOptions, _sizingOptions?: SizeOptions | MultiSizeOptions): void {
     this.options = { ...DefaultStageOptions, ..._options };
 
-    this.onScreenResized();
     this.setSizingOptions(_sizingOptions);
 
     // basis fps
@@ -181,8 +180,7 @@ export class ConcreteStage {
     this.connectToTarget();
 
     // listen for resize
-    this.determineSizeOptions();
-    this.resize();
+    this.onScreenResized();
     Screen.resized.attach(this.onScreenResized);
 
     // een keer renderen zodat we geen zwarte flits zien
