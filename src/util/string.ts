@@ -11,3 +11,11 @@ export const slugify = (string: string, lowercase = false): string => {
     strict: true,
   });
 };
+
+export function utf8ToB64(value: string): string {
+  return window.btoa(unescape(encodeURIComponent(value)));
+}
+
+export function b64ToUtf8(value: string): string {
+  return decodeURIComponent(escape(window.atob(value)));
+}
