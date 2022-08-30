@@ -16,7 +16,7 @@ class ConcreteScreen {
   public init(): void {
     this.handleResize();
 
-    // resolutie wordt maar 1 keer geupdate, omdat het pixicanvas
+    // resolutie wordt maar 1 keer ge-update, omdat het pixi-canvas
     // niet dynamisch kan wisselen van resolutie
     ({ screen: this._resolution } = determineResolution());
 

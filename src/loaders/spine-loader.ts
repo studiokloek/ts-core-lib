@@ -4,7 +4,7 @@ import { ISkeletonData } from 'pixi-spine';
 import { Loader, Texture } from 'pixi.js';
 import { AssetLoaderInterface } from '.';
 import { getLogger } from '../logger';
-import { determineResolution } from '../screen';
+import { determineResolution, ResolutionMode } from '../screen';
 
 const Logger = getLogger('loader > spine');
 
@@ -71,7 +71,7 @@ export class SpineLoader implements AssetLoaderInterface {
     this.baseUrl = `${this.options.assetDirectory}${this.options.assetName}/${spineName}`;
   }
 
-  private getTextureExtention(): string {
+  private getTextureExtension(): string {
     const { texture: textureResolution } = determineResolution();
     return textureResolution >= 2 ? '@2x' : '';
   }
@@ -100,7 +100,7 @@ export class SpineLoader implements AssetLoaderInterface {
     this.isLoading = true;
 
     // url bepalen we hier omdat de resolutie veranderd zou kunnen zijn
-    const resolutionExtension = this.getTextureExtention();
+    const resolutionExtension = this.getTextureExtension();
 
     this.loadUrl = `${this.baseUrl}${resolutionExtension}`;
     this.loader.add(`${this.loadUrl}.json`);
