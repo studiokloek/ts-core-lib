@@ -4,7 +4,7 @@ import { ISkeletonData } from 'pixi-spine';
 import { Loader, Texture } from 'pixi.js';
 import { AssetLoaderInterface } from '.';
 import { getLogger } from '../logger';
-import { determineResolution, ResolutionMode } from '../screen';
+import { determineResolution } from '../screen';
 
 const Logger = getLogger('loader > spine');
 
