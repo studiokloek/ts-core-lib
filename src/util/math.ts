@@ -18,7 +18,7 @@ export const mapNumber = (value: number, istart: number, istop: number, ostart: 
   constrain = constrain === true ? true : false;
 
   // fix voor als range start/stop gelijk is, om te voorkomen dat we door nul delen
-  const inputRangeDiff = istop - istart || 0.0000001;
+  const inputRangeDiff = istop - istart || 0.000_000_1;
 
   let mappedValue = (ostop - ostart) * ((value - istart) / inputRangeDiff);
 

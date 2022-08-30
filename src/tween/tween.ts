@@ -5,7 +5,7 @@ import { getLogger } from '../logger';
 
 const Logger = getLogger('tween');
 
-function getTweenVariables(target: {}, duration = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTweenVars {
+function getTweenVariables(target: gsap.TweenTarget, duration = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTweenVars {
   let variables: GSAPTweenVars;
 
   if (settings) {
@@ -36,22 +36,23 @@ function getTweenVariables(target: {}, duration = 0, properties: GSAPTweenVars, 
 }
 
 export const Tween = {
-  to: (target: {}, duration = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTween => {
+  to: (target: gsap.TweenTarget, duration = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTween => {
     // maak tween aan
     const variables = getTweenVariables(target, duration, properties, settings);
     return gsap.to(target, variables) as GSAPTween;
   },
-  from: (target: {}, duration = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTween => {
+
+  from: (target: gsap.TweenTarget, duration = 0, properties: GSAPTweenVars, settings?: GSAPTweenVars): GSAPTween => {
     // maak tween aan
     const variables = getTweenVariables(target, duration, properties, settings);
     return gsap.from(target, variables) as GSAPTween;
   },
 
-  set: (target: {}, properties: GSAPTweenVars): GSAPTween => {
+  set: (target: gsap.TweenTarget, properties: GSAPTweenVars): GSAPTween => {
     return gsap.set(target, properties) as GSAPTween;
   },
 
-  killTweensOf: (_target: {}, _variables?: {}): void => {
-    gsap.killTweensOf(_target, _variables);
+  killTweensOf: (_target: gsap.TweenTarget, _properties?: object | string): void => {
+    gsap.killTweensOf(_target, _properties);
   },
 };

@@ -95,7 +95,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
       Logger.error(`Texture not found with id ${this.textureId}`);
     }
 
-    this.texture = texture ? texture : Texture.EMPTY;
+    this.texture = texture ?? Texture.EMPTY;
   }
 
   protected emptyTexture(): void {
