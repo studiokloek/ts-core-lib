@@ -47,13 +47,14 @@ export const deviceNeedsMediaTrigger = memoize((): boolean => {
   }
 
   // browser op desktop
-  // nieuwere browsers verlangen klik van geruiker
+  // nieuwere browsers verlangen klik van gebruiker
   if (
     browserSatisfies({
       desktop: {
         safari: '>=11',
         chrome: '>=72',
         firefox: '>=66',
+        edge: '>=92',
       },
     }) === true
   ) {
