@@ -79,12 +79,12 @@ class ConcreteSoundsPlayer {
     if (options?.position) {
       player.seek(options.position, id);
     } else if (options?.randomStart === true) {
-      // of juisxt starten op random positie
-      const postition = round(KloekRandom.real(0, player.duration() * 0.9), 2);
-      player.seek(postition, id);
+      // of juist starten op random positie
+      const position = round(KloekRandom.real(0, player.duration() * 0.9), 2);
+      player.seek(position, id);
     }
 
-    // snelheid meegegeven, of anders snelheid van de mainticker
+    // snelheid meegegeven, of anders snelheid van de main ticker
     if (options?.rate) {
       player.rate(options.rate * Stage.timeScale, id);
     } else {
@@ -241,10 +241,38 @@ class ConcreteSoundsPlayer {
     }
   }
 
-  public fadeAllTo(target = 1, duration = 1): void {
-    Tween.killTweensOf(this.volumeFader);
-    this.volumeFader.value = Howler.volume();
-    Tween.to(this.volumeFader, duration, { value: target, ease: Easing.Linear.easeNone, onUpdate: this.fadeAllUpdater });
+  public fadeTo(value = 1, duration = 1, asset?: SoundAsset, id?: number): void {
+    if (!asset) {
+      Tween.killTweensOf(this.volumeFader);
+      this.volumeFader.value = Howler.volume();
+      Tween.to(this.volumeFader, duration, { value, ease: Easing.Linear.easeNone, onUpdate: this.fadeAllUpdater });
+    } else {
+      const item = SoundLibrary.getItemByAsset(asset);
+
+      if (!item) {
+        return;
+      }
+
+      const player = item.getPlayer();
+
+      if (!player) {
+        return;
+      }
+
+      if (!item.isBuffered) {
+        let volume: number;
+
+        if (typeof id === 'number') {
+          volume = player.volume(id) as number;
+          player.volume(0, id);
+        } else {
+          volume = player.volume();
+          player.volume(0);
+        }
+
+        player.fade(volume, value, duration * 1000, id);
+      }
+    }
   }
 
   @Bind
@@ -277,7 +305,7 @@ class ConcreteSoundsPlayer {
         await ctx.resume();
       } catch {}
     }
-    this.fadeAllTo(1, 0.3);
+    this.fadeTo(1, 0.3);
     this.resumeAll();
   }
 }
