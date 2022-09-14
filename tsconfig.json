@@ -45,7 +45,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+
+    "allowJs": true,
+    "checkJs": true
   },
   "exclude": ["node_modules", "lib"],
   "include": ["src/**/*.ts"]
