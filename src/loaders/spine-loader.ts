@@ -90,7 +90,7 @@ export class SpineLoader implements AssetLoaderInterface {
     }
 
     if (this.isLoaded) {
-      Logger.info('Already loaded...');
+      Logger.debug('Already loaded...');
       this.loadedResolver(this._data);
 
       return;
@@ -148,8 +148,6 @@ export class SpineLoader implements AssetLoaderInterface {
 
   private removeTextureFromCache(textureId: string): void {
     const texture = Texture.removeFromCache(textureId);
-
-    Logger.debug(textureId, texture);
 
     if (texture) {
       texture.destroy(true);

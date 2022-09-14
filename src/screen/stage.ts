@@ -299,7 +299,7 @@ export class ConcreteStage {
       backgroundColor: this.options ? this.options.backgroundColor : 0x00_00_00,
     };
 
-    Logger.info('Render options:', renderOptions);
+    Logger.debug('Render options:', renderOptions);
 
     return renderOptions;
   }
@@ -409,21 +409,21 @@ export class ConcreteStage {
     // bestaat er een optie voor de huidige orientatie
     if (this._sizeOptions) {
       if (this._sizeOptions[orientation]) {
-        Logger.info('determineSizeOptions()', `Found options for orientation:${orientation}`);
+        Logger.debug('determineSizeOptions()', `Found options for orientation:${orientation}`);
         options = this._sizeOptions[orientation];
       } else {
         // is er wel een vaste groote voor andere orientatie?
         // dan gebruiken we deze voor beide groottes
         const oppositeOrientation = orientation === OrientationMode.LANDSCAPE ? OrientationMode.PORTRAIT : OrientationMode.LANDSCAPE;
         if (this._sizeOptions[oppositeOrientation]) {
-          Logger.info('determineSizeOptions()', `Found options for opposite orientation:${oppositeOrientation}`);
+          Logger.debug('determineSizeOptions()', `Found options for opposite orientation:${oppositeOrientation}`);
           options = this._sizeOptions[oppositeOrientation];
         }
       }
     }
 
     if (!options) {
-      Logger.info('determineSizeOptions()', `No options found for any orientation:${orientation}`);
+      Logger.warn('determineSizeOptions()', `No options found for any orientation:${orientation}`);
       options = DefaultSizeOptions;
     }
 
@@ -459,7 +459,7 @@ export class ConcreteStage {
     }
     this.sleeping = true;
 
-    Logger.info('sleep()');
+    Logger.debug('sleep()');
 
     this.timeScaleBeforeSleep = this._timeScale;
     this._timeScale = 0;
@@ -477,7 +477,7 @@ export class ConcreteStage {
     }
     this.sleeping = false;
 
-    Logger.info('wake()');
+    Logger.debug('wake()');
 
     GSAPTicker.wake();
     GSAPTicker.lagSmoothing(500, 33);
@@ -512,14 +512,14 @@ export class ConcreteStage {
   // PERFORMANCE
   public lowPerformance(): void {
     // Logger.info('ticker', 'Starting energy saving mode');
-    Logger.info('Starting energy saving mode.');
+    Logger.debug('Starting energy saving mode.');
 
     // GSAPTicker.useRAF(false);
     GSAPTicker.fps(30);
   }
 
   public highPerformance(): void {
-    Logger.info('Exiting energy saving mode');
+    Logger.debug('Exiting energy saving mode');
 
     // GSAPTicker.useRAF(true);
     GSAPTicker.fps(this.options ? this.options.fps : 60);
@@ -664,7 +664,7 @@ export class ConcreteStage {
           orientation
             .lock(lockOrientation)
             .then(() => {
-              Logger.info(`Locked orientation to '${lockOrientation}'`);
+              Logger.debug(`Locked orientation to '${lockOrientation}'`);
               return;
             })
             .catch(() => {

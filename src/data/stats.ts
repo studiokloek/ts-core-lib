@@ -71,7 +71,7 @@ function doTrack(_event: GoogleTagEvent): void {
     return;
   }
 
-  Logger.info('doTrack', _event);
+  Logger.debug('doTrack', _event);
 
   if (typeof window.ga === 'function') {
     window.ga('send', _event);

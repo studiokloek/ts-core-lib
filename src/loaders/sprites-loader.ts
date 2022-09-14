@@ -116,7 +116,7 @@ export class SpriteLoader implements AssetLoaderInterface {
     }
 
     if (this.isLoaded) {
-      Logger.info('Already loaded...');
+      Logger.debug('Already loaded...');
       this.loadedResolver(this.textures);
       return;
     }
@@ -160,7 +160,7 @@ export class SpriteLoader implements AssetLoaderInterface {
         this.isLoaded = true;
         this.isLoading = false;
 
-        Logger.info(`Loaded textures for '${this.options.assetName}'`);
+        Logger.debug(`Loaded textures for '${this.options.assetName}'`);
 
         this.loadedResolver(this.textures);
 
@@ -188,7 +188,7 @@ export class SpriteLoader implements AssetLoaderInterface {
     this.textureIndex = [];
     this.loadUrlIndex = [];
 
-    Logger.info(`Un-loaded texture from '${this.options.assetName}'`);
+    Logger.debug(`Un-loaded texture from '${this.options.assetName}'`);
   }
 
   private removeTextureFromCache(textureId: string): void {

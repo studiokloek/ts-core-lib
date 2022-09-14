@@ -17,7 +17,7 @@ function handleAppState(state: AppState): void {
     PubSub.publishSync(AppEvent.STATE_INACTIVE);
   }
 
-  Logger.info(`Changed state to '${state.isActive ? 'active' : 'in-active'}'`);
+  Logger.debug(`Changed state to '${state.isActive ? 'active' : 'in-active'}'`);
 }
 
 let appHasFocus = false;
@@ -25,7 +25,7 @@ function handleWindowBlur(): void {
   if (appHasFocus === false) {
     return;
   }
-  Logger.info(`Changed state to 'blurred'`);
+  Logger.debug(`Changed state to 'blurred'`);
   appHasFocus = false;
   PubSub.publishSync(AppEvent.STATE_BLURRED);
 }
@@ -34,7 +34,7 @@ function handleWindowFocus(): void {
   if (appHasFocus === true) {
     return;
   }
-  Logger.info(`Changed state to 'focussed'`);
+  Logger.debug(`Changed state to 'focussed'`);
   appHasFocus = true;
   PubSub.publishSync(AppEvent.STATE_FOCUSSED);
 }

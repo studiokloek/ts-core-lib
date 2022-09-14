@@ -26,7 +26,7 @@ function reportStatus(status: ConnectionStatus): void {
     PubSub.publish(AppEvent.NETWORK_OFFLINE);
   }
 
-  Logger.info(`Status changed to '${status.connected ? 'connected' : 'disconnected'}'`);
+  Logger.debug(`Status changed to '${status.connected ? 'connected' : 'disconnected'}'`);
 }
 
 let inited = false;
@@ -42,7 +42,7 @@ export async function initNetworkStatusDetection(): Promise<void> {
     return;
   }
 
-  let status = await Network.getStatus();
+  const status = await Network.getStatus();
   reportStatus(status);
 }
 

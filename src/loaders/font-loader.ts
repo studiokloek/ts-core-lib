@@ -56,7 +56,7 @@ export class FontLoader implements AssetLoaderInterface {
     }
 
     if (this.isLoaded) {
-      Logger.info('Already loaded...');
+      Logger.debug('Already loaded...');
       this.loadedResolver();
       return;
     }
@@ -76,7 +76,7 @@ export class FontLoader implements AssetLoaderInterface {
     };
 
     this.isLoading = false;
-    Logger.info(`Loaded '${this.options.fontFamilyName}' variant '${squashForLog(this.options.variant)}'`);
+    Logger.debug(`Loaded '${this.options.fontFamilyName}' variant '${squashForLog(this.options.variant)}'`);
 
     this.loadedResolver();
   }

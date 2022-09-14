@@ -56,7 +56,7 @@ export const determineResolution = memoize((): { screen: ResolutionMode; texture
     }
   }
 
-  Logger.info(`pixelRatio[${pixelRatio}] viewportSize[${viewportSize}] screenResolution[${screenResolution}] textureResolution[${textureResolution}]`);
+  Logger.debug(`pixelRatio[${pixelRatio}] viewportSize[${viewportSize}] screenResolution[${screenResolution}] textureResolution[${textureResolution}]`);
 
   return {
     screen: screenResolution,

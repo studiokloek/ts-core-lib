@@ -68,7 +68,7 @@ export class SoundsLoader implements AssetLoaderInterface {
     }
 
     if (this.isLoaded) {
-      Logger.info('Already loaded...');
+      Logger.debug('Already loaded...');
       this.resolveLoaded();
       return;
     }
@@ -119,7 +119,7 @@ export class SoundsLoader implements AssetLoaderInterface {
     if (this.numberDoneLoading < this.numberToLoad) {
       this.preloadNextSoundAsset();
     } else {
-      Logger.info(`Loaded '${this.options.assetName}' sounds`);
+      Logger.debug(`Loaded '${this.options.assetName}' sounds`);
       this.isLoaded = true;
       this.resolveLoaded();
     }
@@ -154,7 +154,7 @@ export class SoundsLoader implements AssetLoaderInterface {
       SoundLibrary.unload(item, this.options.assetName);
     }
 
-    Logger.info(`Un-loaded '${this.options.assetName}'`);
+    Logger.debug(`Un-loaded '${this.options.assetName}'`);
 
     this.soundsToLoad.length = 0;
     this.isLoaded = false;
