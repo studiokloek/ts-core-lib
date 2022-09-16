@@ -388,7 +388,7 @@ export class ConcreteStage {
     };
 
     if (!this.firstResize) {
-      PubSub.publish(AppEvent.RESIZED, info, true);
+      PubSub.publish(AppEvent.RESIZED, info);
     }
 
     this.firstResize = false;
@@ -406,17 +406,17 @@ export class ConcreteStage {
 
     let options;
 
-    // bestaat er een optie voor de huidige orientatie
+    // bestaat er een optie voor de huidige oriëntatie
     if (this._sizeOptions) {
       if (this._sizeOptions[orientation]) {
-        Logger.debug('determineSizeOptions()', `Found options for orientation:${orientation}`);
+        Logger.verbose('determineSizeOptions()', `Found options for orientation:${orientation}`);
         options = this._sizeOptions[orientation];
       } else {
-        // is er wel een vaste groote voor andere orientatie?
+        // is er wel een vaste grootte voor andere oriëntatie?
         // dan gebruiken we deze voor beide groottes
         const oppositeOrientation = orientation === OrientationMode.LANDSCAPE ? OrientationMode.PORTRAIT : OrientationMode.LANDSCAPE;
         if (this._sizeOptions[oppositeOrientation]) {
-          Logger.debug('determineSizeOptions()', `Found options for opposite orientation:${oppositeOrientation}`);
+          Logger.verbose('determineSizeOptions()', `Found options for opposite orientation:${oppositeOrientation}`);
           options = this._sizeOptions[oppositeOrientation];
         }
       }
