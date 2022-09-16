@@ -27,6 +27,7 @@ import { initNetworkStatusDetection, initDeviceInfo } from './device';
 import { initAppInfo } from './app';
 import { initScreen, ResolutionBreakpoint } from './screen';
 import { initLogger } from './logger';
+import { initTweens } from './tween';
 
 interface ICoreLibraryOptions {
   assetsBasePath?: string;
@@ -42,6 +43,8 @@ export async function initCoreLibrary(_options?: ICoreLibraryOptions): Promise<v
   // set options
   CoreLibraryOptions.ASSET_BASE_PATH = _options?.assetsBasePath ?? CoreLibraryOptions.ASSET_BASE_PATH;
   CoreLibraryOptions.RESOLUTION_BREAKPOINTS = _options?.resolutionBreakPoints ?? CoreLibraryOptions.RESOLUTION_BREAKPOINTS;
+
+  initTweens();
 
   // init capacitor plugins
   await Promise.all([initNetworkStatusDetection(), initDeviceInfo(), initAppInfo()]);
