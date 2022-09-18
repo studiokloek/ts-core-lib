@@ -152,6 +152,7 @@ export class ConcreteStage {
   private sleeping = false;
   private forcedScreenOrientation: string | undefined;
   private firstResize = true;
+  private resizedWhileSleeping = false;
 
   public constructor() {
     this._view = new Container();
@@ -333,6 +334,11 @@ export class ConcreteStage {
       return;
     }
 
+    if (this.sleeping) {
+      this.resizedWhileSleeping = true;
+      return;
+    }
+
     const screenRatio = Screen.width / Screen.height;
     const { min: minRatio, max: maxRatio } = options.ratio;
     const { width: minWidth, height: minHeight } = options.size.minimum;
@@ -409,14 +415,14 @@ export class ConcreteStage {
     // bestaat er een optie voor de huidige oriëntatie
     if (this._sizeOptions) {
       if (this._sizeOptions[orientation]) {
-        Logger.verbose('determineSizeOptions()', `Found options for orientation:${orientation}`);
+        // Logger.verbose('determineSizeOptions()', `Found options for orientation:${orientation}`);
         options = this._sizeOptions[orientation];
       } else {
         // is er wel een vaste grootte voor andere oriëntatie?
         // dan gebruiken we deze voor beide groottes
         const oppositeOrientation = orientation === OrientationMode.LANDSCAPE ? OrientationMode.PORTRAIT : OrientationMode.LANDSCAPE;
         if (this._sizeOptions[oppositeOrientation]) {
-          Logger.verbose('determineSizeOptions()', `Found options for opposite orientation:${oppositeOrientation}`);
+          // Logger.verbose('determineSizeOptions()', `Found options for opposite orientation:${oppositeOrientation}`);
           options = this._sizeOptions[oppositeOrientation];
         }
       }
@@ -489,6 +495,12 @@ export class ConcreteStage {
     }
 
     restoreTickerTimeAfterSleep();
+
+    if (this.resizedWhileSleeping) {
+      this.resize();
+    }
+
+    this.resizedWhileSleeping = false;
   }
 
   // TIMESCALE
