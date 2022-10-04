@@ -3,7 +3,7 @@ import { Loader, Texture } from 'pixi.js';
 import { AssetLoaderInterface } from '.';
 import { getLogger } from '../logger';
 import { Stage } from '../screen';
-import { CoreLibraryOptions, getAppVersion } from '..';
+import { CoreLibraryOptions, getAppVersion, isApp } from '..';
 
 const Logger = getLogger('loader > sprite');
 
@@ -72,7 +72,9 @@ export class SpriteLoader implements AssetLoaderInterface {
       Logger.error('error loading', loader, resource);
     });
 
-    this.loader.defaultQueryString = getAppVersion();
+    if (!isApp()) {
+      this.loader.defaultQueryString = getAppVersion();
+    }
 
     this.isLoaded = false;
     this.isLoading = false;

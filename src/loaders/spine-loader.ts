@@ -1,4 +1,4 @@
-import { CoreLibraryOptions, getAppVersion } from '../';
+import { CoreLibraryOptions, getAppVersion, isApp } from '../';
 import { last, split } from 'lodash-es';
 import { ISkeletonData } from 'pixi-spine';
 import { Loader, Texture } from 'pixi.js';
@@ -52,7 +52,10 @@ export class SpineLoader implements AssetLoaderInterface {
     };
 
     this.loader = new Loader();
-    this.loader.defaultQueryString = getAppVersion();
+
+    if (!isApp()) {
+      this.loader.defaultQueryString = getAppVersion();
+    }
 
     this.isLoaded = false;
     this.isLoading = false;
