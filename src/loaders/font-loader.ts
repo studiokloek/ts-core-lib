@@ -37,7 +37,6 @@ export class FontLoader implements AssetLoaderInterface {
     this.options = { ..._options };
 
     this.loader = new FontFaceObserver(this.options.fontFamilyName, this.options.variant);
-    // this.loader.defaultQueryString = Settings.version ? Settings.version : '';
 
     this.isLoaded = false;
     this.isLoading = false;
