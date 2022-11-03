@@ -1,6 +1,6 @@
 import { filter, find, isNil, remove, round } from 'lodash-es';
 import { Texture } from 'pixi.js';
-import { AsyncEvent } from 'ts-events';
+import { SyncEvent } from 'ts-events';
 import { getLogger } from '../logger';
 import { SoundLibraryItem } from '../media';
 import type { FontAsset, FontAssetInfo } from './font-loader';
@@ -75,8 +75,8 @@ export class AssetLoader {
   private loaders: AssetLoaderInterface[] = [];
   private queue: AssetLoaderInterface[] = [];
 
-  public progressed: AsyncEvent<number> = new AsyncEvent({ condensed: true });
-  public loaded: AsyncEvent<void> = new AsyncEvent({ condensed: true });
+  public progressed: SyncEvent<number> = new SyncEvent();
+  public loaded: SyncEvent<void> = new SyncEvent();
 
   public constructor(assets?: LoaderAssets, options?: LoaderOptions) {
     this.assets = { ...DefaultLoaderAssets, ...assets };
