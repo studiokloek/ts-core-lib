@@ -1,4 +1,4 @@
-import { isObject, merge } from 'lodash-es';
+import { isObject } from 'lodash-es';
 import { AssetLoaderInterface } from '.';
 import { CoreDebug } from '../debug';
 import { getLogger } from '../logger';
