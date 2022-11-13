@@ -125,9 +125,7 @@ export class SoundsLoader implements AssetLoaderInterface {
     }
   }
 
-  private getSoundsToLoad(_data: SoundAssetList): SoundAsset[] {
-    const sounds: SoundAsset[] = [];
-
+  private getSoundsToLoad(_data: SoundAssetList, _sounds: SoundAsset[] = []): SoundAsset[] {
     for (const index in _data) {
       const value = _data[index];
 
@@ -136,13 +134,13 @@ export class SoundsLoader implements AssetLoaderInterface {
       }
 
       if (isSoundAsset(value as SoundAsset)) {
-        sounds.push(value as SoundAsset);
+        _sounds.push(value as SoundAsset);
       } else {
-        merge(sounds, this.getSoundsToLoad(value as SoundAssetList));
+        _sounds = this.getSoundsToLoad(value as SoundAssetList, _sounds);
       }
     }
 
-    return sounds;
+    return _sounds;
   }
 
   public unload(): void {
