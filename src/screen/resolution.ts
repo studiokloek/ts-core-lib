@@ -25,11 +25,13 @@ export const determineResolution = memoize((): { screen: number; texture: number
     if (isPlatform(Platform.IOS) && viewportSize > 1024) {
       // ios retina
       screenResolution = textureResolution = ResolutionMode.RETINA;
-    } else if (viewportSize > 1280 && pixelRatio > 1.5) {
-      // android retina ea
-      screenResolution = textureResolution = ResolutionMode.RETINA;
-    } else if (pixelRatio > 1.2 && viewportSize > 1280) {
-      textureResolution = ResolutionMode.RETINA;
+    } else if (viewportSize > 1280) {
+      if (pixelRatio >= 1.5) {
+        // android retina ea
+        screenResolution = textureResolution = ResolutionMode.RETINA;
+      } else if (pixelRatio > 1.2) {
+        textureResolution = ResolutionMode.RETINA;
+      }
     }
     // dekstop, maar geen oude browser?
   } else if (!isObsoleteBrowser()) {
