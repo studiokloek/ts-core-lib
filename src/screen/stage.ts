@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { Bind } from 'lodash-decorators-esm';
-import { ceil, get, round } from 'lodash-es';
+import { ceil, round } from 'lodash-es';
 import {
   IPoint,
   IRendererOptionsAuto,
