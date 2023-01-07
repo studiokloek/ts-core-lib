@@ -36,7 +36,7 @@ export const determineResolution = memoize((): { screen: ResolutionMode; texture
     if (isPlatform(Platform.IOS) && viewportSize > breakpoints.ios) {
       // ios retina
       screenResolution = textureResolution = ResolutionMode.RETINA;
-    } else if (pixelRatio > 1.5 && viewportSize > breakpoints.android) {
+    } else if (pixelRatio >= 1.5 && viewportSize > breakpoints.android) {
       // android retina ea
       screenResolution = textureResolution = ResolutionMode.RETINA;
     } else if (pixelRatio > 1.2 && viewportSize > breakpoints.android) {
