@@ -1,6 +1,7 @@
 import { gsap } from 'gsap';
 import { Bind } from 'lodash-decorators-esm';
 import { ceil, round } from 'lodash-es';
+
 import {
   IPoint,
   IRendererOptionsAuto,
@@ -21,6 +22,7 @@ import {
   Ticker as PixiTicker,
   utils,
 } from 'pixi.js';
+import { hexTostring } from '../util/color';
 import { Screen } from '.';
 import { CoreDebug } from '../debug';
 import { Delayed } from '../delay';
@@ -660,6 +662,12 @@ export class ConcreteStage {
 
   public get screenOrientation(): string {
     return this.forcedScreenOrientation || Screen.orientation;
+  }
+
+  public setBackgroundColor(color: number, alpha = 1): void {
+    this.renderer.backgroundAlpha = alpha;
+    this.renderer.backgroundColor = color;
+    document.body.style.backgroundColor = alpha === 0 ? 'transparent' : hexTostring(color, alpha);
   }
 
   public set forcedOrientation(_value: string) {
