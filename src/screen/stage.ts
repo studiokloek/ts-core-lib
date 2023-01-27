@@ -21,6 +21,7 @@ import {
   TextureGCSystem,
   Ticker as PixiTicker,
   utils,
+  AccessibilityManager,
 } from 'pixi.js';
 import { hexTostring } from '../util/color';
 import { Screen } from '.';
@@ -148,6 +149,7 @@ export class ConcreteStage {
   private textureGC: TextureGCSystem | undefined;
   private unloadingTextures: boolean | undefined;
   private _interaction: InteractionManager | undefined;
+  private _accessibility: AccessibilityManager | undefined;
   private sharedTicker!: PixiTicker;
   private _timeScale = 1;
   private timeScaleBeforeSleep: number | undefined;
@@ -179,7 +181,6 @@ export class ConcreteStage {
     this.initRenderer();
     this.initTicker();
     this.initGC();
-    this.initInteraction();
     this.connectToTarget();
 
     // listen for resize
@@ -261,15 +262,6 @@ export class ConcreteStage {
     }
   }
 
-  private initInteraction(): void {
-    if (!this.renderer) {
-      return;
-    }
-
-    this._interaction = this.renderer.plugins.interaction as InteractionManager;
-    this._interaction.autoPreventDefault = true;
-  }
-
   private initRenderer(): void {
     const renderSettings = this.getRendererOptions();
 
@@ -278,6 +270,13 @@ export class ConcreteStage {
 
     // pixi renderer
     this.renderer = autoDetectRenderer(renderSettings);
+
+    // interactie
+    this._interaction = this.renderer.plugins.interaction as InteractionManager;
+    this._interaction.autoPreventDefault = true;
+
+    // accessibility
+    this._accessibility = this.renderer.plugins.accessibility as AccessibilityManager;
   }
 
   private getRendererOptions(): IRendererOptionsAuto {
@@ -618,6 +617,10 @@ export class ConcreteStage {
 
   public get interaction(): InteractionManager | undefined {
     return this._interaction;
+  }
+
+  public get accessibility(): AccessibilityManager | undefined {
+    return this._accessibility;
   }
 
   public get view(): Container {
