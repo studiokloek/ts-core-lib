@@ -148,8 +148,6 @@ export class ConcreteStage {
   private _view: Container;
   private textureGC: TextureGCSystem | undefined;
   private unloadingTextures: boolean | undefined;
-  private _interaction: InteractionManager | undefined;
-  private _accessibility: AccessibilityManager | undefined;
   private sharedTicker!: PixiTicker;
   private _timeScale = 1;
   private timeScaleBeforeSleep: number | undefined;
@@ -213,7 +211,7 @@ export class ConcreteStage {
         event.preventDefault();
       });
 
-      // body zelfde achtegrond kleur
+      // body zelfde achtergrond kleur
       if (this.options.backgroundColor !== undefined) {
         document.body.style.backgroundColor = `#${this.options.backgroundColor === 0 ? '000' : this.options.backgroundColor.toString(16)}`;
       }
@@ -272,11 +270,9 @@ export class ConcreteStage {
     this.renderer = autoDetectRenderer(renderSettings);
 
     // interactie
-    this._interaction = this.renderer.plugins.interaction as InteractionManager;
-    this._interaction.autoPreventDefault = true;
-
-    // accessibility
-    this._accessibility = this.renderer.plugins.accessibility as AccessibilityManager;
+    if (this.interaction) {
+      this.interaction.autoPreventDefault = true;
+    }
   }
 
   private getRendererOptions(): IRendererOptionsAuto {
@@ -616,11 +612,11 @@ export class ConcreteStage {
   // GET / SET
 
   public get interaction(): InteractionManager | undefined {
-    return this._interaction;
+    return this.renderer.plugins.interaction;
   }
 
   public get accessibility(): AccessibilityManager | undefined {
-    return this._accessibility;
+    return this.renderer.plugins.accessibility;
   }
 
   public get view(): Container {
