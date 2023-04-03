@@ -7,7 +7,6 @@ import { Stage } from '../../screen';
 import { Easing, Tween } from '../../tween';
 import { KloekRandom } from '../../util';
 import { SoundLibrary } from './library';
-import { SoundLibraryItem } from './library-item';
 
 // we regelen zelf suspend
 Howler.autoSuspend = false;
@@ -55,7 +54,7 @@ class ConcreteSoundsPlayer {
     // delay?
     if (delay > 0) {
       // delayed call
-      const delayedCall = Delayed.call(this.doPlay, delay, [item, player, id, volume, options]);
+      const delayedCall = Delayed.call(this.doPlay, delay, [player, id, volume, options]);
 
       // haal bestaande op in lijst
       const list = this.delayedCalls.get(asset) ?? {};
@@ -64,14 +63,14 @@ class ConcreteSoundsPlayer {
       // bewaar
       this.delayedCalls.set(asset, list);
     } else {
-      this.doPlay(item, player, id, volume, options);
+      this.doPlay(player, id, volume, options);
     }
 
     return id;
   }
 
   @Bind
-  private doPlay(item: SoundLibraryItem, player: Howl, id: number, volume = -1, options?: AudioFXOptions): void {
+  private doPlay(player: Howl, id: number, volume = -1, options?: AudioFXOptions): void {
     // in loop afspelen?
     player.loop(options?.loop ?? false, id);
 
@@ -93,7 +92,7 @@ class ConcreteSoundsPlayer {
 
     // infaden van volume?
     const targetVolume = volume === -1 ? 0.5 : volume;
-    if (!item.isBuffered && options?.fade) {
+    if (options?.fade) {
       player.once('fade', (id) => player.volume(targetVolume, id));
       player.fade(0, targetVolume, options.fade * 1000, id);
     } else {
@@ -147,7 +146,7 @@ class ConcreteSoundsPlayer {
       }
     }
 
-    if (!item.isBuffered && options && options.fade && options.fade > 0) {
+    if (options && options.fade && options.fade > 0) {
       player.once('fade', (id) => player.stop(id));
       const volume = id ? (player.volume(id) as number) : player.volume();
       player.fade(volume, 0, options.fade * 1000, id);
@@ -183,7 +182,7 @@ class ConcreteSoundsPlayer {
     }
 
     const volume = id ? (player.volume(id) as number) : player.volume();
-    if (!item.isBuffered && options && options.fade && options.fade > 0) {
+    if (options && options.fade && options.fade > 0) {
       player.once('fade', (id) => {
         // pause
         player.pause(id);
@@ -210,7 +209,7 @@ class ConcreteSoundsPlayer {
       return;
     }
 
-    if (!item.isBuffered && options && options.fade && options.fade > 0) {
+    if (options && options.fade && options.fade > 0) {
       const volume = player.volume(id) as number;
       player.volume(0, id);
       player.fade(volume, 0, options.fade * 1000, id);
@@ -242,11 +241,7 @@ class ConcreteSoundsPlayer {
   }
 
   public fadeTo(value = 1, duration = 1, asset?: SoundAsset, id?: number): void {
-    if (!asset) {
-      Tween.killTweensOf(this.volumeFader);
-      this.volumeFader.value = Howler.volume();
-      Tween.to(this.volumeFader, duration, { value, ease: Easing.Linear.easeNone, onUpdate: this.fadeAllUpdater });
-    } else {
+    if (asset) {
       const item = SoundLibrary.getItemByAsset(asset);
 
       if (!item) {
@@ -259,19 +254,21 @@ class ConcreteSoundsPlayer {
         return;
       }
 
-      if (!item.isBuffered) {
-        let volume: number;
+      let volume: number;
 
-        if (typeof id === 'number') {
-          volume = player.volume(id) as number;
-          player.volume(0, id);
-        } else {
-          volume = player.volume();
-          player.volume(0);
-        }
-
-        player.fade(volume, value, duration * 1000, id);
+      if (typeof id === 'number') {
+        volume = player.volume(id) as number;
+        player.volume(0, id);
+      } else {
+        volume = player.volume();
+        player.volume(0);
       }
+
+      player.fade(volume, value, duration * 1000, id);
+    } else {
+      Tween.killTweensOf(this.volumeFader);
+      this.volumeFader.value = Howler.volume();
+      Tween.to(this.volumeFader, duration, { value, ease: Easing.Linear.easeNone, onUpdate: this.fadeAllUpdater });
     }
   }
 

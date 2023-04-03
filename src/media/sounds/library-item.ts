@@ -87,9 +87,7 @@ export class SoundLibraryItem {
     this.isLoaded = false;
 
     // niet meer aan het spelen?
-    if (!this.player.playing()) {
-      this.dispose();
-    } else {
+    if (this.player.playing()) {
       this.player.off('fade');
 
       this.player.fade(this.player.volume(), 0, 250);
@@ -101,6 +99,8 @@ export class SoundLibraryItem {
       this.player.once('fade', () => {
         this.dispose();
       });
+    } else {
+      this.dispose();
     }
   }
 
