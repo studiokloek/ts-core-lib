@@ -2,29 +2,30 @@ import { gsap } from 'gsap';
 import { Bind } from 'lodash-decorators';
 import { ceil, get, round } from 'lodash-es';
 import {
-  autoDetectRenderer,
-  CanvasRenderer,
   Container,
   DisplayObject,
-  Graphics,
   IPoint,
+  AbstractRenderer,
+  InteractionManager,
+  MSAA_QUALITY,
+  IRendererOptionsAuto,
+  Ticker as PixiTicker,
   Point,
   Rectangle,
-  Renderer,
-  settings,
-  Sprite,
-  systems,
-  Texture,
-  Ticker as PixiTicker,
-  utils,
-  InteractionManager,
   RenderTexture,
-} from 'pixi.js-legacy';
+  Renderer,
+  Sprite,
+  Texture,
+  TextureGCSystem,
+  autoDetectRenderer,
+  settings,
+  utils,
+} from 'pixi.js';
 import Stats from 'stats.js';
 import { Screen } from '.';
 import { CoreDebug } from '../debug';
 import { Delayed } from '../delay';
-import { getGPUInfo, GPUInfo, isApp } from '../device';
+import { GPUInfo, getGPUInfo, isApp } from '../device';
 import { AppEvent, PubSub } from '../events';
 import { getLogger } from '../logger';
 import { restoreTickerTimeAfterSleep, setTickerGlobalTimeScale, storeTickerTimeBeforeSleep } from '../ticker';
@@ -95,7 +96,7 @@ export interface MultiSizeOptions {
 const DefaultStageOptions: StageOptions = {
   fps: 60,
   antialias: false,
-  backgroundColor: 0x000000,
+  backgroundColor: 0x00_00_00,
   target: '#app',
 };
 
@@ -140,10 +141,10 @@ export class ConcreteStage {
   private _sizeOptions: MultiSizeOptions | undefined;
   private currentSizeOptions: SizeOptions | undefined;
   private isRunning = false;
-  private renderer!: Renderer | CanvasRenderer;
+  private renderer!: AbstractRenderer;
   private target: HTMLElement | null | undefined;
   private _view: Container;
-  private textureGC: systems.TextureGCSystem | undefined;
+  private textureGC: TextureGCSystem | undefined;
   private unloadingTextures: boolean | undefined;
   private _interaction: InteractionManager | undefined;
   private sharedTicker!: PixiTicker;
@@ -284,7 +285,7 @@ export class ConcreteStage {
   }
 
   private initRenderer(): void {
-    const renderSettings: RendererOptions = this.getRendererOptions();
+    const renderSettings = this.getRendererOptions();
 
     // zet filter resolutie op scherm resolutie
     settings.FILTER_RESOLUTION = renderSettings.resolution as number;
@@ -293,7 +294,7 @@ export class ConcreteStage {
     this.renderer = autoDetectRenderer(renderSettings);
   }
 
-  private getRendererOptions(): RendererOptions {
+  private getRendererOptions(): IRendererOptionsAuto {
     // standaard zelfde resolutie als het scherm
     let rendererResolution = Screen.resolution;
 
@@ -304,7 +305,7 @@ export class ConcreteStage {
 
     this._rendererResolution = rendererResolution;
 
-    const renderOptions: RendererOptions = {
+    const renderOptions: IRendererOptionsAuto = {
       width: this.width,
       height: this.height,
       autoDensity: true,
@@ -313,8 +314,8 @@ export class ConcreteStage {
       antialias: this.options?.antialias === true ? true : false,
       resolution: this._rendererResolution,
       forceCanvas: !gpuInfo.isWebGLSupported,
-      backgroundColor: this.options ? this.options.backgroundColor : 0x000000,
-      forceFXAA: false,
+      backgroundColor: this.options ? this.options.backgroundColor : 0x00_00_00,
+      // forceFXAA: false,
     };
 
     Logger.info('Render options:', renderOptions);
@@ -469,10 +470,7 @@ export class ConcreteStage {
   private setSizingOptions(_sizingOptions?: SizeOptions | MultiSizeOptions): void {
     let sizingOptions = _sizingOptions;
 
-    if (!sizingOptions) {
-      // helemaal geen sizing, dan default...
-      this._sizeOptions = { [DefaultSizeOptions.orientation]: DefaultSizeOptions };
-    } else {
+    if (sizingOptions) {
       // enkele sizing?
       sizingOptions = _sizingOptions as SizeOptions;
       if (isSizeOptions(sizingOptions)) {
@@ -485,6 +483,9 @@ export class ConcreteStage {
           this._sizeOptions = sizingOptions;
         }
       }
+    } else {
+      // helemaal geen sizing, dan default...
+      this._sizeOptions = { [DefaultSizeOptions.orientation]: DefaultSizeOptions };
     }
   }
 
@@ -581,12 +582,21 @@ export class ConcreteStage {
     });
   }
 
-  public generateTexture(_displayObject: DisplayObject, _region?: Rectangle): Texture | RenderTexture {
-    if (typeof (_displayObject as Graphics).generateCanvasTexture === 'function') {
-      return (_displayObject as Graphics).generateCanvasTexture(settings.SCALE_MODE, this._generateResolution);
-    }
+  // public generateTexture(_displayObject: DisplayObject, _region?: Rectangle): Texture | RenderTexture {
+  //   if (typeof (_displayObject as Graphics).generateCanvasTexture === 'function') {
+  //     return (_displayObject as Graphics).generateCanvasTexture(settings.SCALE_MODE, this._generateResolution);
+  //   }
 
-    return this.renderer.generateTexture(_displayObject, settings.SCALE_MODE, this._generateResolution, _region);
+  //   return this.renderer.generateTexture(_displayObject, settings.SCALE_MODE, this._generateResolution, _region);
+  // }
+
+  public generateTexture(_displayObject: DisplayObject, _region?: Rectangle): Texture | RenderTexture {
+    return this.renderer.generateTexture(_displayObject, {
+      scaleMode: settings.SCALE_MODE,
+      resolution: this._generateResolution,
+      region: _region,
+      multisample: MSAA_QUALITY.MEDIUM,
+    });
   }
 
   public destroyTextureIn(_sprite: Sprite, _destroyBaseTexture?: boolean): void {

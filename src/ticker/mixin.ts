@@ -7,6 +7,7 @@ const Logger = getLogger('ticker > mixin');
 
 // MIXIN
 let MIXIN_UUID = 0;
+
 export class TickerMixin {
   private __ticker?: ConcreteTicker;
 
@@ -17,8 +18,8 @@ export class TickerMixin {
     }
 
     if (!this.__ticker) {
-      const name = get(this, 'name') || get(this, 'id') || `mixin-ticker-${++MIXIN_UUID}`;
-      this.__ticker = getTicker(name, true);
+      const tickerName = get(this, 'name') || get(this, 'id') || `mixin-ticker-${++MIXIN_UUID}`;
+      this.__ticker = getTicker(tickerName as string, true);
     }
 
     return this.__ticker.add(callback);

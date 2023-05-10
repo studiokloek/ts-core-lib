@@ -1,4 +1,4 @@
-import { Sprite, Texture } from 'pixi.js-legacy';
+import { Sprite, Texture } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
 import { getLogger } from '../logger';
 import { TweenMixin } from '../tween';
@@ -232,7 +232,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
   }
 
   // GET & SET
-  // @ts-expect-error
+  // @ts-ignore
   public get width(): number {
     if (this.texture && this.texture !== Texture.EMPTY) {
       return super.width;
@@ -247,7 +247,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     super.width = value;
   }
 
-  // @ts-expect-error
+  // @ts-ignore
   public get height(): number {
     if (this.texture && this.texture !== Texture.EMPTY) {
       return super.height;

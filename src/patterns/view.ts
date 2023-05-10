@@ -1,5 +1,5 @@
 import { get } from 'lodash-es';
-import { Container } from 'pixi.js-legacy';
+import { Container } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
 import { isPrepareCleanup, PrepareCleanupInterface } from './preparecleanup';
 import { getLogger } from '../logger';
@@ -38,7 +38,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
   public addView(_viewClass: Type<ViewInterface>, _options?: {}, _register = true): ViewInterface {
     const view: ViewInterface = new _viewClass(_options);
 
-    const target = get(_options, 'target') as Container;
+    const target = get(_options, 'target') as Container | undefined;
     if (target) {
       view.setTarget(target);
     } else {

@@ -26,7 +26,7 @@ export class ObjectPool<T> {
   }
 }
 
-export interface ObjectPoolItem<T extends Record<string, any>> {
+export interface ObjectPoolItem<T> {
   new (): T;
-  reset?(obj: T): void;
+  reset?(object: T): void;
 }
