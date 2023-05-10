@@ -96,7 +96,7 @@ export interface MultiSizeOptions {
 const DefaultStageOptions: StageOptions = {
   fps: 60,
   antialias: false,
-  backgroundColor: 0x00_00_00,
+  backgroundColor: 0x000000,
   target: '#app',
 };
 
@@ -314,7 +314,7 @@ export class ConcreteStage {
       antialias: this.options?.antialias === true ? true : false,
       resolution: this._rendererResolution,
       forceCanvas: !gpuInfo.isWebGLSupported,
-      backgroundColor: this.options ? this.options.backgroundColor : 0x00_00_00,
+      backgroundColor: this.options ? this.options.backgroundColor : 0x000000,
       // forceFXAA: false,
     };
 
