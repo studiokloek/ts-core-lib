@@ -1,6 +1,6 @@
 {
   "name": "@studiokloek/ts-core-lib",
-  "version": "1.25.0",
+  "version": "1.26.0",
   "description": "Core TypeScript lib for our projects.",
   "author": "Martijn Swart <opensource@studiokloek.nl> (https://studiokloek.nl)",
   "license": "MIT",
@@ -39,8 +39,8 @@
     "@types/fontfaceobserver": "2.1.0",
     "@types/howler": "2.2.7",
     "@types/lodash-es": "^4.17.7",
-    "@types/superagent": "^4.1.17",
     "@types/stats.js": "^0.17.0",
+    "@types/superagent": "^4.1.17",
     "bowser": "^2.11.0",
     "fontfaceobserver": "^2.3.0",
     "gsap": "^3.7.1",
