@@ -37,7 +37,6 @@ export class FontLoader implements AssetLoaderInterface {
     this.options = { ..._options };
 
     this.loader = new FontFaceObserver(this.options.fontFamilyName, this.options.variant);
-    // this.loader.defaultQueryString = Settings.version ? Settings.version : '';
 
     this.isLoaded = false;
     this.isLoading = false;
@@ -56,7 +55,7 @@ export class FontLoader implements AssetLoaderInterface {
     }
 
     if (this.isLoaded) {
-      Logger.info('Already loaded...');
+      Logger.debug('Already loaded...');
       this.loadedResolver();
       return;
     }
@@ -76,7 +75,7 @@ export class FontLoader implements AssetLoaderInterface {
     };
 
     this.isLoading = false;
-    Logger.info(`Loaded '${this.options.fontFamilyName}' variant '${squashForLog(this.options.variant)}'`);
+    Logger.debug(`Loaded '${this.options.fontFamilyName}' variant '${squashForLog(this.options.variant)}'`);
 
     this.loadedResolver();
   }

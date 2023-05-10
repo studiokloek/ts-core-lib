@@ -3,10 +3,14 @@ import { Texture } from 'pixi.js';
 import { SyncEvent } from 'ts-events';
 import { getLogger } from '../logger';
 import { SoundLibraryItem } from '../media';
-import { createFontLoader, FontAsset, FontAssetInfo } from './font-loader';
-import { createSoundsLoader, SoundsAssetInfo } from './sounds-loader';
-import { createSpineLoader, SpineAsset, SpineAssetInfo } from './spine-loader';
-import { createSpriteLoader, SpriteAssetInfo } from './sprites-loader';
+import type { FontAsset, FontAssetInfo } from './font-loader';
+import { createFontLoader } from './font-loader';
+import type { SoundsAssetInfo } from './sounds-loader';
+import { createSoundsLoader } from './sounds-loader';
+import type { SpineAsset, SpineAssetInfo } from './spine-loader';
+import { createSpineLoader } from './spine-loader';
+import type { SpriteAssetInfo } from './sprites-loader';
+import { createSpriteLoader } from './sprites-loader';
 
 const Logger = getLogger('loader');
 
@@ -30,7 +34,10 @@ export const LoaderAssetTypes = {
 export type AssetLoaderInfo = SpriteAssetInfo | SoundsAssetInfo | SpineAssetInfo | FontAssetInfo;
 
 export interface LoaderAssets {
-  [key: string]: AssetLoaderInfo[] | (() => AssetLoaderInfo[]);
+  sprites?: SpriteAssetInfo[] | (() => SpriteAssetInfo[]);
+  fonts?: FontAssetInfo[] | (() => FontAssetInfo[]);
+  sounds?: SoundsAssetInfo[] | (() => SoundsAssetInfo[]);
+  spine?: SpineAssetInfo[] | (() => SpineAssetInfo[]);
 }
 
 const DefaultLoaderAssets: LoaderAssets = {
@@ -62,6 +69,7 @@ export class AssetLoader {
   private _isLoaded = false;
   private options: LoaderOptions;
   private assetsInited = false;
+  private allLoadedPromises: Promise<void>[] = [];
   private dynamicLoaders: AssetLoaderInterface[] = [];
   private dynamicAssets: (() => AssetLoaderInfo[])[] = [];
   private loaders: AssetLoaderInterface[] = [];
@@ -76,10 +84,10 @@ export class AssetLoader {
   }
 
   private initAssets(): void {
-    // allready inited?
+    // already init-ed?
     if (this.assetsInited === true) {
       // add dynamic assets again
-      this.dynamicAssets.forEach((asset) => this.addAsset(asset));
+      for (const asset of this.dynamicAssets) this.addAsset(asset);
       return;
     }
 
@@ -99,13 +107,13 @@ export class AssetLoader {
       }
 
       // call & add assets
-      (asset() as AssetLoaderInfo[]).forEach((_asset) => this.addAsset(_asset, true));
+      for (const _asset of asset() as AssetLoaderInfo[]) this.addAsset(_asset, true);
 
       return;
     }
 
     if (Array.isArray(asset)) {
-      asset.forEach((_asset) => this.addAsset(_asset));
+      for (const _asset of asset) this.addAsset(_asset);
 
       return;
     }
@@ -143,7 +151,12 @@ export class AssetLoader {
   }
 
   public async load(): Promise<void> {
-    if (this.isLoading || this.isLoaded) {
+    if (this.isLoaded) {
+      return;
+    }
+
+    if (this.isLoading) {
+      await this.checkLoadDone();
       return;
     }
 
@@ -161,19 +174,31 @@ export class AssetLoader {
     // maak copy van loaders die we gaan inladen
     this.queue = [...this.loaders];
 
-    const concurrent = this.options.maxConcurrent || 1,
-      allLoadedPromises = this.loaders.map((loader) => loader.prepareForLoad());
+    const concurrent = this.options.maxConcurrent || 1;
+
+    this.allLoadedPromises = this.loaders.map((loader) => loader.prepareForLoad());
 
     for (let index = 0; index < concurrent; index++) {
       this.loadNext();
     }
 
-    await Promise.all(allLoadedPromises);
+    await this.checkLoadDone();
+  }
+
+  private async checkLoadDone(): Promise<void> {
+    await Promise.all(this.allLoadedPromises);
+
+    if (!this.isLoading) {
+      return;
+    }
 
     // done loading
-    this.loaded.post();
-    this.isLoading = false;
+    if (!this._isLoaded) {
+      this.loaded.post();
+    }
+
     this._isLoaded = true;
+    this.isLoading = false;
   }
 
   private async loadNext(): Promise<void> {
@@ -201,6 +226,10 @@ export class AssetLoader {
   }
 
   public unload(): void {
+    this.isLoading = false;
+    this._isLoaded = false;
+    this.allLoadedPromises.length = 0;
+
     for (const loader of this.loaders) {
       loader.unload();
     }
@@ -208,9 +237,6 @@ export class AssetLoader {
     // remove dynamic ones from list
     remove(this.loaders, (loader) => this.dynamicLoaders.includes(loader));
     this.dynamicLoaders.length = 0;
-
-    this.isLoading = false;
-    this._isLoaded = false;
   }
 
   public get id(): string | undefined {

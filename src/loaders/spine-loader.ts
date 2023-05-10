@@ -1,9 +1,10 @@
+import { getAppVersion, isApp } from '../';
 import { last, split } from 'lodash-es';
-import type { SkeletonData } from 'pixi-spine';
 import { Loader, Texture } from 'pixi.js';
 import { AssetLoaderInterface } from '.';
 import { getLogger } from '../logger';
 import { determineResolution } from '../screen';
+import type { SkeletonData } from 'pixi-spine';
 
 const Logger = getLogger('loader > spine');
 
@@ -26,8 +27,8 @@ export function isSpineAsset(_info: SpineAsset): _info is SpineAsset {
 export interface SpineLoaderOptions {
   assetId?: string;
   assetName?: string;
-  assetDirectory: string;
-  numberOfParts: number;
+  assetDirectory?: string;
+  numberOfParts?: number;
 }
 
 const OptionDefaults: SpineLoaderOptions = {
@@ -52,7 +53,10 @@ export class SpineLoader implements AssetLoaderInterface {
     this.options = { ...OptionDefaults, ..._options };
 
     this.loader = new Loader();
-    // this.loader.defaultQueryString = Settings.version ? Settings.version : '';
+
+    if (!isApp()) {
+      this.loader.defaultQueryString = getAppVersion();
+    }
 
     this.isLoaded = false;
     this.isLoading = false;
@@ -71,7 +75,7 @@ export class SpineLoader implements AssetLoaderInterface {
     this.baseUrl = `${this.options.assetDirectory}${this.options.assetName}/${spineName}`;
   }
 
-  private getTextureExtention(): string {
+  private getTextureExtension(): string {
     const { texture: textureResolution } = determineResolution();
     return textureResolution >= 2 ? '@2x' : '';
   }
@@ -90,7 +94,7 @@ export class SpineLoader implements AssetLoaderInterface {
     }
 
     if (this.isLoaded) {
-      Logger.info('Already loaded...');
+      Logger.debug('Already loaded...');
       this.loadedResolver(this._data);
 
       return;
@@ -100,7 +104,7 @@ export class SpineLoader implements AssetLoaderInterface {
     this.isLoading = true;
 
     // url bepalen we hier omdat de resolutie veranderd zou kunnen zijn
-    const resolutionExtension = this.getTextureExtention();
+    const resolutionExtension = this.getTextureExtension();
 
     this.loadUrl = `${this.baseUrl}${resolutionExtension}`;
     this.loader.add(`${this.loadUrl}.json`);
@@ -148,8 +152,6 @@ export class SpineLoader implements AssetLoaderInterface {
 
   private removeTextureFromCache(textureId: string): void {
     const texture = Texture.removeFromCache(textureId);
-
-    Logger.debug(textureId, texture);
 
     if (texture) {
       texture.destroy(true);

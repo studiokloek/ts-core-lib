@@ -1,11 +1,8 @@
-import { SoundLibrary, SoundLibraryItem } from '../media';
-
-SoundLibraryItem;
-
-import { merge, isObject } from 'lodash-es';
+import { isObject } from 'lodash-es';
 import { AssetLoaderInterface } from '.';
-import { getLogger } from '../logger';
 import { CoreDebug } from '../debug';
+import { getLogger } from '../logger';
+import { SoundLibrary, SoundLibraryItem } from '../media';
 
 const Logger = getLogger('loader > sounds ');
 
@@ -16,7 +13,7 @@ export interface SoundAsset {
 }
 
 export interface SoundAssetList {
-  [key: string]: SoundAsset | { [key: string]: SoundAssetList };
+  [key: string]: SoundAsset | { [key: string]: SoundAsset | SoundAssetList };
 }
 
 export function isSoundAsset(_info: SoundAsset): _info is SoundAsset {
@@ -71,7 +68,7 @@ export class SoundsLoader implements AssetLoaderInterface {
     }
 
     if (this.isLoaded) {
-      Logger.info('Already loaded...');
+      Logger.debug('Already loaded...');
       this.resolveLoaded();
       return;
     }
@@ -98,7 +95,7 @@ export class SoundsLoader implements AssetLoaderInterface {
     Logger.debug(`Start loading #${this.numberToLoad} sounds for '${this.options.assetName}'`);
 
     // max 8 tegelijkertijd inladen?
-    for (let i = 0; i < 8; i++) {
+    for (let numberOfLoaders = 0; numberOfLoaders < 8; numberOfLoaders++) {
       this.preloadNextSoundAsset();
     }
 
@@ -122,15 +119,13 @@ export class SoundsLoader implements AssetLoaderInterface {
     if (this.numberDoneLoading < this.numberToLoad) {
       this.preloadNextSoundAsset();
     } else {
-      Logger.info(`Loaded '${this.options.assetName}' sounds`);
+      Logger.debug(`Loaded '${this.options.assetName}' sounds`);
       this.isLoaded = true;
       this.resolveLoaded();
     }
   }
 
-  private getSoundsToLoad(_data: SoundAssetList): SoundAsset[] {
-    const sounds: SoundAsset[] = [];
-
+  private getSoundsToLoad(_data: SoundAssetList, _sounds: SoundAsset[] = []): SoundAsset[] {
     for (const index in _data) {
       const value = _data[index];
 
@@ -139,13 +134,13 @@ export class SoundsLoader implements AssetLoaderInterface {
       }
 
       if (isSoundAsset(value as SoundAsset)) {
-        sounds.push(value as SoundAsset);
+        _sounds.push(value as SoundAsset);
       } else {
-        merge(sounds, this.getSoundsToLoad(value as SoundAssetList));
+        _sounds = this.getSoundsToLoad(value as SoundAssetList, _sounds);
       }
     }
 
-    return sounds;
+    return _sounds;
   }
 
   public unload(): void {
@@ -157,7 +152,7 @@ export class SoundsLoader implements AssetLoaderInterface {
       SoundLibrary.unload(item, this.options.assetName);
     }
 
-    Logger.info(`Un-loaded '${this.options.assetName}'`);
+    Logger.debug(`Un-loaded '${this.options.assetName}'`);
 
     this.soundsToLoad.length = 0;
     this.isLoaded = false;

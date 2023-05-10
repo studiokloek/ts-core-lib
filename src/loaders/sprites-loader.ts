@@ -1,6 +1,7 @@
 import { concat, last, merge, split } from 'lodash-es';
-import { Loader, LoaderResource, Texture } from 'pixi.js';
+import { Loader, Texture } from 'pixi.js';
 import { AssetLoaderInterface } from '.';
+import { getAppVersion, isApp } from '..';
 import { getLogger } from '../logger';
 import { Stage } from '../screen';
 
@@ -12,8 +13,19 @@ export interface SpriteAsset {
   height: number;
 }
 
+export interface SpriteAssetWithMeta extends SpriteAsset {
+  x: number;
+  y: number;
+  zIndex: number;
+  opacity: number;
+}
+
 export function isSpriteAsset(_info: SpriteAsset): _info is SpriteAsset {
   return _info && (_info as SpriteAsset).id !== undefined;
+}
+
+export function isSpriteAssetWithMeta(_info: SpriteAsset | SpriteAssetWithMeta): _info is SpriteAssetWithMeta {
+  return isSpriteAsset(_info) && (_info as SpriteAssetWithMeta).zIndex !== undefined;
 }
 
 export interface SpriteAssetList {
@@ -59,11 +71,13 @@ export class SpriteLoader implements AssetLoaderInterface {
     this.options = { ...OptionDefaults, ..._options };
 
     this.loader = new Loader();
-    this.loader.onError.add((error: Error, loader: Loader, resource: LoaderResource) => {
-      Logger.error('error loading', error, loader, resource);
+    this.loader.onError.add((loader, resource) => {
+      Logger.error('error loading', loader, resource);
     });
 
-    // this.loader.defaultQueryString = Settings.version ? Settings.version : '';
+    if (!isApp()) {
+      this.loader.defaultQueryString = getAppVersion();
+    }
 
     this.isLoaded = false;
     this.isLoading = false;
@@ -107,7 +121,7 @@ export class SpriteLoader implements AssetLoaderInterface {
     }
 
     if (this.isLoaded) {
-      Logger.info('Already loaded...');
+      Logger.debug('Already loaded...');
       this.loadedResolver(this.textures);
       return;
     }
@@ -151,7 +165,7 @@ export class SpriteLoader implements AssetLoaderInterface {
         this.isLoaded = true;
         this.isLoading = false;
 
-        Logger.info(`Loaded textures for '${this.options.assetName}'`);
+        Logger.debug(`Loaded textures for '${this.options.assetName}'`);
 
         this.loadedResolver(this.textures);
 
@@ -179,7 +193,7 @@ export class SpriteLoader implements AssetLoaderInterface {
     this.textureIndex = [];
     this.loadUrlIndex = [];
 
-    Logger.info(`Un-loaded texture from '${this.options.assetName}'`);
+    Logger.debug(`Un-loaded texture from '${this.options.assetName}'`);
   }
 
   private removeTextureFromCache(textureId: string): void {
@@ -190,7 +204,7 @@ export class SpriteLoader implements AssetLoaderInterface {
     }
   }
 
-  // TODO implement assetyype
+  // TODO implement assetype
   public get data(): { [key: string]: Texture } {
     return this.textures;
   }
@@ -203,7 +217,7 @@ export class SpriteLoader implements AssetLoaderInterface {
 export function createSpriteLoader(assetInfo: SpriteAssetInfo): SpriteLoader {
   const loader = new SpriteLoader({
     assetName: assetInfo.fileName,
-    assetDirectory: './assets/sprites/',
+    assetDirectory: `./assets/sprites/`,
     numberOfParts: assetInfo.numberOfParts,
     resolution: assetInfo.resolution,
   });
