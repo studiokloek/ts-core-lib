@@ -36,7 +36,6 @@ declare module 'pixi-spine' {
   import { PositionMode } from '@pixi-spine/base';
   import { PowOut } from '@pixi-spine/base';
   import { RotateMode } from '@pixi-spine/base';
-  import { SkeletonBoundsBase } from '@pixi-spine/base';
   import { SpineBase } from '@pixi-spine/base';
   import type { TextureAtlas } from '@pixi-spine/base';
   import { TextureRegion } from '@pixi-spine/base';
@@ -61,7 +60,16 @@ declare module 'pixi-spine' {
      * See Timeline {@link Timeline#apply(Skeleton, float, float, Array, float, MixBlend, MixDirection)}.
      * @param loop If true, the animation repeats after {@link #getDuration()}.
      * @param events May be null to ignore fired events. */
-    apply(skeleton: Skeleton, lastTime: number, time: number, loop: boolean, events: Array<Event_2>, alpha: number, blend: MixBlend, direction: MixDirection): void;
+    apply(
+      skeleton: Skeleton,
+      lastTime: number,
+      time: number,
+      loop: boolean,
+      events: Array<Event_2>,
+      alpha: number,
+      blend: MixBlend,
+      direction: MixDirection,
+    ): void;
     /** @param target After the first and before the last value.
      * @returns index of first value greater than the target. */
     static binarySearch(values: ArrayLike_2<number>, target: number, step?: number): number;
@@ -1118,16 +1126,12 @@ declare module 'pixi-spine' {
     setCurve(timeline: CurveTimeline, frameIndex: number, cx1: number, cy1: number, cx2: number, cy2: number): void;
   }
 
-  /** Collects each visible {@link BoundingBoxAttachment} and computes the world vertices for its polygon. The polygon vertices are
-   * provided along with convenience methods for doing hit detection.
-   * @public
-   * */
-  export class SkeletonBounds extends SkeletonBoundsBase<BoundingBoxAttachment> {}
-
   /**
    * @public
    */
-  export class SkeletonData implements ISkeletonData<BoneData, SlotData, Skin, Animation_2, EventData, IkConstraintData, TransformConstraintData, PathConstraintData> {
+  export class SkeletonData
+    implements ISkeletonData<BoneData, SlotData, Skin, Animation_2, EventData, IkConstraintData, TransformConstraintData, PathConstraintData>
+  {
     name: string;
     bones: BoneData[];
     slots: SlotData[];

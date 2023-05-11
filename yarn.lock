@@ -1123,49 +1123,49 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@pixi-spine/base@~3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@pixi-spine/base/-/base-3.1.2.tgz#0bf9ec7a1367d8d8474004f0784d990300328310"
-  integrity sha512-sMOZsCJQW4O11QR7afuHcuu8cSUgJv3paSNzZOh+imxvYB/cOcyG7K+f5sWqlGe+z3J2CLEYCX2WfXeeJi6pHg==
+"@pixi-spine/base@~3.0.16":
+  version "3.0.16"
+  resolved "https://registry.yarnpkg.com/@pixi-spine/base/-/base-3.0.16.tgz#152fa1a98d2ebe952b3569903d46f89891e64cd2"
+  integrity sha512-68ExffQYduZKgM2IjMg77/TadG8pjXQ9EiKDG1cnExqPmjV1EY77EGot19lK+Xwa7aoz5fCZnYJ+p8wHaSvAjQ==
 
-"@pixi-spine/loader-base@~3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@pixi-spine/loader-base/-/loader-base-3.1.2.tgz#b208f14f2cd4b29ff575fc5a32c4f5328e6008f1"
-  integrity sha512-llg0RuuWiqVkyoQA+ceORV0sfUtrWGJj4jQ6erDFn2hMnob+QGzh+qwHSTMAnTNZTINEMfiUxmcwbmUYwTd8Ag==
+"@pixi-spine/loader-base@~3.0.16":
+  version "3.0.16"
+  resolved "https://registry.yarnpkg.com/@pixi-spine/loader-base/-/loader-base-3.0.16.tgz#fd212865694b3a937395169265da2a73beb04317"
+  integrity sha512-msKbFxq43pFd9z7QMSp/lGRCQFHdWA0O6bWJU7KZOa0i/DCemXKFs4O/7o9ZhoshfAadnbkmDigzaZdN+bXp5Q==
   dependencies:
-    "@pixi-spine/base" "~3.1.2"
+    "@pixi-spine/base" "~3.0.16"
 
-"@pixi-spine/loader-uni@~3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@pixi-spine/loader-uni/-/loader-uni-3.1.2.tgz#3671675dba01d655f5c207b10723823313e09d00"
-  integrity sha512-5th9gXqNQWMSuOu3euMw2kHETlncxU7LIFvOYqTMsKnwrOAIsPjHSF/4Sat1d3EAvvdMrYm4LmhHklgrAfk6UA==
+"@pixi-spine/loader-uni@~3.0.16":
+  version "3.0.16"
+  resolved "https://registry.yarnpkg.com/@pixi-spine/loader-uni/-/loader-uni-3.0.16.tgz#0141d6e015b0bd44084dd7ae9b9ddc4dde08c052"
+  integrity sha512-LL3hLiYrwE3L23oP8SXMZ6DxbuDt1NVeftJp5GFIz0DaCIH2rKpBB3v52qXqUor1IbCGRduxkBzl/JdyZeUhTw==
   dependencies:
-    "@pixi-spine/base" "~3.1.2"
-    "@pixi-spine/loader-base" "~3.1.2"
-    "@pixi-spine/runtime-3.7" "~3.1.2"
-    "@pixi-spine/runtime-3.8" "~3.1.2"
-    "@pixi-spine/runtime-4.1" "~3.1.2"
+    "@pixi-spine/base" "~3.0.16"
+    "@pixi-spine/loader-base" "~3.0.16"
+    "@pixi-spine/runtime-3.7" "~3.0.16"
+    "@pixi-spine/runtime-3.8" "~3.0.16"
+    "@pixi-spine/runtime-4.0" "~3.0.16"
 
-"@pixi-spine/runtime-3.7@~3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@pixi-spine/runtime-3.7/-/runtime-3.7-3.1.2.tgz#909ee4b906fe3e1faf8df996025d29c05f2c68b4"
-  integrity sha512-dMcw5x9jG+0itzzbPsJUn8hvhxzRXRzbm/kCUQ51iyFfLZQIK1LoPck4XPVuXckwFjU1qCT+tDZSEGBMYs5//A==
+"@pixi-spine/runtime-3.7@~3.0.16":
+  version "3.0.16"
+  resolved "https://registry.yarnpkg.com/@pixi-spine/runtime-3.7/-/runtime-3.7-3.0.16.tgz#867f33ad3e10fad304629302852bac209368ad44"
+  integrity sha512-rGDVCaFdoqyt0agjtKu5HUEH1fPxMYvLFfsggP6qeaGd6ZCUgbYZsKcyC3iqHoLEJ7/ypBuzZMwuSkMVBY9GYg==
   dependencies:
-    "@pixi-spine/base" "~3.1.2"
+    "@pixi-spine/base" "~3.0.16"
 
-"@pixi-spine/runtime-3.8@~3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@pixi-spine/runtime-3.8/-/runtime-3.8-3.1.2.tgz#be0fe73ce75384d3815a729c826b09c43a9c3db4"
-  integrity sha512-AgS3mUC+5HQ/ehJO5Wo4oBoLg8F+tssF5WXi3FnnjqOaMcO+Ag232ForoL2iYHW40TKx0xMi5MpXsSafgS1i1A==
+"@pixi-spine/runtime-3.8@~3.0.16":
+  version "3.0.16"
+  resolved "https://registry.yarnpkg.com/@pixi-spine/runtime-3.8/-/runtime-3.8-3.0.16.tgz#4f451fbe8819f6ee1445b5f24b9c9e135756425e"
+  integrity sha512-CM0gKZc04jSnDUQp3CFCfaOmSLIRaZ0NnI8CKLZVVl91W45TjWKtWjFEg0HNRb+f1xvaVZ6O/7M6pTunWvV7GQ==
   dependencies:
-    "@pixi-spine/base" "~3.1.2"
+    "@pixi-spine/base" "~3.0.16"
 
-"@pixi-spine/runtime-4.1@~3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@pixi-spine/runtime-4.1/-/runtime-4.1-3.1.2.tgz#43aa99b71dca01a962db7dee04a38e2fe167d33e"
-  integrity sha512-XtaKAuLTtJ3o3llcUTr0d94dnRTyYHlss+x4VsYm1H38r4DUmQTBS13nisW0pgS3fY60D8AbEJkYVW7mwokxag==
+"@pixi-spine/runtime-4.0@~3.0.16":
+  version "3.0.16"
+  resolved "https://registry.yarnpkg.com/@pixi-spine/runtime-4.0/-/runtime-4.0-3.0.16.tgz#9f5297bde593d2c47a9338a6507b75508e128c7c"
+  integrity sha512-bcatHHNvPOcwa/YzdaWw4FLagRDnkP/tlW1d+ukwE4CEMVE26SNzNtO+xzRDuFqCC8pipPEZZ1TKpZb5j9u9zw==
   dependencies:
-    "@pixi-spine/base" "~3.1.2"
+    "@pixi-spine/base" "~3.0.16"
 
 "@pixi/accessibility@6.4.2":
   version "6.4.2"
@@ -1176,6 +1176,56 @@
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/@pixi/app/-/app-6.4.2.tgz#d24e1fe4cb415e8dd7f2fd26a8e59969debee3ca"
   integrity sha512-r0cTQan9ST0N+QmaaZQso7q0Q/lk9pUXB7dez+2vrLEbP8TAnLym2V2H+ChN6TwD+EoX6qXD7oFohNbwPedNyA==
+
+"@pixi/canvas-display@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-display/-/canvas-display-6.4.2.tgz#3641eb07db542c0e3fc80fb9110b245dbe712887"
+  integrity sha512-RoHJLcLkl4w3a3HrWhkvB8Tu9V0GWIxOcdM81o58rBFhi+BWC4MEuiqkQ/6AUXaaCSYV4dIbyiEbrxb7fJM57g==
+
+"@pixi/canvas-extract@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-extract/-/canvas-extract-6.4.2.tgz#224ca7399fb0f7e0f551b5c437357b4078a68cdd"
+  integrity sha512-BNddDRWD0Eejn7pozqTJkmfQNVcwx9r++aAFZ4DOqXJji84G57M4eXkdM22+N4j5hgxxxiCTZCkYUmCIk9Y/RQ==
+
+"@pixi/canvas-graphics@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-graphics/-/canvas-graphics-6.4.2.tgz#6ed2114200dead64b615681f0a1da2d3aa83d278"
+  integrity sha512-nulzicZ5X3wD4kiRxD9PCxcCGegNCs52x8tY380UVjMbxNPjtrbu1BWGtMDRd9TqJLsPc9GnesfYGTxDtNGOaA==
+
+"@pixi/canvas-mesh@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-mesh/-/canvas-mesh-6.4.2.tgz#7615fb8d0df9b265f8fbca6b47f89e9d47eb392e"
+  integrity sha512-7In1N4/8T2xYYG1FvDpfR19GFqltezyZhWwz0FDzglBikDlDmE/vWRzfttf6ya6SOReK2fbfzfgIHdr+xHUZmw==
+
+"@pixi/canvas-particle-container@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-particle-container/-/canvas-particle-container-6.4.2.tgz#9f1198201b785a072f913f2b0ce650b47574c945"
+  integrity sha512-Q/OW1Cjl556kPeqHDngBOHYorbyxNe7xAYDeEdPqaa6YnIc5Ab0DnbSSJurElacmbs3RR8n6a6pURipnYBdxnQ==
+
+"@pixi/canvas-prepare@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-prepare/-/canvas-prepare-6.4.2.tgz#7ba0b7dbfd9d8d4f8fb1da07afddc7fd41860639"
+  integrity sha512-/YBlj7aoOezttPIWU+5+OAw3I14tUd5UyDBeSLDm/GAxwWsO/38whIAm3LZ0I3/lIEdoOiK4PWgN92yfQnFpew==
+
+"@pixi/canvas-renderer@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-renderer/-/canvas-renderer-6.4.2.tgz#cd73279918f3c61a09645d5e2bdae3585ffd7c44"
+  integrity sha512-NnVT61LlzCk80FGl/imp8zVg6cxinyFk7uljTYJBPJTM6PBFdn/LD+H3wcdbggjNWVSfqwYXVM6gN5Ce22tONg==
+
+"@pixi/canvas-sprite-tiling@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-sprite-tiling/-/canvas-sprite-tiling-6.4.2.tgz#cfbe56f3988dcca64504a0cbb6cbf9dc93610049"
+  integrity sha512-76kHPSsx/AtZQMrgKKqAajj2QyfH0UzJ4sioC9TlsgVaDkNyWSHK86RmWhR0BNZrcJCvarZDc5aRF6kMF3OB4Q==
+
+"@pixi/canvas-sprite@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-sprite/-/canvas-sprite-6.4.2.tgz#1da848f3bc800ae5e33f17e38e507694176479d7"
+  integrity sha512-PsI3x3ytfhg3iUf1ItkNOO1rzZfX/rjBFxPu43xjGdwA/sk+5Ut8J2hr7Wgl7glRO7vcu2j1DVfX2cp/NHk1GA==
+
+"@pixi/canvas-text@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-text/-/canvas-text-6.4.2.tgz#353297a4abc21a2221e0fbca96e2cadd78a166c5"
+  integrity sha512-msOLUXQe/NpwzqMXms/AYFzm4vC1lpDtavPDEpT1sjXBjHMT+ecgPdFqidKDc9XfeFEPQUH3syTlLc23QISVFQ==
 
 "@pixi/compressed-textures@6.4.2":
   version "6.4.2"
@@ -4420,19 +4470,36 @@ pify@^4.0.1:
   resolved "https://registry.yarnpkg.com/pify/-/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
   integrity sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==
 
-pixi-spine@3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/pixi-spine/-/pixi-spine-3.1.2.tgz#f63c5c566c2e74eae3e0c99da172f67404227398"
-  integrity sha512-rTTwXhBl5gZFZ793zdM/to0bifU8K4aa1gD0ilOiCqC/pgw5OxCcKnoRW3i05ythjzI3GlN6G0MDblOe2myr3w==
+pixi-spine@3.0.16:
+  version "3.0.16"
+  resolved "https://registry.yarnpkg.com/pixi-spine/-/pixi-spine-3.0.16.tgz#08d227fc83af500bbad59d5ac9151afd951e17b8"
+  integrity sha512-Gpxn0L2bUDITGJaxAYrFFw1JAogePIwu0Sg5PVgEx75ns8bhPngeW/0OALI1js6ZFsPOCEQ03ObFDeZJkO8dtg==
   dependencies:
-    "@pixi-spine/base" "~3.1.2"
-    "@pixi-spine/loader-base" "~3.1.2"
-    "@pixi-spine/loader-uni" "~3.1.2"
-    "@pixi-spine/runtime-3.7" "~3.1.2"
-    "@pixi-spine/runtime-3.8" "~3.1.2"
-    "@pixi-spine/runtime-4.1" "~3.1.2"
+    "@pixi-spine/base" "~3.0.16"
+    "@pixi-spine/loader-base" "~3.0.16"
+    "@pixi-spine/loader-uni" "~3.0.16"
+    "@pixi-spine/runtime-3.7" "~3.0.16"
+    "@pixi-spine/runtime-3.8" "~3.0.16"
+    "@pixi-spine/runtime-4.0" "~3.0.16"
 
-pixi.js@~6.4.2:
+pixi.js-legacy@6.4.2:
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/pixi.js-legacy/-/pixi.js-legacy-6.4.2.tgz#a1a512e959558c9312355edcca95076f4ddf1617"
+  integrity sha512-W3q7wC8MHFLAn9PLMSYfFkOqsfzOvmQ3yAasLu4U8RxmMR7k8c/9+wYWtF6rNU2aitDkHy48sbqvn/ROwbWpxg==
+  dependencies:
+    "@pixi/canvas-display" "6.4.2"
+    "@pixi/canvas-extract" "6.4.2"
+    "@pixi/canvas-graphics" "6.4.2"
+    "@pixi/canvas-mesh" "6.4.2"
+    "@pixi/canvas-particle-container" "6.4.2"
+    "@pixi/canvas-prepare" "6.4.2"
+    "@pixi/canvas-renderer" "6.4.2"
+    "@pixi/canvas-sprite" "6.4.2"
+    "@pixi/canvas-sprite-tiling" "6.4.2"
+    "@pixi/canvas-text" "6.4.2"
+    pixi.js "6.4.2"
+
+pixi.js@6.4.2:
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/pixi.js/-/pixi.js-6.4.2.tgz#1cbac71a6535568f59a8684274792aa1bd271646"
   integrity sha512-8fjWgBfuSinIz0J5qXdsz10KAeDYyaa8XOcp4E1f+ug5ckE5rTPCcrSwQ8LNWA/YpdJ5irGOjv0rEA4sOcWVeQ==
