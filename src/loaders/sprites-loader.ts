@@ -68,7 +68,10 @@ export class SpriteLoader implements AssetLoaderInterface {
   private loadedResolver!: (value: any | undefined) => void;
 
   public constructor(_options: SpriteLoaderOptions) {
-    this.options = { ...OptionDefaults, ..._options };
+    this.options = {
+      ...OptionDefaults,
+      ..._options,
+    };
 
     this.loader = new Loader();
     this.loader.onError.add((loader, resource) => {
