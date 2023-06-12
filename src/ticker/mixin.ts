@@ -17,7 +17,7 @@ export class TickerMixin {
     }
 
     if (!this.__ticker) {
-      const name = get(this, 'name') || get(this, 'id') || `mixin-ticker-${++MIXIN_UUID}`;
+      const name = (get(this, 'name') || get(this, 'id') || `mixin-ticker-${++MIXIN_UUID}`) as string;
       this.__ticker = getTicker(name, true);
     }
 
