@@ -1,10 +1,21 @@
 import { CoreLibraryOptions, getAppVersion, isApp } from '../';
 import { last, split } from 'lodash-es';
-import { ISkeletonData } from 'pixi-spine';
 import { Loader, Texture } from 'pixi.js';
-import { AssetLoaderInterface } from '.';
+import { AssetLoaderInterface, ISkeletonData } from '.';
 import { getLogger } from '../logger';
 import { determineResolution } from '../screen';
+
+import { SkeletonBounds } from '@pixi-spine/runtime-3.8';
+import { Spine } from '@pixi-spine/loader-uni';
+import { SpineParser } from '@pixi-spine/loader-uni';
+
+export { SkeletonBounds };
+
+export { Spine };
+
+export { SpineParser };
+
+export * from '@pixi-spine/base';
 
 const Logger = getLogger('loader > spine');
 
