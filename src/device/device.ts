@@ -20,6 +20,10 @@ export const getDeviceId = (): string => {
   return `${info.platform}-${id.uuid}`;
 };
 
+export const getDeviceInfo = (): DeviceInfo => {
+  return info;
+};
+
 export const Platform = {
   IOS: 'ios',
   ANDROID: 'android',
