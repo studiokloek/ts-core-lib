@@ -17,7 +17,7 @@ export interface ViewOptions {
   target?: Container;
 }
 
-interface OtherViewOptions extends ViewOptions {
+export interface OtherViewOptions extends ViewOptions {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }

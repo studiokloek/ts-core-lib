@@ -7,7 +7,7 @@ import { PubSubMixin } from '../events';
 import { getLogger } from '../logger';
 import { TickerMixin } from '../ticker';
 import { Type } from '../util';
-import { ViewInterface, ViewOptions } from './view';
+import { OtherViewOptions, ViewInterface, ViewOptions } from './view';
 
 const Logger = getLogger('mediator');
 
@@ -49,7 +49,7 @@ export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) impl
     return mediator;
   }
 
-  protected addView<T extends View>(_viewClass: Type<T>, _options?: ViewOptions, _add = true, _register = true): T {
+  protected addView<T extends View>(_viewClass: Type<T>, _options?: ViewOptions | OtherViewOptions, _add = true, _register = true): T {
     const view: T = new _viewClass(_options);
 
     const target = get(_options, 'target') as Container;
