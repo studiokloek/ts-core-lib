@@ -9,7 +9,7 @@ ConcretePubSubJS.immediateExceptions = parameters.has('debug');
 
 const Logger = getLogger('events > pubsub');
 
-export type PubSubCallback = (data: unknown) => void;
+export type PubSubCallback = (data: any) => void;
 
 const table = new Map();
 function subscribe(message: string, callback: PubSubCallback): string | undefined {
