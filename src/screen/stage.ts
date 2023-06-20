@@ -673,32 +673,6 @@ export class ConcreteStage {
     const oldScreenOrientation = this.screenOrientation;
     this.forcedScreenOrientation = _value;
 
-    // // in app force orientation with plugin
-    // const orientation = get(window, 'screen.orientation') as ScreenOrientation;
-    // if (isApp() && orientation) {
-    //   if (this.forcedScreenOrientation) {
-    //     const lockOrientation = this.forcedScreenOrientation === OrientationMode.LANDSCAPE ? 'landscape-primary' : 'portrait-primary';
-
-    //     if (orientation.type !== lockOrientation) {
-    //       orientation
-    //         .lock(lockOrientation)
-    //         .then(() => {
-    //           Logger.debug(`Locked orientation to '${lockOrientation}'`);
-    //           return;
-    //         })
-    //         .catch(() => {
-    //           Logger.warn('Could not lock orientation on this device.');
-    //         });
-    //     }
-    //   } else {
-    //     orientation.unlock();
-    //   }
-    // } else {
-    //   if (_value !== oldScreenOrientation) {
-    //     this.onScreenResized();
-    //   }
-    // }
-
     if (!isApp() && _value !== oldScreenOrientation) {
       this.onScreenResized();
     }
