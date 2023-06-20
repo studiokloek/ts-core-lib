@@ -17,7 +17,7 @@ export const isApp = (): boolean => {
 };
 
 export const getDeviceId = (): string => {
-  return `${info.platform}-${id.uuid}`;
+  return `${info.platform}-${id.identifier}`;
 };
 
 export const getDeviceInfo = (): DeviceInfo => {

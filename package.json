@@ -36,13 +36,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@capacitor/app": "^4.1.1",
-    "@capacitor/core": "^4.8.0",
-    "@capacitor/device": "^4.1.0",
-    "@capacitor/network": "^4.1.0",
-    "@capacitor/preferences": "^4.0.2",
-    "@capacitor/splash-screen": "^4.2.0",
-    "@capacitor/status-bar": "^4.1.1",
+    "@capacitor/app": "^5.0.3",
+    "@capacitor/core": "^5.0.5",
+    "@capacitor/device": "^5.0.4",
+    "@capacitor/network": "^5.0.4",
+    "@capacitor/preferences": "^5.0.4",
+    "@capacitor/splash-screen": "^5.0.4",
+    "@capacitor/status-bar": "^5.0.4",
     "@types/fontfaceobserver": "2.1.0",
     "@types/howler": "2.2.7",
     "@types/lodash-es": "^4.17.7",
@@ -65,7 +65,7 @@
     "tslib": "^2.5.3"
   },
   "devDependencies": {
-    "@capacitor/cli": "^4.8.0",
+    "@capacitor/cli": "^5.0.5",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
     "eslint": "^8.42.0",
@@ -77,7 +77,6 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-unicorn": "^47.0.0",
-    "np": "^7.7.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.8",
     "prettier-package-json": "^2.8.0",
