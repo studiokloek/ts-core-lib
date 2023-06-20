@@ -187,6 +187,15 @@ export class ConcreteStage {
 
     // een keer renderen zodat we geen zwarte flits zien
     this.render();
+
+    this.initDebug();
+  }
+
+  private initDebug(): void {
+    if (CoreDebug.isEnabled()) {
+      (globalThis as any).__PIXI_STAGE__ = this._view;
+      (globalThis as any).__PIXI_RENDERER__ = this.renderer;
+    }
   }
 
   private connectToTarget(): void {
