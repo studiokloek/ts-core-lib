@@ -223,7 +223,7 @@ export class ConcreteTicker {
 
   public set timeScale(_value: number) {
     // helemaal 0 kan niet...
-    const value = _value ?? 0.000_000_000_1;
+    const value = _value || 0.000_000_000_1;
 
     if (!this.isRunning) {
       this.beforeSleepTimeScale = value;

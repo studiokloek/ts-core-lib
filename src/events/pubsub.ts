@@ -9,19 +9,21 @@ ConcretePubSubJS.immediateExceptions = parameters.has('debug');
 
 const Logger = getLogger('events > pubsub');
 
+export type PubSubCallback = (data: unknown) => void;
+
 const table = new Map();
-function subscribe(message: string, func: Function): string | undefined {
+function subscribe(message: string, callback: PubSubCallback): string | undefined {
   if (isEmpty(message)) {
     Logger.error('No message provided for PubSub.subscribe().');
     return;
   }
 
-  if (typeof func !== 'function') {
+  if (typeof callback !== 'function') {
     Logger.error(`No valid function provided for PubSub.subscribe(${message}).`);
     return;
   }
 
-  let id = table.get(func);
+  let id = table.get(callback);
 
   if (id) {
     return id;
@@ -29,28 +31,28 @@ function subscribe(message: string, func: Function): string | undefined {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   id = ConcretePubSubJS.subscribe(message, (_message: any, data: any) => {
-    func(data);
+    callback(data);
   });
 
-  table.set(func, id);
+  table.set(callback, id);
 
   return id;
 }
 
-function subscribeOnce(message: string, func: Function): string | undefined {
+function subscribeOnce(message: string, callback: PubSubCallback): string | undefined {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const id = subscribe(message, (data: any) => {
     if (id) {
       unsubscribe(id);
     }
 
-    func(data);
+    callback(data);
   });
 
   return id;
 }
 
-function _doUnsubscribe(value: Function | string): void {
+function _doUnsubscribe(value: PubSubCallback | string): void {
   if (typeof value === 'function') {
     ConcretePubSubJS.unsubscribe(table.get(value));
     table.delete(value);
@@ -59,21 +61,31 @@ function _doUnsubscribe(value: Function | string): void {
   }
 }
 
-function unsubscribe(value: Function | string | (Function | string)[]): void {
-  // async to make sure event in this tick still take place
-  Delayed.async(() => {
+function unsubscribe(value: PubSubCallback | string | (PubSubCallback | string)[], _async = false): void {
+  if (_async) {
+    // async to make sure event in this tick still take place
+    Delayed.async(() => {
+      if (isArrayLikeObject(value)) {
+        for (const v of value as []) {
+          _doUnsubscribe(v);
+        }
+      } else {
+        _doUnsubscribe(value);
+      }
+    });
+  } else {
     if (isArrayLikeObject(value)) {
-      (value as []).forEach((v: Function | string) => {
-        unsubscribe(v);
-      });
+      for (const v of value as []) {
+        _doUnsubscribe(v);
+      }
     } else {
       _doUnsubscribe(value);
     }
-  });
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function publish(message: string, data?: any, report: boolean = false): boolean {
+function publish(message: string, data?: any, report = false): boolean {
   if (isEmpty(message)) {
     Logger.error('No message provided for Pubsub.publish()');
   }
@@ -88,7 +100,7 @@ function publish(message: string, data?: any, report: boolean = false): boolean 
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function publishSync(message: string, data?: any, report: boolean = false): boolean {
+function publishSync(message: string, data?: any, report = false): boolean {
   if (isEmpty(message)) {
     throw new Error('No message provided for Pubsub.publish()');
   }
@@ -106,14 +118,14 @@ function publishSync(message: string, data?: any, report: boolean = false): bool
 
 export class PubSubMixin {
   private __pubsubSubscriptions: { [key: string]: string } = {};
-  protected subscribe(message: string, func: Function): void {
+  protected subscribe(message: string, callback: PubSubCallback): void {
     // bestaat deze al?
     if (this.__pubsubSubscriptions[message]) {
       return;
     }
 
     // aanmelden
-    const id = subscribe(message, func);
+    const id = subscribe(message, callback);
 
     // bewaren
     if (id) {
@@ -138,12 +150,12 @@ export class PubSubMixin {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected publish(message: string, data?: any, report: boolean = false): boolean {
+  protected publish(message: string, data?: any, report = false): boolean {
     return publish(message, data, report);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected publishSync(message: string, data?: any, report: boolean = false): boolean {
+  protected publishSync(message: string, data?: any, report = false): boolean {
     return publishSync(message, data, report);
   }
 }
