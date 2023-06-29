@@ -1,12 +1,13 @@
 // @ts-nocheck
 
 /*!
+ *
  * Dit is een aangepaste kopie van de plugin met ondersteuning voor mixins
  *
- * PixiPlugin 3.11.1
+ * PixiPlugin 3.12.2
  * https://greensock.com
  *
- * @license Copyright 2008-2022, GreenSock. All rights reserved.
+ * @license Copyright 2008-2023, GreenSock. All rights reserved.
  * Subject to the terms at https://greensock.com/standard-license or for
  * Club GreenSock members, the agreement issued with that membership.
  * @author: Jack Doyle, jack@greensock.com
@@ -30,6 +31,7 @@ let gsap,
   _lumR = 0.212_671,
   _lumG = 0.715_16,
   _lumB = 0.072_169,
+  _filterClass = (name) => (_isFunction(_PIXI[name]) ? _PIXI[name] : _PIXI.filters[name]), // in PIXI 7.1, filters moved from PIXI.filters to just PIXI
   _applyMatrix = (m, m2) => {
     let temporary = [],
       index = 0,
@@ -121,7 +123,7 @@ let gsap,
   },
   _setContrast = (m, n) => _applyMatrix([n, 0, 0, 0, 0.5 * (1 - n), 0, n, 0, 0, 0.5 * (1 - n), 0, 0, n, 0, 0.5 * (1 - n), 0, 0, 0, 1, 0], m),
   _getFilter = (target, type) => {
-    let filterClass = _PIXI.filters[type],
+    let filterClass = _filterClass(type),
       filters = target.filters || [],
       index = filters.length,
       filter;
@@ -145,7 +147,8 @@ let gsap,
     plugin._props.push(p);
   },
   _applyBrightnessToMatrix = (brightness, matrix) => {
-    let temporary = new _PIXI.filters.ColorMatrixFilter();
+    let filterClass = _filterClass('ColorMatrixFilter'),
+      temporary = new filterClass();
     temporary.matrix = matrix;
     temporary.brightness(brightness, true);
     return temporary.matrix;
@@ -190,7 +193,7 @@ let gsap,
       }
     } else {
       matrix = [..._idMatrix];
-      if (v.contrast != undefined) {
+      if (v.contrast != null) {
         matrix = _setContrast(matrix, +v.contrast);
         _addColorMatrixFilterCacheTween('contrast', pg, cache, v);
       } else if (cache.contrast !== 1) {
@@ -200,7 +203,7 @@ let gsap,
           _addColorMatrixFilterCacheTween('contrast', pg, cache, _CMFdefaults);
         }
       }
-      if (v.hue != undefined) {
+      if (v.hue != null) {
         matrix = _setHue(matrix, +v.hue);
         _addColorMatrixFilterCacheTween('hue', pg, cache, v);
       } else if (cache.hue) {
@@ -210,7 +213,7 @@ let gsap,
           _addColorMatrixFilterCacheTween('hue', pg, cache, _CMFdefaults);
         }
       }
-      if (v.brightness != undefined) {
+      if (v.brightness != null) {
         matrix = _applyBrightnessToMatrix(+v.brightness, matrix);
         _addColorMatrixFilterCacheTween('brightness', pg, cache, v);
       } else if (cache.brightness !== 1) {
@@ -220,7 +223,7 @@ let gsap,
           _addColorMatrixFilterCacheTween('brightness', pg, cache, _CMFdefaults);
         }
       }
-      if (v.colorize != undefined) {
+      if (v.colorize != null) {
         v.colorizeAmount = 'colorizeAmount' in v ? +v.colorizeAmount : 1;
         matrix = _colorize(matrix, v.colorize, v.colorizeAmount);
         _addColorMatrixFilterCacheTween('colorize', pg, cache, v);
@@ -233,7 +236,7 @@ let gsap,
           _addColorMatrixFilterCacheTween('colorizeAmount', pg, cache, _CMFdefaults);
         }
       }
-      if (v.saturation != undefined) {
+      if (v.saturation != null) {
         matrix = _setSaturation(matrix, +v.saturation);
         _addColorMatrixFilterCacheTween('saturation', pg, cache, v);
       } else if (cache.saturation !== 1) {
@@ -332,7 +335,7 @@ for (index = 0; index < _xyContexts.length; index++) {
 }
 
 export const PixiPlugin = {
-  version: '3.11.1',
+  version: '3.12.2',
   name: 'pixi',
   register(core, Plugin, propertyTween) {
     gsap = core;
@@ -343,24 +346,20 @@ export const PixiPlugin = {
   registerPIXI(pixi) {
     _PIXI = pixi;
   },
-  init(target, values, tween, index, targets) {
+  init(target, values) {
     _PIXI || _initCore();
     // aangepast door martijn@studiokloek.nl om mixins te ondersteunen
     if (!_PIXI || (!(target instanceof _PIXI.DisplayObject) && !hasMixin(target, _PIXI.DisplayObject))) {
-      console.error(target, 'is not a DisplayObject or PIXI was not found. PixiPlugin.registerPIXI(PIXI);');
+      _warn(target, 'is not a DisplayObject or PIXI was not found. PixiPlugin.registerPIXI(PIXI);');
       return false;
     }
-    let context, axis, value, colorMatrix, filter, p, padding, index_, data;
+
+    let context, axis, value, colorMatrix, filter, p, padding, index, data;
     for (p in values) {
       context = _contexts[p];
       value = values[p];
       if (context) {
-        axis = ~p
-          .charAt(p.length - 1)
-          .toLowerCase()
-          .indexOf('x')
-          ? 'x'
-          : 'y';
+        axis = ~p.at(-1).toLowerCase().indexOf('x') ? 'x' : 'y';
         this.add(target[context], axis, target[context][axis], context === 'skew' ? _degreesToRadians(value) : value, 0, 0, 0, 0, 0, 1);
       } else if (p === 'scale' || p === 'anchor' || p === 'pivot' || p === 'tileScale') {
         this.add(target[p], 'x', target[p].x, value);
@@ -378,18 +377,18 @@ export const PixiPlugin = {
         this.add(filter, p, filter[p], value);
         if (values.blurPadding !== 0) {
           padding = values.blurPadding || Math.max(filter[p], value) * 2;
-          index_ = target.filters.length;
-          while (--index_ > -1) {
-            target.filters[index_].padding = Math.max(target.filters[index_].padding, padding); //if we don't expand the padding on all the filters, it can look clipped.
+          index = target.filters.length;
+          while (--index > -1) {
+            target.filters[index].padding = Math.max(target.filters[index].padding, padding); //if we don't expand the padding on all the filters, it can look clipped.
           }
         }
       } else if (_colorProperties[p]) {
         if ((p === 'lineColor' || p === 'fillColor') && target instanceof _PIXI.Graphics) {
           data = (target.geometry || target).graphicsData; //"geometry" was introduced in PIXI version 5
           this._pt = new PropertyTween(this._pt, target, p, 0, 0, _renderDirtyCache, { g: target.geometry || target });
-          index_ = data.length;
-          while (--index_ > -1) {
-            _addColorTween(_isV4 ? data[index_] : data[index_][`${p.slice(0, 4)}Style`], _isV4 ? p : 'color', value, this);
+          index = data.length;
+          while (--index > -1) {
+            _addColorTween(_isV4 ? data[index] : data[index][`${p.slice(0, 4)}Style`], _isV4 ? p : 'color', value, this);
           }
         } else {
           _addColorTween(target, p, value, this);
