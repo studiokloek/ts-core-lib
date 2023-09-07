@@ -130,6 +130,11 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     // ook toevoegen?
     if (_styleOverwriteOrTargetOrAdd !== false && _targetOrAdd !== false && _add !== false) {
       text.addToTarget();
+
+      // als we al klaar zijn, gelijk laten zien
+      if (this.isPrepared) {
+        text.prepareAfterLoad();
+      }
     }
 
     if (_register) {
