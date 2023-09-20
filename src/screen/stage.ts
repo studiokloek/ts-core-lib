@@ -375,11 +375,9 @@ export class ConcreteStage {
 
     if (options.orientation === OrientationMode.LANDSCAPE) {
       // TODO dit in een landscape project testen
-      // const deltaWidth = (this._width - this._height) * this.scale.x;
-      // this._aspect = mapNumber(deltaWidth / (this.defaultHeight * this.scale.x), 0.777_777_777_78, 1.166_666_666_67, 1, 0.820_512_82, true, 5);
       this._aspect = round(this.scale.y / this.scale.x, 5);
     } else {
-      const deltaHeight = (this._height - this._width) * this.scale.x;
+      const deltaHeight = this._height - this._width;
       this._aspect = mapNumber(deltaHeight / (this.defaultWidth * this.scale.x), 0.777_777_777_78, 1.166_666_666_67, 1, 0.820_512_82, true, 5);
     }
 
