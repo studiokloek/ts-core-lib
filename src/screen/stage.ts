@@ -32,7 +32,7 @@ import { AppEvent, PubSub } from '../events';
 import { getLogger } from '../logger';
 import { restoreTickerTimeAfterSleep, setTickerGlobalTimeScale, storeTickerTimeBeforeSleep } from '../ticker';
 import { Tween } from '../tween';
-import { constrainNumber } from '../util/math';
+import { constrainNumber, mapNumber } from '../util/math';
 import { OrientationMode, ResolutionMode } from './constants';
 import { determineResolution } from './resolution';
 import { StageInfo } from './stageinfo';
@@ -373,7 +373,15 @@ export class ConcreteStage {
     this.position.x = round(Screen.width - this.width) * 0.5;
     this.position.y = round(Screen.height - this.height) * 0.5;
 
-    this._aspect = options.orientation === OrientationMode.LANDSCAPE ? round(this.scale.y / this.scale.x, 5) : round(this.scale.x / this.scale.y, 5);
+    if (options.orientation === OrientationMode.LANDSCAPE) {
+      // TODO dit in een landscape project testen
+      // const deltaWidth = (this._width - this._height) * this.scale.x;
+      // this._aspect = mapNumber(deltaWidth / (this.defaultHeight * this.scale.x), 0.777_777_777_78, 1.166_666_666_67, 1, 0.820_512_82, true, 5);
+      this._aspect = round(this.scale.y / this.scale.x, 5);
+    } else {
+      const deltaHeight = (this._height - this._width) * this.scale.x;
+      this._aspect = mapNumber(deltaHeight / (this.defaultWidth * this.scale.x), 0.777_777_777_78, 1.166_666_666_67, 1, 0.820_512_82, true, 5);
+    }
 
     // afronden
     this._width = ceil(this._width);
