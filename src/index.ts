@@ -51,3 +51,7 @@ export async function initCoreLibrary(_options?: ICoreLibraryOptions): Promise<v
   initScreen();
   initLogger();
 }
+
+// libs
+export { hasMixin, Mixin } from 'ts-mixer';
+export { AsyncEvent, SyncEvent } from 'ts-events';
