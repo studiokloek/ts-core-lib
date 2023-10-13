@@ -349,8 +349,13 @@ export const PixiPlugin = {
   init(target, values) {
     _PIXI || _initCore();
     // aangepast door martijn@studiokloek.nl om mixins te ondersteunen
-    if (!_PIXI || (!(target instanceof _PIXI.DisplayObject) && !hasMixin(target, _PIXI.DisplayObject))) {
-      _warn(target, 'is not a DisplayObject or PIXI was not found. PixiPlugin.registerPIXI(PIXI);');
+    if (!_PIXI) {
+      _warn('PIXI was not found. PixiPlugin.init();');
+      return false;
+    }
+
+    if (!(target instanceof _PIXI.DisplayObject) && !hasMixin(target, _PIXI.DisplayObject)) {
+      _warn(['Target is not a DisplayObject or PIXI was not found. PixiPlugin.init();', target]);
       return false;
     }
 
