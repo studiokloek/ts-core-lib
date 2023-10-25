@@ -235,6 +235,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
   // @ts-ignore
   public get width(): number {
     if (this.texture && this.texture !== Texture.EMPTY) {
+      // @ts-ignore
       return super.width;
     } else if (this.asset) {
       return this.asset.width * this.scale.x;
@@ -244,18 +245,25 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
   }
 
   public set width(value: number) {
+    // @ts-ignore
     super.width = value;
   }
 
   // @ts-ignore
   public get height(): number {
     if (this.texture && this.texture !== Texture.EMPTY) {
+      // @ts-ignore
       return super.height;
     } else if (this.asset) {
       return this.asset.height * this.scale.y;
     } else {
       return 0;
     }
+  }
+
+  public set height(value: number) {
+    // @ts-ignore
+    super.height = value;
   }
 
   public get isFilled(): boolean {

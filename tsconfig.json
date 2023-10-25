@@ -8,8 +8,8 @@
       ]
     },
     "outDir": "./lib/",
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ES5",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "inlineSourceMap": true,
     "declaration": true,
