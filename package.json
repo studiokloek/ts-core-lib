@@ -11,30 +11,27 @@
     "url": "https://github.com/studiokloek/ts-core-lib/issues"
   },
   "scripts": {
-    "clean": "rimraf ./lib",
-    "release": "yarn build && np --any-branch",
-    "type-check": "tsc --noEmit",
-    "type-check:watch": "yarn type-check -- --watch",
-    "build": "yarn clean && yarn build:types && yarn build:js",
-    "build:watch": "babel src --watch --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
-    "build:types": "tsc --emitDeclarationOnly",
-    "build:script": "tsc",
-    "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline"
+    "types/check": "tsc --noEmit",
+    "types/watch": "tsc --noEmit --watch",
+    "build": "run-s build/clean build/script",
+    "build/clean": "rimraf ./lib",
+    "build/script": "tsc"
   },
   "np": {
     "tests": false
   },
+  "type": "module",
   "engines": {
     "node": ">=14.13.1 || >=16.0.0"
   },
   "files": [
     "lib/*"
   ],
+  "sideEffects": false,
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@babel/runtime-corejs3": "^7.23.2",
     "@capacitor/core": "^2.5.0",
     "@types/fontfaceobserver": "2.1.2",
     "@types/howler": "2.2.10",
@@ -46,6 +43,7 @@
     "gsap": "^3.12.2",
     "howler": "^2.2.4",
     "lodash-es": "^4.17.21",
+    "lodash-decorators": "^6.0.1",
     "pixi-spine": "3.0.16",
     "pixi.js-legacy": "6.4.2",
     "pubsub-js": "^1.9.4",
@@ -57,19 +55,8 @@
     "ts-mixer": "5.4.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.23.0",
-    "@babel/core": "^7.23.2",
-    "@babel/plugin-proposal-decorators": "^7.23.2",
-    "@babel/plugin-transform-class-properties": "^7.22.5",
-    "@babel/plugin-transform-nullish-coalescing-operator": "^7.22.11",
-    "@babel/plugin-transform-object-rest-spread": "^7.22.15",
-    "@babel/plugin-transform-optional-chaining": "^7.23.0",
-    "@babel/plugin-transform-runtime": "^7.23.2",
-    "@babel/preset-env": "^7.23.2",
-    "@babel/preset-typescript": "^7.23.2",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
-    "core-js": "^3.33.1",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-formatter-pretty": "^4.1.0",
@@ -79,12 +66,11 @@
     "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-unicorn": "^27.0.0",
-    "lodash-decorators": "^6.0.1",
-    "np": "^7.7.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.8.8",
     "prettier-package-json": "^2.8.0",
     "rimraf": "^3.0.2",
-    "typescript": "^4.8.4"
+    "typescript": "4.9.5"
   },
   "browserslist": [
     "last 2 Chrome versions",

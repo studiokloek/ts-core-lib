@@ -3,18 +3,28 @@
     "rootDir": "./src/",
     "baseUrl": "./src",
     "paths": {
-      "*": ["@types/*"]
+      "*": [
+        "@types/*"
+      ]
     },
     "outDir": "./lib/",
-
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "declaration": true,
     "removeComments": false,
     "importHelpers": false,
-    "lib": ["dom", "es5", "es2015.core", "es2015.iterable", "es2015.promise", "es2015.symbol", "es2015.symbol.wellknown", "es2015.proxy"],
+    "lib": [
+      "dom",
+      "es5",
+      "es2015.core",
+      "es2015.iterable",
+      "es2015.promise",
+      "es2015.symbol",
+      "es2015.symbol.wellknown",
+      "es2015.proxy"
+    ],
     "plugins": [],
     "inlineSources": true,
     "downlevelIteration": false,
@@ -27,20 +37,21 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noUnusedParameters": true,
-
     "pretty": true,
     "noErrorTruncation": false,
-
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "esModuleInterop": true,
-
     "noImplicitAny": true,
-
     "allowJs": true,
     "checkJs": true
   },
-  "exclude": ["node_modules", "lib"],
-  "include": ["src/**/*.ts"]
+  "exclude": [
+    "node_modules",
+    "lib"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ]
 }
