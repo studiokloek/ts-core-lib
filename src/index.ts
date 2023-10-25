@@ -26,8 +26,10 @@ export * from './util';
 import { initNetworkStatusDetection, getDeviceInfo } from './device';
 import { initScreen } from './screen';
 import { initLogger } from './logger';
+import { initTweens } from './tween';
 
 export async function initCoreLibrary(): Promise<void> {
+  initTweens();
   await Promise.all([initNetworkStatusDetection(), getDeviceInfo()]);
   initScreen();
   initLogger();
