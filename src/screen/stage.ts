@@ -374,7 +374,6 @@ export class ConcreteStage {
     this.position.y = round(Screen.height - this.height) * 0.5;
 
     if (options.orientation === OrientationMode.LANDSCAPE) {
-      // TODO dit in een landscape project testen
       this._aspect = round(this.scale.y / this.scale.x, 5);
     } else {
       const deltaHeight = this._height - this._width;

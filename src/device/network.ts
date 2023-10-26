@@ -6,7 +6,10 @@ const Logger = getLogger('device > network');
 
 Network.addListener('networkStatusChange', reportStatus);
 
-let currentStatus: ConnectionStatus;
+let currentStatus: ConnectionStatus = {
+  connected: false,
+  connectionType: 'unknown',
+};
 
 function reportStatus(status: ConnectionStatus): void {
   if (!status) {
@@ -38,14 +41,10 @@ export async function initNetworkStatusDetection(): Promise<void> {
 
   inited = true;
 
-  if (currentStatus) {
-    return;
-  }
-
   const status = await Network.getStatus();
   reportStatus(status);
 }
 
-export async function isOnline(): Promise<boolean> {
+export function isOnline(): boolean {
   return currentStatus.connected;
 }

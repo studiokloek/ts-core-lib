@@ -44,7 +44,7 @@ function getResponseError(_responseError: request.ResponseError): ResponseError 
 }
 
 async function checkNetworkStatus(): Promise<ResponseError | void> {
-  if (!(await isOnline())) {
+  if (!isOnline()) {
     return { type: ResponseErrorTypes.OFFLINE, message: 'Device is offline...', code: -1 };
   }
 }
