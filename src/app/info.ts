@@ -20,7 +20,7 @@ export const getAppVersion = (): string => {
     return info.version;
   } else if (AppData) {
     const { info } = AppData;
-    return info.version ? `v${info.version}` : 'unknown';
+    return info.version ? `${info.version}` : 'unknown';
   }
 
   return 'unknown';
