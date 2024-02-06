@@ -23,7 +23,7 @@ import {
   utils,
   AccessibilityManager,
 } from 'pixi.js';
-import { hexTostring } from '../util/color';
+import { hexToString } from '../util/color';
 import { Screen } from '.';
 import { CoreDebug } from '../debug';
 import { Delayed } from '../delay';
@@ -375,9 +375,12 @@ export class ConcreteStage {
 
     if (options.orientation === OrientationMode.LANDSCAPE) {
       this._aspect = round(this.scale.y / this.scale.x, 5);
+
+      const deltaWidth = this.width - this.height;
+      this._aspect = mapNumber(deltaWidth / (this.defaultHeight * this.scale.x), 0.333_333_333_333, 0.584_484_734_475, 1, 0, true, 5);
     } else {
       const deltaHeight = this._height - this._width;
-      this._aspect = mapNumber(deltaHeight / (this.defaultWidth * this.scale.x), 0.777_777_777_78, 1.166_666_666_67, 1, 0.820_512_82, true, 5);
+      this._aspect = mapNumber(deltaHeight / (this.defaultWidth * this.scale.x), 0.777_777_777_78, 1.166_666_666_67, 1, 0, true, 5);
     }
 
     // afronden
@@ -657,7 +660,7 @@ export class ConcreteStage {
     return this._height;
   }
 
-  public get aspect(): number {
+  public get aspectRatio(): number {
     return this._aspect;
   }
 
@@ -680,7 +683,7 @@ export class ConcreteStage {
   public setBackgroundColor(color: number, alpha = 1): void {
     this.renderer.backgroundAlpha = alpha;
     this.renderer.backgroundColor = color;
-    document.body.style.backgroundColor = alpha === 0 ? 'transparent' : hexTostring(color, alpha);
+    document.body.style.backgroundColor = alpha === 0 ? 'transparent' : hexToString(color, alpha);
   }
 
   public set forcedOrientation(_value: string) {
@@ -698,6 +701,10 @@ export class ConcreteStage {
 
   public get defaultHeight(): number {
     return this.currentSizeOptions ? this.currentSizeOptions.size.default.height : DefaultSizeOptions.size.default.height;
+  }
+
+  public mapAspectRatio(min: number, max: number): number {
+    return mapNumber(this._aspect, 0, 1, min, max, true, 5);
   }
 }
 

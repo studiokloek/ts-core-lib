@@ -56,7 +56,7 @@ export function rgbToHex(color: RGB): string {
   return `#${intToHex(color.r)}${intToHex(color.g)}${intToHex(color.b)}`;
 }
 
-export function hexTostring(hex: number, alpha?: number): string {
+export function hexToString(hex: number, alpha?: number): string {
   let hexString = hex.toString(16);
   hexString = '000000'.slice(0, Math.max(0, 6 - hexString.length)) + hexString;
   hexString = `#${hexString}`;
