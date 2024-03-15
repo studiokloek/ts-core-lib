@@ -374,8 +374,6 @@ export class ConcreteStage {
     this.position.y = round(Screen.height - this.height) * 0.5;
 
     if (options.orientation === OrientationMode.LANDSCAPE) {
-      this._aspect = round(this.scale.y / this.scale.x, 5);
-
       const deltaWidth = this.width - this.height;
       this._aspect = mapNumber(deltaWidth / (this.defaultHeight * this.scale.x), 0.333_333_333_333, 0.584_484_734_475, 0, 1, true, 5);
     } else {
@@ -384,8 +382,8 @@ export class ConcreteStage {
     }
 
     // afronden
-    this._width = ceil(this._width);
-    this._height = ceil(this._height);
+    this._width = round(this._width);
+    this._height = round(this._height);
 
     if (this.target) {
       Tween.set(this.target, {
