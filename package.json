@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@capacitor/app": "^5.0.7",
-    "@capacitor/core": "^5.7.2",
+    "@capacitor/core": "^5.7.4",
     "@capacitor/device": "^5.0.7",
     "@capacitor/network": "^5.0.7",
     "@capacitor/preferences": "^5.0.7",
@@ -65,7 +65,7 @@
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@capacitor/cli": "^5.7.2",
+    "@capacitor/cli": "^5.7.4",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "eslint": "^8.57.0",
