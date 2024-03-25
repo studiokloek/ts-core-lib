@@ -52,7 +52,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
       this.fillTexture();
     }
 
-    this.setDefaults(this.defaults, true);
+    // this.setDefaults(this.defaults, true);
   }
 
   public getAsset(): SpriteAsset | SpriteAssetWithMeta | undefined {
