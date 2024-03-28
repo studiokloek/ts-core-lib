@@ -1,4 +1,4 @@
-import { gsap} from 'gsap';
+import { gsap } from 'gsap';
 import { find, remove } from 'lodash-es';
 import { getLogger } from '../logger';
 import { Delayed } from './delay';
@@ -63,7 +63,7 @@ export class DelayedMixin {
     }
   }
 
-  protected remumeDelay(_callback: (...args: any[]) => void): void {
+  protected resumeDelay(_callback: (...args: any[]) => void): void {
     // welke items zijn dat
     const calls = gsap.getTweensOf(_callback);
 

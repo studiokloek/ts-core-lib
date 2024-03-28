@@ -130,14 +130,14 @@ export class TweenMixin {
     }
   }
 
-  protected killTweenOf(_target?: GSAPTweenTarget, _variables?: GSAPTweenVars): void {
+  protected killTweenOf(_target?: GSAPTweenTarget, _properties?: string): void {
     if (_target) {
       // haal uit lijst
       const tweensToKill = remove(this.__tweens, (item) => item.targets().includes(_target));
 
       // kill
       for (const tween of tweensToKill) {
-        tween.kill(_variables);
+        tween.kill(undefined, _properties);
       }
     }
   }
