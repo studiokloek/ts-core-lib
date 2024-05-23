@@ -41,7 +41,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     }
   }
 
-  public setAsset(_asset?: SpriteAsset | SpriteAssetWithMeta): void {
+  public setAsset(_asset?: SpriteAsset | SpriteAssetWithMeta, _useDefaults = true): void {
     this.asset = _asset;
 
     if (this.asset) {
@@ -52,7 +52,9 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
       this.fillTexture();
     }
 
-    // this.setDefaults(this.defaults, true);
+    if (_useDefaults) {
+      this.setDefaults(this.defaults, true);
+    }
   }
 
   public getAsset(): SpriteAsset | SpriteAssetWithMeta | undefined {
