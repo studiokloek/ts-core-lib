@@ -34,7 +34,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
   public constructor(_asset?: SpriteAsset, _defaults?: KloekSpriteDefaults) {
     super();
 
-    this.setAsset(_asset);
+    this.setAsset(_asset, false);
 
     if (_defaults) {
       this.setDefaults(_defaults);
@@ -119,7 +119,14 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     const asset = this.asset as SpriteAssetWithMeta;
     if (isSpriteAssetWithMeta(asset)) {
       // defaults meegegeven? dan deze gebruiken
-      if (defaults !== undefined) {
+      if (defaults === undefined) {
+        // niet dan alleen de standaard meta
+        defaults = {
+          x: asset.x,
+          y: asset.y,
+          zIndex: asset.zIndex,
+        };
+      } else {
         // check if anchor is set
         let anchor = { x: 0, y: 0 };
         if (defaults.anchor !== undefined) {
@@ -138,13 +145,6 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
           y: defaults.y ?? (asset.y + asset.height * anchor.y) * scale.y,
           zIndex: defaults.zIndex ?? asset.zIndex,
           alpha: defaults.alpha,
-        };
-      } else {
-        // niet dan alleen de standaard meta
-        defaults = {
-          x: asset.x,
-          y: asset.y,
-          zIndex: asset.zIndex,
         };
       }
     }
@@ -288,10 +288,10 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
 
     const sprite = new KloekSprite();
 
-    if (!isSpriteAsset(_asset)) {
-      Logger.warn('No valid sprite asset provided...');
-    } else {
+    if (isSpriteAsset(_asset)) {
       sprite.setAsset(_asset);
+    } else {
+      Logger.warn('No valid sprite asset provided...');
     }
 
     if (defaults) {
