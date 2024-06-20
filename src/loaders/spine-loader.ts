@@ -115,7 +115,7 @@ export class SpineLoader implements AssetLoaderInterface {
         const resource = _resources ? _resources[`${this.loadUrl}.json`] : undefined;
 
         if (!resource) {
-          Logger.error('Error accessing resource in loader...');
+          Logger.error(`Error accessing resource in loader... url[${this.loadUrl}]`);
           return resolve();
         }
 

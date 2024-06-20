@@ -69,7 +69,7 @@ export class SpriteLoader implements AssetLoaderInterface {
 
     this.loader = new Loader();
     this.loader.onError.add((loader, resource) => {
-      Logger.error('error loading', loader, resource);
+      Logger.error(`Error loading asset[${_options.assetName}] assetDirectory[${_options.assetDirectory}] numberOfParts[${_options.numberOfParts}] resolution[${_options.resolution}]`, loader, resource);
     });
 
     if (!isApp()) {
