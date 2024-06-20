@@ -28,15 +28,15 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@capacitor/app@^5.0.7":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@capacitor/app/-/app-5.0.7.tgz#f71e81320bcd504c400c1f503ba43a88ccac96e8"
-  integrity sha512-oad0jwQu+vgQDukeS9UV56yG10dlxkAGGl26IQpZlTmg3dTI9qSJtvhmlLfkF0nEtoj5IsVQUPE+NLH1oZkgGQ==
+"@capacitor/app@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@capacitor/app/-/app-5.0.8.tgz#6edd3396f722aa807e6c481dec3ed481c2d05c45"
+  integrity sha512-ClUPJG6Awkf5HncVCZQwLrnuugjU8TnACSJ1dKJb6QNCHv2jQzmXvB3KvTvxTZyWbh5EVvlla0qlobYyU1lb6A==
 
-"@capacitor/cli@^5.7.5":
-  version "5.7.5"
-  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-5.7.5.tgz#a5ca439ee10e67ea1005ebcab99701e9deea2626"
-  integrity sha512-CEgCXq3NNacS+9EptJXM+Cm915oB8eNPhiTP7ylKsQchrY0CGbeyO5y4A/oYnB/h4f+UiaX3ShlIOljx3+agqw==
+"@capacitor/cli@^5.7.6":
+  version "5.7.6"
+  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-5.7.6.tgz#fe6a92ab1daff69cd9d6524b24bef99e531a6feb"
+  integrity sha512-CDDcBF7wHm5v/j0dA2bls0vK954XlD1JCjMuTgLtjZMvWrIlTJAkwCQLkiqRhS2P63AXqfqQqkb/qs2RHc1zDQ==
   dependencies:
     "@ionic/cli-framework-output" "^2.2.5"
     "@ionic/utils-fs" "^3.1.6"
@@ -56,37 +56,37 @@
     tslib "^2.4.0"
     xml2js "^0.5.0"
 
-"@capacitor/core@^5.7.5":
-  version "5.7.5"
-  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-5.7.5.tgz#087cb45a072d0625c0a12ade36d027e4be9b9421"
-  integrity sha512-babBo26lgIyKkAOr/AbPq5wwi9I4uHDP0lBteJq7p4xZElA6tAA8mD3xRH1/4EKmZ4+acYpKmmyegX3zsVh37A==
+"@capacitor/core@^5.7.6":
+  version "5.7.6"
+  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-5.7.6.tgz#55cdc72b588888bbde2aa4730ab01fbdcdb4d547"
+  integrity sha512-YVCNegFg04Pm6Rfc6KbZT2wnxAUzhcyi3b+MWFj+FwUOOFNmnGkzxCFo4tQakXFblfOK6pU0Va5XuiNs1+Fnow==
   dependencies:
     tslib "^2.1.0"
 
-"@capacitor/device@^5.0.7":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@capacitor/device/-/device-5.0.7.tgz#f45d74008cbd4352f3e9eb816f2f8f4a177840b4"
-  integrity sha512-sTYzGktRVK6giQCsoFtw+IGkEPGmFvIwi0pfFej5TRND1UHidkNZSpgMFBbjCYPbwsqXTcR3boYPcmxvl5iuJg==
+"@capacitor/device@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@capacitor/device/-/device-5.0.8.tgz#1d84c4c7b326cbd57211a68f601436d0f7c5a57a"
+  integrity sha512-JKkoBwZBM2z6EnzPzjeRuAEtvKQQ+WwQ1eyBhtNwBygNczVTtpGeQTwEt8fZfdI7dDi/sxvh1M3Sc5jWGW14fw==
 
-"@capacitor/network@^5.0.7":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@capacitor/network/-/network-5.0.7.tgz#21d9f835d63bf08085e4d816668d98aef201e338"
-  integrity sha512-g+8SkNmkOyidaHnfKI9Ly8GNcx3VEwboehDXcTs5WU8bPuhCOEzbZnC0kFL5wwix3AoUQl8gEos6MtCey5cUIg==
+"@capacitor/network@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@capacitor/network/-/network-5.0.8.tgz#1ac7e639411eb42fdb8f5313145a1da130d2ac52"
+  integrity sha512-memV4MSSxDtdss42gF6FZbNuCwGXiovQ5Ppw51cU5Rw1mt+/itJTkrrlqhKcVWLGNsUrBarAKLyMpvSQT5v1bg==
 
-"@capacitor/preferences@^5.0.7":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@capacitor/preferences/-/preferences-5.0.7.tgz#a24c5a0b82fc5d07455b1a18cd8a28cc173f976e"
-  integrity sha512-JvfGP1m8nITWEFdBpKR9HXNeBjLKwO0q1pry7Z5lYrYmCrbyRBLWzaGZGll8py4KmGWL3F5+PZvhrpT4gPoeAQ==
+"@capacitor/preferences@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@capacitor/preferences/-/preferences-5.0.8.tgz#46ba54432d7c5b248b7a91736c9718a6b736198f"
+  integrity sha512-zzz8JC2NuZ+xdBP2Cfhu4uyRUMAFoxMl7l8w5ahQPzckyt7Fk/pWATXj6IcTm7DzbsKc8ryXSsYTkv9ZL3Pfmw==
 
-"@capacitor/splash-screen@^5.0.7":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@capacitor/splash-screen/-/splash-screen-5.0.7.tgz#edefca896365cac83c351f1ffc82d9d2f99d6661"
-  integrity sha512-2aAhhZPi7GU8DDs9dhH4OnMJ3rTscPS/TYKzm03fzhBby6ykSXY6HqKgaWdhfCR4TvLsHf0VKpWZu4ZHD0S7iQ==
+"@capacitor/splash-screen@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@capacitor/splash-screen/-/splash-screen-5.0.8.tgz#3662003f7142114a6e95ba954da51914e9af2f52"
+  integrity sha512-mDRJS9QFxL5UMN74gRr6cBhOtkZjWwdttPCjBJNgcMDJIGi9IAKRJuDGTsqSUbp6zWrPF4AW29Mu6qhXtHpHWg==
 
-"@capacitor/status-bar@^5.0.7":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@capacitor/status-bar/-/status-bar-5.0.7.tgz#a341e8dec9f93769bed4a42e8ad397e5df1b5287"
-  integrity sha512-KblB3gV2LDMEjx3fQoNBAzxb+Tr+2mv68SfFLLDCMiMUD3Eile2TAWRWd1yxy496pDFTOs2BJtup8++iuuuJ/w==
+"@capacitor/status-bar@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@capacitor/status-bar/-/status-bar-5.0.8.tgz#f00e21a99f79b06c36d61ad35ba78675fdefda54"
+  integrity sha512-ES/4ik3/6SV6RVXVVoMm5i7zanwZ+CBtNX6glhBHDHS0nR2m3Dmdxuk/BaFEZWT5bDn4xzg0LlnMsS8mlbUf+A==
 
 "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.4.0":
   version "4.4.0"
@@ -1366,10 +1366,10 @@ eslint-plugin-prettier@^4.2.1:
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-plugin-promise@^6.1.1:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-6.1.1.tgz#269a3e2772f62875661220631bd4dafcb4083816"
-  integrity sha512-tjqWDwVZQo7UIPMeDReOpUgHCmCiH+ePnVT+5zVapL0uuHnegBUs2smM13CzOs2Xb5+MHMRFTs9v24yjba4Oig==
+eslint-plugin-promise@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-6.2.0.tgz#e24ab0e3c0a25fa227d98d9ff612156b5af15945"
+  integrity sha512-QmAqwizauvnKOlifxyDj2ObfULpHQawlg/zQdgEixur9vl0CvZGv/LCJV2rtj3210QCoeGBzVMfMXqGAOr/4fA==
 
 eslint-plugin-unicorn@^47.0.0:
   version "47.0.0"
@@ -3373,6 +3373,11 @@ tslib@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.2.tgz#703ac29425e7b37cd6fd456e92404d46d1f3e4ae"
   integrity sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==
+
+tslib@^2.6.3:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.3.tgz#0438f810ad7a9edcde7a241c3d80db693c8cbfe0"
+  integrity sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==
 
 tsutils@^3.21.0:
   version "3.21.0"
