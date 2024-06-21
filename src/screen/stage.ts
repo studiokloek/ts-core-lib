@@ -22,6 +22,8 @@ import {
   Ticker as PixiTicker,
   utils,
   AccessibilityManager,
+  IRenderableObject,
+  IRendererRenderOptions,
 } from 'pixi.js';
 import { hexToString } from '../util/color';
 import { Screen } from '.';
@@ -186,7 +188,7 @@ export class ConcreteStage {
     Screen.resized.attach(this.onScreenResized);
 
     // een keer renderen zodat we geen zwarte flits zien
-    this.render();
+    this.update();
 
     this.initDebug();
   }
@@ -322,13 +324,13 @@ export class ConcreteStage {
 
     Logger.debug('Starting...');
 
-    GSAPTicker.add(this.render);
+    GSAPTicker.add(this.update);
   }
 
   @Bind()
-  private render(): void {
+  private update(): void {
     this.sharedTicker.update(GSAPTicker.time * 1000);
-    this.renderer.render(this._view);
+    this.render(this._view);
   }
 
   // RESIZE
@@ -614,7 +616,7 @@ export class ConcreteStage {
     w.document.title = 'Screenshot';
     w.document.body.style.backgroundColor = 'black';
 
-    this.render();
+    this.update();
 
     const img = new Image();
     img.src = this.renderer.view.toDataURL('image/png');
@@ -682,6 +684,11 @@ export class ConcreteStage {
     this.renderer.backgroundAlpha = alpha;
     this.renderer.backgroundColor = color;
     document.body.style.backgroundColor = alpha === 0 ? 'transparent' : hexToString(color, alpha);
+  }
+  
+
+  public render(displayObject: IRenderableObject, options?: IRendererRenderOptions): void {
+    this.renderer.render(displayObject, options);
   }
 
   public set forcedOrientation(_value: string) {
