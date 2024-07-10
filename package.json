@@ -1,6 +1,6 @@
 {
   "name": "@studiokloek/ts-core-lib",
-  "version": "2.7.11",
+  "version": "2.7.12",
   "description": "Core TypeScript lib for our projects.",
   "author": "Martijn Swart <opensource@studiokloek.nl> (https://studiokloek.nl)",
   "license": "MIT",
