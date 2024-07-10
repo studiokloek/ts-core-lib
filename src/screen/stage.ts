@@ -191,6 +191,8 @@ export class ConcreteStage {
     this.update();
 
     this.initDebug();
+
+    PubSub.publish(AppEvent.STAGE_READY);
   }
 
   private initDebug(): void {

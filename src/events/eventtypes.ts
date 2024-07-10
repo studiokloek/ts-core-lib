@@ -20,6 +20,7 @@ export const AppEvent = {
   RESIZED: 'resized',
   DEBUG_VALUE: 'debug_value',
   DATA_READY: 'data_ready',
+  STAGE_READY: 'stage_ready',
   MEDIATRIGGER_READY: 'mediatrigger_ready',
   READY: 'ready',
   LOAD_COMPLETE: 'load_complete',
