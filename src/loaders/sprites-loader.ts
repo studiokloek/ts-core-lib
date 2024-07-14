@@ -58,11 +58,11 @@ export class SpriteLoader implements AssetLoaderInterface {
   private loadUrlIndex: string[];
 
   private isLoading: boolean;
-  public isLoaded: boolean;
+  isLoaded: boolean;
 
   private loadedResolver!: (value: any | undefined) => void;
 
-  public constructor(_options: SpriteLoaderOptions) {
+  constructor(_options: SpriteLoaderOptions) {
     this.options = {
       ..._options,
     };
@@ -105,13 +105,13 @@ export class SpriteLoader implements AssetLoaderInterface {
     return textureResolution >= 2 ? '@2x' : '';
   }
 
-  public prepareForLoad(): Promise<void> {
+  prepareForLoad(): Promise<void> {
     return new Promise((resolve) => {
       this.loadedResolver = resolve;
     });
   }
 
-  public async load(): Promise<{ [key: string]: Texture } | undefined> {
+  async load(): Promise<{ [key: string]: Texture } | undefined> {
     if (this.isLoading) {
       Logger.error('Already loading...');
       return;
@@ -171,7 +171,7 @@ export class SpriteLoader implements AssetLoaderInterface {
     });
   }
 
-  public unload(): void {
+  unload(): void {
     // reset loader
     this.loader.reset();
 
@@ -202,11 +202,11 @@ export class SpriteLoader implements AssetLoaderInterface {
   }
 
   // TODO implement assetyype
-  public get data(): { [key: string]: Texture } {
+  get data(): { [key: string]: Texture } {
     return this.textures;
   }
 
-  public get type(): string {
+  get type(): string {
     return 'sprites';
   }
 }

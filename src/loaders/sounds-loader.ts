@@ -41,11 +41,11 @@ export class SoundsLoader implements AssetLoaderInterface {
   private numberToLoad: number;
 
   private isLoading: boolean;
-  public isLoaded: boolean;
+  isLoaded: boolean;
 
   private _loadedResolver!: (value?: any) => void;
 
-  public constructor(_options: SoundsLoaderOptions) {
+  constructor(_options: SoundsLoaderOptions) {
     this.options = { ..._options };
 
     this.numberDoneLoading = 0;
@@ -55,13 +55,13 @@ export class SoundsLoader implements AssetLoaderInterface {
     this.isLoading = false;
   }
 
-  public prepareForLoad(): Promise<void> {
+  prepareForLoad(): Promise<void> {
     return new Promise((resolve) => {
       this._loadedResolver = resolve;
     });
   }
 
-  public async load(): Promise<void> {
+  async load(): Promise<void> {
     if (this.isLoading) {
       Logger.error('Already loading...');
       return;
@@ -143,7 +143,7 @@ export class SoundsLoader implements AssetLoaderInterface {
     return _sounds;
   }
 
-  public unload(): void {
+  unload(): void {
     const sounds = this.getSoundsToLoad(this.options.assets);
 
     Logger.debug(`Un-loading #${sounds.length} sounds for '${this.options.assetName}'`);
@@ -165,11 +165,11 @@ export class SoundsLoader implements AssetLoaderInterface {
     }
   }
 
-  public get data(): SoundLibraryItem[] {
+  get data(): SoundLibraryItem[] {
     return SoundLibrary.getZoneSounds(this.options.assetName);
   }
 
-  public get type(): string {
+  get type(): string {
     return 'sounds';
   }
 }

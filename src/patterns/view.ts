@@ -40,12 +40,12 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
   protected isPrepared = false;
   protected isActive = false;
 
-  public constructor(_options?: ViewOptions | OtherViewOptions) {
+  constructor(_options?: ViewOptions | OtherViewOptions) {
     super();
     this.options = { ..._options };
   }
 
-  public addView<T extends View>(_viewClass: Type<T>, _options?: ViewOptions | OtherViewOptions, _add = true, _register = true): T {
+  addView<T extends View>(_viewClass: Type<T>, _options?: ViewOptions | OtherViewOptions, _add = true, _register = true): T {
     const view: T = new _viewClass(_options);
 
     const target = get(_options, 'target') as Container;
@@ -69,7 +69,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     return view;
   }
 
-  public addSprite(
+  addSprite(
     _asset?: SpriteAsset | SpriteAssetWithMeta,
     _defaults?: KloekSpriteDefaults,
     _targetOrAdd: Container | boolean = true,
@@ -108,7 +108,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     return sprite;
   }
 
-  public addText(
+  addText(
     _text: string | number,
     _style: string,
     _styleOverwriteOrTargetOrAdd: Record<string, unknown> | Container | boolean = true,
@@ -146,29 +146,29 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
 
   // TARGET
 
-  public setTarget(_target: Container | undefined): void {
+  setTarget(_target: Container | undefined): void {
     this.target = _target;
   }
 
-  public addToTarget(): void {
+  addToTarget(): void {
     if (this.target) {
       this.target.addChild(this);
     }
   }
 
-  public removeFromTarget(): void {
+  removeFromTarget(): void {
     if (this.target && this.parent) {
       this.target.removeChild(this);
     }
   }
 
   // INIT
-  public init(): void {
+  init(): void {
     Logger.error('init() should be overwritten.');
   }
 
   // PREPARE / CLEANUP
-  public prepareAfterLoad(): void {
+  prepareAfterLoad(): void {
     if (this.isPrepared) {
       return;
     }
@@ -186,7 +186,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     }
   }
 
-  public cleanupBeforeUnload(): void {
+  cleanupBeforeUnload(): void {
     if (!this.isPrepared) {
       return;
     }
@@ -209,7 +209,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
   }
 
   // ACTIVATE & DEACTIVATE
-  public activate(): void {
+  activate(): void {
     if (this.isActive) {
       return;
     }
@@ -222,7 +222,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     for (const view of this.views) view.activate();
   }
 
-  public deactivate(): void {
+  deactivate(): void {
     if (!this.isActive) {
       return;
     }
@@ -235,7 +235,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     for (const view of this.views) view.deactivate();
   }
 
-  public get isView(): boolean {
+  get isView(): boolean {
     return true;
   }
 }

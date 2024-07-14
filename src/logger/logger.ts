@@ -18,7 +18,7 @@ class LoggerClass {
   private _table: (tabularData?: unknown, properties?: string[]) => void;
   private _tree: (object: unknown, options?: Record<string, unknown>) => void;
 
-  public constructor(prefix: string, color?: string) {
+  constructor(prefix: string, color?: string) {
     if (prefix) {
       this.prefix = `${prefix.toUpperCase()}`;
     }
@@ -37,31 +37,31 @@ class LoggerClass {
     return method.bind(console, `%c${this.prefix}`, `background:${this._color};color:#ffffff; font-size: 10px;padding:2px 4px 1px 4px; `);
   }
 
-  public get verbose(): (message?: unknown, ...optionalParameters: unknown[]) => void {
+  get verbose(): (message?: unknown, ...optionalParameters: unknown[]) => void {
     return this.shouldLog(LogLevels.VERBOSE) ? this._verbose : noop;
   }
 
-  public get debug(): (message?: unknown, ...optionalParameters: unknown[]) => void {
+  get debug(): (message?: unknown, ...optionalParameters: unknown[]) => void {
     return this.shouldLog(LogLevels.DEBUG) ? this._debug : noop;
   }
 
-  public get info(): (message?: unknown, ...optionalParameters: unknown[]) => void {
+  get info(): (message?: unknown, ...optionalParameters: unknown[]) => void {
     return this.shouldLog(LogLevels.INFO) ? this._info : noop;
   }
 
-  public get warn(): (message?: unknown, ...optionalParameters: unknown[]) => void {
+  get warn(): (message?: unknown, ...optionalParameters: unknown[]) => void {
     return this.shouldLog(LogLevels.WARN) ? this._warn : noop;
   }
 
-  public get error(): (message?: unknown, ...optionalParameters: unknown[]) => void {
+  get error(): (message?: unknown, ...optionalParameters: unknown[]) => void {
     return this.shouldLog(LogLevels.ERROR) ? this._error : noop;
   }
 
-  public get table(): (tabularData?: unknown, properties?: string[]) => void {
+  get table(): (tabularData?: unknown, properties?: string[]) => void {
     return this.shouldLog(LogLevels.DEBUG) ? this._table : noop;
   }
 
-  public get tree(): (object: unknown, options?: Record<string, unknown>) => void {
+  get tree(): (object: unknown, options?: Record<string, unknown>) => void {
     return this.shouldLog(LogLevels.DEBUG) ? this._tree : noop;
   }
 
@@ -77,19 +77,19 @@ class LoggerClass {
     return true;
   }
 
-  public get titleColor(): string {
+  get titleColor(): string {
     return this._color;
   }
 
-  public enable(): void {
+  enable(): void {
     this.isEnabled = true;
   }
 
-  public disable(): void {
+  disable(): void {
     this.isEnabled = false;
   }
 
-  public set level(_level: number) {
+  set level(_level: number) {
     this.logLevel = _level;
   }
 }

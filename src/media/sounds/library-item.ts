@@ -16,14 +16,14 @@ export class SoundLibraryItem {
   private isLoaded = false;
   private isLoading = false;
   private player?: Howl;
-  public zones: string[] = [];
+  zones: string[] = [];
 
-  public constructor(_asset: SoundAsset, _options: SoundLibraryItemOptions) {
+  constructor(_asset: SoundAsset, _options: SoundLibraryItemOptions) {
     this.asset = _asset;
     this.options = _options;
   }
 
-  public async load(): Promise<void> {
+  async load(): Promise<void> {
     if (this.isLoaded || this.isLoading) {
       return;
     }
@@ -79,7 +79,7 @@ export class SoundLibraryItem {
     return player;
   }
 
-  public unload(): void {
+  unload(): void {
     if (!this.player) {
       return;
     }
@@ -120,33 +120,33 @@ export class SoundLibraryItem {
     this.isLoaded = false;
   }
 
-  public get id(): string {
+  get id(): string {
     return this.asset.id;
   }
 
-  public get isBuffered(): boolean {
+  get isBuffered(): boolean {
     return this.options?.buffer === true;
   }
 
-  public getPlayer(): Howl | undefined {
+  getPlayer(): Howl | undefined {
     return this.player;
   }
 
-  public addToZone(_zone: string): void {
+  addToZone(_zone: string): void {
     if (!this.zones.includes(_zone)) {
       this.zones.push(_zone);
     }
   }
 
-  public removeFromZone(_zone: string): void {
+  removeFromZone(_zone: string): void {
     pull(this.zones, _zone);
   }
 
-  public isInZone(_zone: string): boolean {
+  isInZone(_zone: string): boolean {
     return this.zones.includes(_zone);
   }
 
-  public hasZone(): boolean {
+  hasZone(): boolean {
     return this.zones.length > 0;
   }
 }

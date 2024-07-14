@@ -45,7 +45,7 @@ export class KloekText extends Text implements PrepareCleanupInterface {
   private _value: string | number | undefined;
   protected target: Container | undefined;
 
-  public constructor(_text: string | number, _style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>) {
+  constructor(_text: string | number, _style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>) {
     super('', getStyle(_style, _styleOverwrite));
     this.text = _text;
   }
@@ -68,12 +68,12 @@ export class KloekText extends Text implements PrepareCleanupInterface {
     super.text = this._value ?? '';
   }
 
-  public updateStyle(_style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>): void {
+  updateStyle(_style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>): void {
     const style = getStyle(_style, _styleOverwrite);
     this.style = style ?? new TextStyle();
   }
 
-  public prepareAfterLoad(): void {
+  prepareAfterLoad(): void {
     if (this.isPrepared) {
       return;
     }
@@ -82,7 +82,7 @@ export class KloekText extends Text implements PrepareCleanupInterface {
     this.updateTextField();
   }
 
-  public cleanupBeforeUnload(): void {
+  cleanupBeforeUnload(): void {
     if (!this.isPrepared) {
       return;
     }
@@ -97,27 +97,27 @@ export class KloekText extends Text implements PrepareCleanupInterface {
   }
 
   // target
-  public setTarget(_target: Container | undefined): void {
+  setTarget(_target: Container | undefined): void {
     this.target = _target;
   }
 
-  public addToTarget(): void {
+  addToTarget(): void {
     if (this.target) {
       this.target.addChild(this);
     }
   }
 
-  public removeFromTarget(): void {
+  removeFromTarget(): void {
     if (this.target && this.parent) {
       this.target.removeChild(this);
     }
   }
 
-  public static create(_text: string | number, _style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>): KloekText {
+  static create(_text: string | number, _style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>): KloekText {
     return new KloekText(_text, _style, _styleOverwrite);
   }
 
-  public static registerStyle(_name: string, _baseOrStyle: string | TextStyle | Record<string, unknown>, _style?: Record<string, unknown>): void {
+  static registerStyle(_name: string, _baseOrStyle: string | TextStyle | Record<string, unknown>, _style?: Record<string, unknown>): void {
     if (typeof _baseOrStyle === 'string' && _style) {
       const baseStyle = StylesRegister[_baseOrStyle];
 

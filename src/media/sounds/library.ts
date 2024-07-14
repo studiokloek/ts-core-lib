@@ -8,7 +8,7 @@ import { SoundLibraryItem } from './library-item';
 class ConcreteSoundsLibrary {
   private items: SoundLibraryItem[] = [];
 
-  public async load(asset: SoundAsset, zone = 'generic', buffer = false): Promise<SoundLibraryItem> {
+  async load(asset: SoundAsset, zone = 'generic', buffer = false): Promise<SoundLibraryItem> {
     // bestaat deze al?
     let item = this.getItemByAsset(asset);
 
@@ -27,7 +27,7 @@ class ConcreteSoundsLibrary {
     return item;
   }
 
-  public unload(asset: SoundAsset, zone = 'generic'): boolean {
+  unload(asset: SoundAsset, zone = 'generic'): boolean {
     const item = this.getItemByAsset(asset);
 
     if (!item) {
@@ -45,11 +45,11 @@ class ConcreteSoundsLibrary {
     return true;
   }
 
-  public getItemByAsset(_asset: SoundAsset): SoundLibraryItem {
+  getItemByAsset(_asset: SoundAsset): SoundLibraryItem {
     return find(this.items, { id: _asset.id }) as SoundLibraryItem;
   }
 
-  public getZoneSounds(_zone: string): SoundLibraryItem[] {
+  getZoneSounds(_zone: string): SoundLibraryItem[] {
     return filter(this.items, (item) => item.isInZone(_zone));
   }
 }

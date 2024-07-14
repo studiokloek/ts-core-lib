@@ -29,11 +29,11 @@ export class FontLoader implements AssetLoaderInterface {
   private options: FontLoaderOptions;
   private loader: FontFaceObserver;
   private isLoading: boolean;
-  public isLoaded: boolean;
+  isLoaded: boolean;
 
   private loadedResolver!: (value?: any) => void;
 
-  public constructor(_options: FontLoaderOptions) {
+  constructor(_options: FontLoaderOptions) {
     this.options = { ..._options };
 
     this.loader = new FontFaceObserver(this.options.fontFamilyName, this.options.variant);
@@ -42,13 +42,13 @@ export class FontLoader implements AssetLoaderInterface {
     this.isLoading = false;
   }
 
-  public prepareForLoad(): Promise<void> {
+  prepareForLoad(): Promise<void> {
     return new Promise((resolve) => {
       this.loadedResolver = resolve;
     });
   }
 
-  public async load(): Promise<void> {
+  async load(): Promise<void> {
     if (this.isLoading || this.isLoaded) {
       Logger.error('Already loading...');
       return;
@@ -80,16 +80,16 @@ export class FontLoader implements AssetLoaderInterface {
     this.loadedResolver();
   }
 
-  public unload(): void {
+  unload(): void {
     this.isLoaded = false;
     this.isLoading = false;
   }
 
-  public get data(): FontAsset | undefined {
+  get data(): FontAsset | undefined {
     return this._data;
   }
 
-  public get type(): string {
+  get type(): string {
     return 'font';
   }
 }

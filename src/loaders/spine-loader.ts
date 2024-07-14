@@ -41,10 +41,10 @@ export class SpineLoader implements AssetLoaderInterface {
 
   private isLoading: boolean;
 
-  public isLoaded: boolean;
+  isLoaded: boolean;
   private loadedResolver!: (value: any | undefined) => void;
 
-  public constructor(_options: SpineLoaderOptions) {
+  constructor(_options: SpineLoaderOptions) {
     this.options = {
       assetDirectory: `${CoreLibraryOptions.ASSET_BASE_PATH}`,
       numberOfParts: 1,
@@ -79,13 +79,13 @@ export class SpineLoader implements AssetLoaderInterface {
     return textureResolution >= 2 ? '@2x' : '';
   }
 
-  public prepareForLoad(): Promise<void> {
+  prepareForLoad(): Promise<void> {
     return new Promise((resolve) => {
       this.loadedResolver = resolve;
     });
   }
 
-  public async load(): Promise<SpineAsset | void> {
+  async load(): Promise<SpineAsset | void> {
     if (this.isLoading) {
       Logger.error('Already loading...');
 
@@ -137,7 +137,7 @@ export class SpineLoader implements AssetLoaderInterface {
     });
   }
 
-  public unload(): void {
+  unload(): void {
     // reset loader
     this.loader.reset();
 
@@ -157,15 +157,15 @@ export class SpineLoader implements AssetLoaderInterface {
     }
   }
 
-  public get data(): SpineAsset | undefined {
+  get data(): SpineAsset | undefined {
     return this._data;
   }
 
-  public get type(): string {
+  get type(): string {
     return 'spine';
   }
 
-  public get assetId(): string | undefined {
+  get assetId(): string | undefined {
     return this.options.assetId;
   }
 }

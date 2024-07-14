@@ -26,11 +26,11 @@ export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) impl
   protected mediators: MediatorInterface[] = [];
   protected views: ViewInterface[] = [];
 
-  public constructor() {
+  constructor() {
     super();
   }
 
-  public async init(): Promise<void> {
+  async init(): Promise<void> {
     Logger.warn('init() method not implemented.');
   }
 
@@ -73,7 +73,7 @@ export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) impl
 
   // PREPARE & CLEANUP
 
-  public prepareAfterLoad(): void {
+  prepareAfterLoad(): void {
     if (this.isPrepared) return;
     this.isPrepared = true;
 
@@ -81,7 +81,7 @@ export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) impl
     for (const view of this.views) view.prepareAfterLoad();
   }
 
-  public cleanupBeforeUnload(): void {
+  cleanupBeforeUnload(): void {
     if (!this.isPrepared) return;
     this.isPrepared = false;
 
@@ -93,7 +93,7 @@ export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) impl
   }
 
   // ACTIVATE & DEACTIVATE
-  public activate(): void {
+  activate(): void {
     // Logger.debug(`Activating mediator...`);
 
     if (this.isActive) {
@@ -109,7 +109,7 @@ export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) impl
     for (const view of this.views) view.activate();
   }
 
-  public deactivate(): void {
+  deactivate(): void {
     // Logger.debug(`Deactivating mediator...`);
     if (!this.isActive) {
       return;

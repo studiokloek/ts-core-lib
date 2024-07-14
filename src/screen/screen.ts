@@ -10,10 +10,10 @@ class ConcreteScreen {
   private _orientation: string = OrientationMode.LANDSCAPE;
   private _resolution: number = ResolutionMode.NORMAL;
 
-  public resized = new AsyncEvent<{ width: number; height: number }>();
-  public orientationChanged = new AsyncEvent<string>();
+  resized = new AsyncEvent<{ width: number; height: number }>();
+  orientationChanged = new AsyncEvent<string>();
 
-  public init(): void {
+  init(): void {
     this.handleResize();
 
     // resolutie wordt maar 1 keer ge-update, omdat het pixi-canvas
@@ -79,19 +79,19 @@ class ConcreteScreen {
     return true;
   }
 
-  public get orientation(): string {
+  get orientation(): string {
     return this._orientation;
   }
 
-  public get resolution(): number {
+  get resolution(): number {
     return this._resolution;
   }
 
-  public get width(): number {
+  get width(): number {
     return this._width;
   }
 
-  public get height(): number {
+  get height(): number {
     return this._height;
   }
 }

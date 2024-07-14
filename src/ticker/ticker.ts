@@ -34,7 +34,7 @@ export class ConcreteTicker {
   private isRunning = false;
   private autoSleep = false;
 
-  public constructor(name: string, autoSleep = false) {
+  constructor(name: string, autoSleep = false) {
     this._name = name;
     this.autoSleep = autoSleep;
 
@@ -92,7 +92,7 @@ export class ConcreteTicker {
     }
   }
 
-  public add(callback: TickerCallback): number {
+  add(callback: TickerCallback): number {
     if (typeof callback !== 'function') {
       Logger.error('Ticker', 'Could not add callback. No valid callback provided.');
       return -1;
@@ -134,7 +134,7 @@ export class ConcreteTicker {
     return time;
   }
 
-  public remove(callback: TickerCallback | TickerCallback[]): void {
+  remove(callback: TickerCallback | TickerCallback[]): void {
     // meerdere callbacks?
     if (Array.isArray(callback)) {
       for (const item of callback) {
@@ -164,13 +164,13 @@ export class ConcreteTicker {
     delete this.hash[tickerCallbackId];
   }
 
-  public removeAll(): void {
+  removeAll(): void {
     for (const item of this.items) {
       this.remove(item.callback);
     }
   }
 
-  public wake(): void {
+  wake(): void {
     if (this.isRunning) {
       return;
     }
@@ -182,7 +182,7 @@ export class ConcreteTicker {
     gsap.ticker.add(this.update);
   }
 
-  public sleep(): void {
+  sleep(): void {
     if (!this.isRunning) {
       return;
     }
@@ -194,13 +194,13 @@ export class ConcreteTicker {
     gsap.ticker.remove(this.update);
   }
 
-  public restoreTimeAfterSleep(): void {
+  restoreTimeAfterSleep(): void {
     this.startTime += performance.now() - this.sleepStartTime;
     this._timeScale = this.beforeSleepTimeScale;
     this.previousTime = round((performance.now() - this.startTime) * 0.001, 5);
   }
 
-  public storeTimeBeforeSleep(): void {
+  storeTimeBeforeSleep(): void {
     this.sleepStartTime = performance.now();
 
     if (this._timeScale !== 0) {
@@ -209,19 +209,19 @@ export class ConcreteTicker {
     }
   }
 
-  public get name(): string {
+  get name(): string {
     return this._name;
   }
 
-  public get time(): number {
+  get time(): number {
     return this._time;
   }
 
-  public get timeScale(): number {
+  get timeScale(): number {
     return this._timeScale;
   }
 
-  public set timeScale(_value: number) {
+  set timeScale(_value: number) {
     // helemaal 0 kan niet...
     const value = _value || 0.000_000_000_1;
 
@@ -232,7 +232,7 @@ export class ConcreteTicker {
     }
   }
 
-  public set globalTimeScale(_value: number) {
+  set globalTimeScale(_value: number) {
     this._globalTimeScale = _value;
   }
 }

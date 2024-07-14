@@ -27,7 +27,7 @@ class ConcreteSoundsPlayer {
   private playingSounds: { [key: number]: Howl } = {};
   private delayedCalls: Map<SoundAsset, Record<number, gsap.core.Tween | undefined>> = new Map();
 
-  public play(asset: SoundAsset, volume = -1, delay = 0, options?: AudioFXOptions): number | undefined {
+  play(asset: SoundAsset, volume = -1, delay = 0, options?: AudioFXOptions): number | undefined {
     const item = SoundLibrary.getItemByAsset(asset);
 
     if (!item) {
@@ -113,7 +113,7 @@ class ConcreteSoundsPlayer {
     player.off('stop', undefined, id);
   }
 
-  public stop(asset: SoundAsset, optionsOrId?: AudioFXOptions | number, id?: number): void {
+  stop(asset: SoundAsset, optionsOrId?: AudioFXOptions | number, id?: number): void {
     const item = SoundLibrary.getItemByAsset(asset);
 
     if (!item) {
@@ -155,7 +155,7 @@ class ConcreteSoundsPlayer {
     }
   }
 
-  public pause(asset: SoundAsset, options?: AudioFXOptions, id?: number): void {
+  pause(asset: SoundAsset, options?: AudioFXOptions, id?: number): void {
     const item = SoundLibrary.getItemByAsset(asset);
 
     if (!item) {
@@ -196,7 +196,7 @@ class ConcreteSoundsPlayer {
     }
   }
 
-  public resume(asset: SoundAsset, id: number, options?: AudioFXOptions): void {
+  resume(asset: SoundAsset, id: number, options?: AudioFXOptions): void {
     const item = SoundLibrary.getItemByAsset(asset);
 
     if (!item) {
@@ -218,7 +218,7 @@ class ConcreteSoundsPlayer {
     player.play(id);
   }
 
-  public resumeAll(): void {
+  resumeAll(): void {
     for (const id in this.playingSounds) {
       const player = this.playingSounds[id];
       if (player.state() === 'loaded') {
@@ -229,7 +229,7 @@ class ConcreteSoundsPlayer {
     }
   }
 
-  public pauseAll(): void {
+  pauseAll(): void {
     for (const id in this.playingSounds) {
       const player = this.playingSounds[id];
       if (player.state() === 'loaded') {
@@ -240,7 +240,7 @@ class ConcreteSoundsPlayer {
     }
   }
 
-  public fadeTo(value = 1, duration = 1, asset?: SoundAsset, id?: number): void {
+  fadeTo(value = 1, duration = 1, asset?: SoundAsset, id?: number): void {
     if (asset) {
       const item = SoundLibrary.getItemByAsset(asset);
 
@@ -277,12 +277,12 @@ class ConcreteSoundsPlayer {
     Howler.volume(this.volumeFader.value);
   }
 
-  public setVolume(_value: number): void {
+  setVolume(_value: number): void {
     Howler.volume(_value);
   }
 
   // before webview pause，suspend the AudioContext
-  public async suspendContext(): Promise<void> {
+  async suspendContext(): Promise<void> {
     const { ctx } = Howler;
     if (ctx && ctx.state === 'running') {
       try {
@@ -295,7 +295,7 @@ class ConcreteSoundsPlayer {
   }
 
   // after webview resumes，manually resume the AudioContext
-  public async resumeContext(): Promise<void> {
+  async resumeContext(): Promise<void> {
     const { ctx } = Howler;
     if (ctx && ctx.state !== 'running') {
       try {

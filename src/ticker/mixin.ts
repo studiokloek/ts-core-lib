@@ -48,7 +48,7 @@ export class TickerMixin {
     }
   }
 
-  public get tickerTime(): number {
+  get tickerTime(): number {
     return this.__ticker ? this.__ticker.time : 0;
   }
 }

@@ -31,7 +31,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
   protected currentDefaults?: KloekSpriteDefaults;
   protected previousDefaults: KloekSpriteDefaults = {};
 
-  public constructor(_asset?: SpriteAsset, _defaults?: KloekSpriteDefaults) {
+  constructor(_asset?: SpriteAsset, _defaults?: KloekSpriteDefaults) {
     super();
 
     this.setAsset(_asset, false);
@@ -41,7 +41,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     }
   }
 
-  public setAsset(_asset?: SpriteAsset | SpriteAssetWithMeta, _useDefaults = true): void {
+  setAsset(_asset?: SpriteAsset | SpriteAssetWithMeta, _useDefaults = true): void {
     this.asset = _asset;
 
     if (this.asset) {
@@ -57,11 +57,11 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     }
   }
 
-  public getAsset(): SpriteAsset | SpriteAssetWithMeta | undefined {
+  getAsset(): SpriteAsset | SpriteAssetWithMeta | undefined {
     return this.asset;
   }
 
-  public prepareAfterLoad(): void {
+  prepareAfterLoad(): void {
     if (this.isPrepared) {
       return;
     }
@@ -71,7 +71,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     this.applyDefaults();
   }
 
-  public cleanupBeforeUnload(): void {
+  cleanupBeforeUnload(): void {
     if (!this.isPrepared) {
       return;
     }
@@ -105,14 +105,14 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     this.texture = Texture.EMPTY;
   }
 
-  public destroy(options?: { children?: boolean; texture?: boolean; baseTexture?: boolean }): void {
+  destroy(options?: { children?: boolean; texture?: boolean; baseTexture?: boolean }): void {
     this.cleanupBeforeUnload();
     this.removeFromTarget();
     this.target = undefined;
     super.destroy(options);
   }
 
-  public setDefaults(defaults?: KloekSpriteDefaults, apply = false): void {
+  setDefaults(defaults?: KloekSpriteDefaults, apply = false): void {
     this.defaults = defaults;
 
     // is en het een asset met meta?
@@ -198,7 +198,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     }
   }
 
-  public applyDefaults(): void {
+  applyDefaults(): void {
     if (!this.currentDefaults) {
       return;
     }
@@ -276,7 +276,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
 
   // STATICS
 
-  public static create(_asset: SpriteAsset | SpriteAssetWithMeta, defaultsOrAutoPrepare?: KloekSpriteDefaults | boolean, autoPrepare = false): KloekSprite {
+  static create(_asset: SpriteAsset | SpriteAssetWithMeta, defaultsOrAutoPrepare?: KloekSpriteDefaults | boolean, autoPrepare = false): KloekSprite {
     // defaults meegegeven?
     let defaults: KloekSpriteDefaults | undefined;
 
@@ -307,7 +307,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
 
   // GET & SET
   // @ts-ignore
-  public get width(): number {
+  get width(): number {
     if (this.texture && this.texture !== Texture.EMPTY) {
       return super.width;
     } else if (this.asset) {
@@ -317,12 +317,12 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     }
   }
 
-  public set width(value: number) {
+  set width(value: number) {
     super.width = value;
   }
 
   // @ts-ignore
-  public get height(): number {
+  get height(): number {
     if (this.texture && this.texture !== Texture.EMPTY) {
       return super.height;
     } else if (this.asset) {
@@ -332,15 +332,15 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     }
   }
 
-  public set height(value: number) {
+  set height(value: number) {
     super.height = value;
   }
 
-  public get isFilled(): boolean {
+  get isFilled(): boolean {
     return this._isFilled;
   }
 
-  public set size(value: number) {
+  set size(value: number) {
     let maxSide = 0;
     if (this.texture && this.texture !== Texture.EMPTY) {
       maxSide = Math.max(this.texture.width, this.texture.height);
@@ -353,17 +353,17 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
   }
 
   // target
-  public setTarget(_target: Container | undefined): void {
+  setTarget(_target: Container | undefined): void {
     this.target = _target;
   }
 
-  public addToTarget(): void {
+  addToTarget(): void {
     if (this.target) {
       this.target.addChild(this);
     }
   }
 
-  public removeFromTarget(): void {
+  removeFromTarget(): void {
     if (this.target && this.parent) {
       this.target.removeChild(this);
     }

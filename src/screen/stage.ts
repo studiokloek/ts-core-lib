@@ -158,14 +158,14 @@ export class ConcreteStage {
   private firstResize = true;
   private resizedWhileSleeping = false;
 
-  public constructor() {
+  constructor() {
     this._view = new Container();
     this._view.interactive = true;
   }
 
   // INIT
 
-  public init(_options: StageOptions, _sizingOptions?: SizeOptions | MultiSizeOptions): void {
+  init(_options: StageOptions, _sizingOptions?: SizeOptions | MultiSizeOptions): void {
     this.options = { ...DefaultStageOptions, ..._options };
 
     this.setSizingOptions(_sizingOptions);
@@ -317,7 +317,7 @@ export class ConcreteStage {
 
   // RENDER
 
-  public start(): void {
+  start(): void {
     if (this.isRunning) {
       return;
     }
@@ -475,7 +475,7 @@ export class ConcreteStage {
   }
 
   // SLEEP / WAKE
-  public sleep(): void {
+  sleep(): void {
     if (this.sleeping) {
       return;
     }
@@ -493,7 +493,7 @@ export class ConcreteStage {
     GSAPTicker.sleep();
   }
 
-  public wake(): void {
+  wake(): void {
     if (!this.sleeping) {
       return;
     }
@@ -520,11 +520,11 @@ export class ConcreteStage {
   }
 
   // TIMESCALE
-  public get timeScale(): number {
+  get timeScale(): number {
     return this._timeScale;
   }
 
-  public set timeScale(_value: number) {
+  set timeScale(_value: number) {
     if (_value === 0) {
       this.sleep();
       return;
@@ -538,7 +538,7 @@ export class ConcreteStage {
   }
 
   // PERFORMANCE
-  public lowPerformance(): void {
+  lowPerformance(): void {
     // Logger.info('ticker', 'Starting energy saving mode');
     Logger.debug('Starting energy saving mode.');
 
@@ -546,7 +546,7 @@ export class ConcreteStage {
     GSAPTicker.fps(30);
   }
 
-  public highPerformance(): void {
+  highPerformance(): void {
     Logger.debug('Exiting energy saving mode');
 
     // GSAPTicker.useRAF(true);
@@ -554,7 +554,7 @@ export class ConcreteStage {
   }
 
   // TEXTURES
-  public unloadTextures(): void {
+  unloadTextures(): void {
     if (!this.textureGC || this.unloadingTextures) {
       return;
     }
@@ -573,7 +573,7 @@ export class ConcreteStage {
     });
   }
 
-  public generateTexture(_displayObject: DisplayObject, _region?: Rectangle): Texture | RenderTexture {
+  generateTexture(_displayObject: DisplayObject, _region?: Rectangle): Texture | RenderTexture {
     return this.renderer.generateTexture(_displayObject, {
       scaleMode: settings.SCALE_MODE,
       resolution: this._generateResolution,
@@ -582,7 +582,7 @@ export class ConcreteStage {
     });
   }
 
-  public destroyTextureIn(_sprite: Sprite, _destroyBaseTexture?: boolean): void {
+  destroyTextureIn(_sprite: Sprite, _destroyBaseTexture?: boolean): void {
     const oldTexture = _sprite.texture;
 
     _sprite.texture = Texture.EMPTY;
@@ -592,22 +592,22 @@ export class ConcreteStage {
     }
   }
 
-  public getGlobalPosition(source: Container, position: Point = new Point(0, 0)): IPoint {
+  getGlobalPosition(source: Container, position: Point = new Point(0, 0)): IPoint {
     const pos = this.view.toLocal(source.toGlobal(position));
     pos.x = pos.x / this.scale.x;
     pos.y = pos.y / this.scale.y;
     return pos;
   }
 
-  public extractImage(_source: DisplayObject | RenderTexture, _format?: string, _quality?: number): HTMLImageElement {
+  extractImage(_source: DisplayObject | RenderTexture, _format?: string, _quality?: number): HTMLImageElement {
     return this.renderer.plugins.extract.image(_source, _format, _quality);
   }
 
-  public extractPixels(_source: DisplayObject | RenderTexture): Uint8Array {
+  extractPixels(_source: DisplayObject | RenderTexture): Uint8Array {
     return this.renderer.plugins.extract.pixels(_source);
   }
 
-  public takeScreenshot(): void {
+  takeScreenshot(): void {
     const w = window.open('', '');
 
     // geblokt door popup?
@@ -630,70 +630,70 @@ export class ConcreteStage {
 
   // GET / SET
 
-  public get interaction(): InteractionManager | undefined {
+  get interaction(): InteractionManager | undefined {
     return this.renderer.plugins.interaction;
   }
 
-  public get accessibility(): AccessibilityManager | undefined {
+  get accessibility(): AccessibilityManager | undefined {
     return this.renderer.plugins.accessibility;
   }
 
-  public get view(): Container {
+  get view(): Container {
     return this._view;
   }
 
-  public get fps(): number {
+  get fps(): number {
     return this._fps;
   }
 
-  public get scale(): { x: number; y: number } {
+  get scale(): { x: number; y: number } {
     return this._scale;
   }
 
-  public get position(): { x: number; y: number } {
+  get position(): { x: number; y: number } {
     return this._position;
   }
 
-  public get width(): number {
+  get width(): number {
     return this._width;
   }
 
-  public get height(): number {
+  get height(): number {
     return this._height;
   }
 
-  public get aspectRatio(): number {
+  get aspectRatio(): number {
     return this._aspect;
   }
 
-  public get textureResolution(): number {
+  get textureResolution(): number {
     return this._textureResolution;
   }
 
-  public get generateResolution(): number {
+  get generateResolution(): number {
     return this._generateResolution;
   }
 
-  public get resolution(): number {
+  get resolution(): number {
     return this._rendererResolution;
   }
 
-  public get screenOrientation(): string {
+  get screenOrientation(): string {
     return this.forcedScreenOrientation || Screen.orientation;
   }
 
-  public setBackgroundColor(color: number, alpha = 1): void {
+  setBackgroundColor(color: number, alpha = 1): void {
     this.renderer.backgroundAlpha = alpha;
     this.renderer.backgroundColor = color;
     document.body.style.backgroundColor = alpha === 0 ? 'transparent' : hexToString(color, alpha);
   }
   
 
-  public render(displayObject: IRenderableObject, options?: IRendererRenderOptions): void {
+  render(displayObject: IRenderableObject, options?: IRendererRenderOptions): void {
     this.renderer.render(displayObject, options);
   }
 
-  public set forcedOrientation(_value: string) {
+  set forcedOrientation(_value: string) {
     const oldScreenOrientation = this.screenOrientation;
     this.forcedScreenOrientation = _value;
 
@@ -702,15 +702,15 @@ export class ConcreteStage {
     }
   }
 
-  public get defaultWidth(): number {
+  get defaultWidth(): number {
     return this.currentSizeOptions ? this.currentSizeOptions.size.default.width : DefaultSizeOptions.size.default.width;
   }
 
-  public get defaultHeight(): number {
+  get defaultHeight(): number {
     return this.currentSizeOptions ? this.currentSizeOptions.size.default.height : DefaultSizeOptions.size.default.height;
   }
 
-  public mapAspectRatio(_standardScreen: number, _wideScreen: number): number {
+  mapAspectRatio(_standardScreen: number, _wideScreen: number): number {
     return mapNumber(this._aspect, 0, 1, _standardScreen, _wideScreen, true, 5);
   }
 }

@@ -8,10 +8,10 @@ const Logger = getLogger('data > localstorage');
 const IS_MIGRATED_KEY = 'capacitor-storage-migrated';
 
 class ConcreteStorage {
-  public constructor() {}
+  constructor() {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async set(key?: string, value?: any): Promise<void> {
+  async set(key?: string, value?: any): Promise<void> {
     if (!key) {
       Logger.error('set', 'No valid key provided');
       return;
@@ -28,7 +28,7 @@ class ConcreteStorage {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async get(key?: string): Promise<any> {
+  async get(key?: string): Promise<any> {
     if (!key) {
       Logger.error('get', 'No valid key provided');
       return;
@@ -47,7 +47,7 @@ class ConcreteStorage {
     return value;
   }
 
-  public async remove(key?: string): Promise<void> {
+  async remove(key?: string): Promise<void> {
     if (!key) {
       Logger.error('remove', 'No valid key provided');
       return;
@@ -58,7 +58,7 @@ class ConcreteStorage {
     Logger.verbose('remove', `${key}`);
   }
 
-  public async keys(): Promise<string[]> {
+  async keys(): Promise<string[]> {
     const returnValue = await Preferences.keys();
 
     if (returnValue && returnValue.keys) {
@@ -68,12 +68,12 @@ class ConcreteStorage {
     }
   }
 
-  public async clear(): Promise<void> {
+  async clear(): Promise<void> {
     await Preferences.clear();
     Logger.verbose('cleared all storage!');
   }
 
-  public async migrate(): Promise<void> {
+  async migrate(): Promise<void> {
     Logger.verbose('migrate() -> start...');
  
     if (await this.get(IS_MIGRATED_KEY)) {

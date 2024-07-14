@@ -75,10 +75,10 @@ export class AssetLoader {
   private loaders: AssetLoaderInterface[] = [];
   private queue: AssetLoaderInterface[] = [];
 
-  public progressed: SyncEvent<number> = new SyncEvent();
-  public loaded: SyncEvent<void> = new SyncEvent();
+  progressed: SyncEvent<number> = new SyncEvent();
+  loaded: SyncEvent<void> = new SyncEvent();
 
-  public constructor(assets?: LoaderAssets, options?: LoaderOptions) {
+  constructor(assets?: LoaderAssets, options?: LoaderOptions) {
     this.assets = { ...DefaultLoaderAssets, ...assets };
     this.options = { ...DefaultLoaderOptions, ...options };
   }
@@ -99,7 +99,7 @@ export class AssetLoader {
     this.assetsInited = true;
   }
 
-  public addAsset(asset: AssetLoaderInfo[] | (() => AssetLoaderInfo[]) | AssetLoaderInfo | undefined, isDynamic = false): void {
+  addAsset(asset: AssetLoaderInfo[] | (() => AssetLoaderInfo[]) | AssetLoaderInfo | undefined, isDynamic = false): void {
     if (typeof asset === 'function') {
       // save dynamic asset callbacks for next time
       if (this.assetsInited !== true) {
@@ -150,7 +150,7 @@ export class AssetLoader {
     }
   }
 
-  public async load(): Promise<void> {
+  async load(): Promise<void> {
     if (this.isLoaded) {
       return;
     }
@@ -225,7 +225,7 @@ export class AssetLoader {
     }
   }
 
-  public unload(): void {
+  unload(): void {
     this.isLoading = false;
     this._isLoaded = false;
     this.allLoadedPromises.length = 0;
@@ -239,11 +239,11 @@ export class AssetLoader {
     this.dynamicLoaders.length = 0;
   }
 
-  public get id(): string | undefined {
+  get id(): string | undefined {
     return this.options.id;
   }
 
-  public get isLoaded(): boolean {
+  get isLoaded(): boolean {
     return this._isLoaded;
   }
 
