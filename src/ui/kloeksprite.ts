@@ -289,7 +289,7 @@ export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCle
     const sprite = new KloekSprite();
 
     if (isSpriteAsset(_asset)) {
-      sprite.setAsset(_asset);
+      sprite.setAsset(_asset, false);
     } else {
       Logger.warn('No valid sprite asset provided...');
     }
