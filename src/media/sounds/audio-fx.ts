@@ -14,6 +14,7 @@ Howler.autoSuspend = false;
 export interface AudioFXOptions {
   loop?: boolean;
   rate?: number;
+  ignoreTimeScale?: boolean;
   fade?: number;
   randomStart?: boolean;
   position?: number;
@@ -84,10 +85,11 @@ class ConcreteSoundsPlayer {
     }
 
     // snelheid meegegeven, of anders snelheid van de main ticker
+    const timeScale = options?.ignoreTimeScale ? 1 : Stage.timeScale;
     if (options?.rate) {
-      player.rate(options.rate * Stage.timeScale, id);
+      player.rate(options.rate * timeScale, id);
     } else {
-      player.rate(Stage.timeScale, id);
+      player.rate(timeScale, id);
     }
 
     // infaden van volume?
@@ -287,7 +289,7 @@ class ConcreteSoundsPlayer {
     if (ctx && ctx.state === 'running') {
       try {
         await ctx.suspend();
-      } catch {}
+      } catch { }
     }
 
     this.pauseAll();
@@ -300,7 +302,7 @@ class ConcreteSoundsPlayer {
     if (ctx && ctx.state !== 'running') {
       try {
         await ctx.resume();
-      } catch {}
+      } catch { }
     }
     this.fadeTo(1, 0.3);
     this.resumeAll();
