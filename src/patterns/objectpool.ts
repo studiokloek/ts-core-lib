@@ -11,7 +11,10 @@ export class ObjectPool<T> {
     if (this.pool.length > 0) {
       return this.pool.splice(0, 1)[0];
     }
-    return new this.target();
+
+    const t = new this.target();
+    this.pool.push(t);
+    return t;
   }
 
   prepareItem(): void {
@@ -27,6 +30,6 @@ export class ObjectPool<T> {
 }
 
 export interface ObjectPoolItem<T> {
-  new (): T;
+  new(): T;
   reset?(object: T): void;
 }
