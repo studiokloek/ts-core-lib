@@ -364,7 +364,7 @@ export const PixiPlugin = {
       context = _contexts[p];
       value = values[p];
       if (context) {
-        axis = ~p.at(-1).toLowerCase().indexOf('x') ? 'x' : 'y';
+        axis = ~p[p.length-1].toLowerCase().indexOf('x') ? 'x' : 'y';
         this.add(target[context], axis, target[context][axis], context === 'skew' ? _degreesToRadians(value) : value, 0, 0, 0, 0, 0, 1);
       } else if (p === 'scale' || p === 'anchor' || p === 'pivot' || p === 'tileScale') {
         this.add(target[p], 'x', target[p].x, value);
