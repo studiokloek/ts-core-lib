@@ -23,6 +23,16 @@ class ConcreteScreen {
     window.addEventListener('resize', this.onResize);
   }
 
+  forceResize(_width?: number, _height?: number): void {
+    const width = _width ?? Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+      height = _height ?? Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    this._width = width;
+    this._height = height;
+
+    this.resized.post({ width: this.width, height: this.height });
+  }
+
   @Throttle(250)
   @Bind
   private onResize(): void {
