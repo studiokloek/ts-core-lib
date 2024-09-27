@@ -2,7 +2,7 @@ import { App, AppState } from '@capacitor/app';
 import { isReloadedPage } from '../app';
 import { AppEvent, PubSub } from '../events';
 import { getLogger } from '../logger';
-import { isApp } from './device';
+import { isApp, isPlatform, Platform } from './device';
 
 const Logger = getLogger('device > app state');
 
@@ -63,8 +63,11 @@ export async function initAppStateDetection(): Promise<void> {
       false,
     );
 
+
+    // luister of pagina opnieuw geladen wordt
+    const pageShowEvent = isPlatform(Platform.IOS) ? 'popstate' : 'pageshow';
     window.addEventListener(
-      'pageshow',
+      pageShowEvent,
       () => {
         handleAppState(true);
       },
