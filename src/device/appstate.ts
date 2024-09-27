@@ -50,11 +50,19 @@ export async function initAppStateDetection(): Promise<void> {
     document.addEventListener(
       'visibilitychange',
       () => {
-        const data = {
+        handleAppState({
           isActive: document.hidden !== true,
-        };
+        });
+      },
+      false,
+    );
 
-        handleAppState(data);
+    window.addEventListener(
+      'pageshow',
+      () => {
+        handleAppState({
+          isActive: true,
+        });
       },
       false,
     );
