@@ -6,18 +6,21 @@ import { isApp } from './device';
 
 const Logger = getLogger('device > app state');
 
-function handleAppState(state: AppState): void {
-  if (!state) {
+let appStateActive = false;
+function handleAppState(_active: boolean): void {
+  if (appStateActive === _active) {
     return;
   }
 
-  if (state.isActive) {
+  appStateActive = _active;
+
+  if (appStateActive) {
     PubSub.publishSync(AppEvent.STATE_ACTIVE);
   } else {
     PubSub.publishSync(AppEvent.STATE_INACTIVE);
   }
 
-  Logger.debug(`Changed state to '${state.isActive ? 'active' : 'in-active'}'`);
+  Logger.debug(`Changed state to '${appStateActive ? 'active' : 'in-active'}'`);
 }
 
 let appHasFocus = false;
@@ -37,6 +40,9 @@ function handleWindowFocus(): void {
   Logger.debug(`Changed state to 'focussed'`);
   appHasFocus = true;
   PubSub.publishSync(AppEvent.STATE_FOCUSSED);
+
+  // als app focus krijgt, dan is deze ook actief
+  handleAppState(true);
 }
 
 export async function initAppStateDetection(): Promise<void> {
@@ -45,14 +51,14 @@ export async function initAppStateDetection(): Promise<void> {
   }
 
   if (isApp()) {
-    App.addListener('appStateChange', handleAppState);
+    App.addListener('appStateChange', (_state: AppState) => {
+      handleAppState(_state.isActive);
+    });
   } else {
     document.addEventListener(
       'visibilitychange',
       () => {
-        handleAppState({
-          isActive: document.hidden !== true,
-        });
+        handleAppState(document.hidden !== true);
       },
       false,
     );
@@ -60,9 +66,7 @@ export async function initAppStateDetection(): Promise<void> {
     window.addEventListener(
       'pageshow',
       () => {
-        handleAppState({
-          isActive: true,
-        });
+        handleAppState(true);
       },
       false,
     );
