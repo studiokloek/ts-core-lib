@@ -2,7 +2,15 @@ import { fixEventNames } from './util';
 
 // TOUCH EVENTS
 type TouchEventTypes = 'TAP' | 'START' | 'END' | 'END_OUTSIDE' | 'CANCEL' | 'MOVE' | 'OVER' | 'OUT';
-type InteractionPointerEvents = "pointerdown" | "pointercancel" | "pointerup" | "pointertap" | "pointerupoutside" | "pointermove" | "pointerover" | "pointerout";
+type InteractionPointerEvents =
+  | 'pointerdown'
+  | 'pointercancel'
+  | 'pointerup'
+  | 'pointertap'
+  | 'pointerupoutside'
+  | 'pointermove'
+  | 'pointerover'
+  | 'pointerout';
 
 export const TouchEvent: { [key in TouchEventTypes]: InteractionPointerEvents } = {
   TAP: 'pointertap',
@@ -25,6 +33,7 @@ export const AppEvent = {
   READY: 'ready',
   LOAD_COMPLETE: 'load_complete',
   LOAD_PROGRESS: 'loaded_progress',
+  LOAD_TEXT: 'loaded_text',
   ENABLE_INTERACTION: 'enable_interaction',
   DISABLE_INTERACTION: 'disable_interaction',
   STATE_ACTIVE: 'state_active',
