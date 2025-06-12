@@ -1,5 +1,5 @@
 import { Howl, Howler } from 'howler';
-import { Bind } from 'lodash-decorators-esm';
+import { Bind } from 'lodash-decorators';
 import { round } from 'lodash';
 import { Delayed } from '../../delay';
 import { SoundAsset } from '../../loaders';

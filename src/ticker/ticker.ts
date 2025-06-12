@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { Bind } from 'lodash-decorators-esm';
+import { Bind } from 'lodash-decorators';
 import { round } from 'lodash';
 import { CoreDebug } from '../debug';
 import { getLogger } from '../logger';
