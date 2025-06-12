@@ -1,5 +1,5 @@
 import { ConcreteTicker } from './ticker';
-import { values } from 'lodash-es';
+import { values } from 'lodash';
 
 const table: { [key: string]: ConcreteTicker } = {};
 

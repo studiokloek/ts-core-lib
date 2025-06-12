@@ -1,4 +1,4 @@
-import { padStart } from 'lodash-es';
+import { padStart } from 'lodash';
 
 interface RGB {
   r: number;

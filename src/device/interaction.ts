@@ -1,5 +1,5 @@
 import { isMobile } from './browser';
-import { memoize } from 'lodash-es';
+import { memoize } from 'lodash';
 
 export const supportsTouch = memoize((): boolean => {
   const isTouch =

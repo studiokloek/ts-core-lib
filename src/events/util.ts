@@ -1,4 +1,4 @@
-import { forIn } from 'lodash-es';
+import { forIn } from 'lodash';
 
 // prefix achter event names (handig voor logging)
 export function fixEventNames(eventObject: { [key: string]: string }, suffix: string): void {

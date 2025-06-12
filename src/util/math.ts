@@ -1,4 +1,4 @@
-import { round } from 'lodash-es';
+import { round } from 'lodash';
 
 export const constrainNumber = (value: number, min: number, max: number, roundPrecision = -1): number => {
   if (value > max) {

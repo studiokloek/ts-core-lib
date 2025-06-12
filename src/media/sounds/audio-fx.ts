@@ -1,6 +1,6 @@
 import { Howl, Howler } from 'howler';
 import { Bind } from 'lodash-decorators-esm';
-import { round } from 'lodash-es';
+import { round } from 'lodash';
 import { Delayed } from '../../delay';
 import { SoundAsset } from '../../loaders';
 import { Stage } from '../../screen';

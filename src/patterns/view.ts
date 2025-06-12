@@ -1,4 +1,4 @@
-import { get, isPlainObject } from 'lodash-es';
+import { get, isPlainObject } from 'lodash';
 import { Container } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
 import { DelayedMixin } from '../delay';

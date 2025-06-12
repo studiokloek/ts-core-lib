@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { get, set } from 'lodash-es';
+import { get, set } from 'lodash';
 import { DisplayObject } from 'pixi.js';
 import { getLogger } from '../logger';
 

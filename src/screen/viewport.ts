@@ -1,5 +1,5 @@
 import { isMobile } from '../device/browser';
-import { get, memoize } from 'lodash-es';
+import { get, memoize } from 'lodash';
 
 export const getViewportSize = memoize(() => {
   let viewportSize = 0;

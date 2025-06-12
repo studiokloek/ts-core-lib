@@ -1,5 +1,5 @@
 import { LogLevels } from '../logger/levels';
-import { assign } from 'lodash-es';
+import { assign } from 'lodash';
 
 // als er een get parameter ?debug aanwezig is, zetten we debug aan
 const parameters = new URLSearchParams(location.search);

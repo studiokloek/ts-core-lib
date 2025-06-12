@@ -1,4 +1,4 @@
-import { isPlainObject, set } from 'lodash-es';
+import { isPlainObject, set } from 'lodash';
 import { Container, Text, TextStyle } from 'pixi.js';
 import { getLogger } from '../logger';
 import { PrepareCleanupInterface } from '../patterns';

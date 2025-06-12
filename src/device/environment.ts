@@ -1,4 +1,4 @@
-import { memoize, isNil } from 'lodash-es';
+import { memoize, isNil } from 'lodash';
 
 export const isInFrame = memoize(() => {
   let inFrame = false;

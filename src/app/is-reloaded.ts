@@ -1,4 +1,4 @@
-import { set, get } from 'lodash-es';
+import { set, get } from 'lodash';
 
 export function isReloadedPage(): boolean {
   return get(window, 'APP.inited', false);

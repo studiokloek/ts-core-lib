@@ -1,4 +1,4 @@
-import { last, split } from 'lodash-es';
+import { last, split } from 'lodash';
 import { Loader, Texture } from 'pixi.js';
 import { AssetLoaderInterface } from '.';
 import { CoreLibraryOptions, getAppVersion, isApp } from '../';

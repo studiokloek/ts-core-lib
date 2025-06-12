@@ -1,4 +1,4 @@
-import { isArrayLikeObject, isEmpty } from 'lodash-es';
+import { isArrayLikeObject, isEmpty } from 'lodash';
 import ConcretePubSubJS from 'pubsub-js';
 import { Delayed } from '../delay';
 import { getLogger } from '../logger';

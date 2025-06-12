@@ -1,4 +1,4 @@
-import { concat, last, merge, split } from 'lodash-es';
+import { concat, last, merge, split } from 'lodash';
 import { Loader, Texture } from 'pixi.js';
 import { AssetLoaderInterface } from '.';
 import { getLogger } from '../logger';

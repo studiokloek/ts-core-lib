@@ -1,4 +1,4 @@
-import { includes, memoize, some } from 'lodash-es';
+import { includes, memoize, some } from 'lodash';
 
 export interface GPUInfo {
   isWebGLSupported: boolean;

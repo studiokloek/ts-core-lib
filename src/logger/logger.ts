@@ -1,5 +1,5 @@
 /* eslint no-console: "off" */
-import { noop, trim } from 'lodash-es';
+import { noop, trim } from 'lodash';
 import { CoreDebug } from '../debug/core';
 import { calculateLoggerColor, getNextLoggerColor } from './colors';
 import { LogLevels } from './levels';

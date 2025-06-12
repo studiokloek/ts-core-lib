@@ -1,4 +1,4 @@
-import { memoize } from 'lodash-es';
+import { memoize } from 'lodash';
 import { CoreLibraryOptions } from '..';
 import { CoreDebug } from '../debug';
 import { getPixelRatio, isMobile, isObsoleteBrowser, isPlatform, Platform } from '../device';

@@ -1,4 +1,4 @@
-import { floor, isDate, padStart, toNumber, map } from 'lodash-es';
+import { floor, isDate, padStart, toNumber, map } from 'lodash';
 
 export function getDateString(date?: Date): string {
   const d = date || new Date();

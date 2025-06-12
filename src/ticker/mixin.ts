@@ -1,4 +1,4 @@
-import { get } from 'lodash-es';
+import { get } from 'lodash';
 import { getTicker } from '.';
 import { getLogger } from '../logger';
 import { ConcreteTicker, TickerCallback } from './ticker';

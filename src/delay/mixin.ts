@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { find, remove } from 'lodash-es';
+import { find, remove } from 'lodash';
 import { getLogger } from '../logger';
 import { Delayed } from './delay';
 

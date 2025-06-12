@@ -1,4 +1,4 @@
-import { escapeRegExp } from 'lodash-es';
+import { escapeRegExp } from 'lodash';
 import { default as orgSlugify } from 'slugify';
 
 export const replaceAll = (string: string, pattern: string, replacement: string): string => {
