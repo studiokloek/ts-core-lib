@@ -2,27 +2,24 @@
 
 /*!
  *
- * Dit is een aangepaste kopie van de plugin met ondersteuning voor mixins
+ * PixiPlugin 3.13.0
+ * https://gsap.com
  *
- * PixiPlugin 3.12.2
- * https://greensock.com
- *
- * @license Copyright 2008-2023, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
+ * @license Copyright 2008-2025, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license
  * @author: Jack Doyle, jack@greensock.com
+ *
  */
 
-import { hasMixin } from 'ts-mixer';
-
+/* eslint-disable */
 let gsap,
-  _win,
   _splitColor,
   _coreInitted,
   _PIXI,
   PropertyTween,
   _getSetter,
   _isV4,
+  _isV8Plus,
   _windowExists = () => typeof window !== 'undefined',
   _getGSAP = () => gsap || (_windowExists() && (gsap = window.gsap) && gsap.registerPlugin && gsap),
   _isFunction = (value) => typeof value === 'function',
@@ -135,10 +132,13 @@ let gsap,
     }
     filter = new filterClass();
     if (type === 'BlurFilter') {
-      filter.blur = 0;
+      if (_isV8Plus) {
+        filter.strength = 0;
+      } else {
+        filter.blur = 0;
+      }
     }
-    filters.push(filter);
-    target.filters = filters;
+    target.filters = [...filters, filter];
     return filter;
   },
   _addColorMatrixFilterCacheTween = (p, plugin, cache, variables) => {
@@ -193,7 +193,7 @@ let gsap,
       }
     } else {
       matrix = [..._idMatrix];
-      if (v.contrast != null) {
+      if (v.contrast != undefined) {
         matrix = _setContrast(matrix, +v.contrast);
         _addColorMatrixFilterCacheTween('contrast', pg, cache, v);
       } else if (cache.contrast !== 1) {
@@ -203,7 +203,7 @@ let gsap,
           _addColorMatrixFilterCacheTween('contrast', pg, cache, _CMFdefaults);
         }
       }
-      if (v.hue != null) {
+      if (v.hue != undefined) {
         matrix = _setHue(matrix, +v.hue);
         _addColorMatrixFilterCacheTween('hue', pg, cache, v);
       } else if (cache.hue) {
@@ -213,7 +213,7 @@ let gsap,
           _addColorMatrixFilterCacheTween('hue', pg, cache, _CMFdefaults);
         }
       }
-      if (v.brightness != null) {
+      if (v.brightness != undefined) {
         matrix = _applyBrightnessToMatrix(+v.brightness, matrix);
         _addColorMatrixFilterCacheTween('brightness', pg, cache, v);
       } else if (cache.brightness !== 1) {
@@ -223,7 +223,7 @@ let gsap,
           _addColorMatrixFilterCacheTween('brightness', pg, cache, _CMFdefaults);
         }
       }
-      if (v.colorize != null) {
+      if (v.colorize != undefined) {
         v.colorizeAmount = 'colorizeAmount' in v ? +v.colorizeAmount : 1;
         matrix = _colorize(matrix, v.colorize, v.colorizeAmount);
         _addColorMatrixFilterCacheTween('colorize', pg, cache, v);
@@ -236,7 +236,7 @@ let gsap,
           _addColorMatrixFilterCacheTween('colorizeAmount', pg, cache, _CMFdefaults);
         }
       }
-      if (v.saturation != null) {
+      if (v.saturation != undefined) {
         matrix = _setSaturation(matrix, +v.saturation);
         _addColorMatrixFilterCacheTween('saturation', pg, cache, v);
       } else if (cache.saturation !== 1) {
@@ -259,8 +259,11 @@ let gsap,
     set(t, p, (color[0] << 16) | (color[1] << 8) | color[2]);
   },
   _renderDirtyCache = (ratio, { g }) => {
-    if (g) {
-      //in order for PixiJS to actually redraw GraphicsData, we've gotta increment the "dirty" and "clearDirty" values. If we don't do this, the values will be tween properly, but not rendered.
+    if (_isV8Plus) {
+      g.fill();
+      g.stroke();
+    } else if (g) {
+      // in order for PixiJS to actually redraw GraphicsData, we've gotta increment the "dirty" and "clearDirty" values. If we don't do this, the values will be tween properly, but not rendered.
       g.dirty++;
       g.clearDirty++;
     }
@@ -279,7 +282,7 @@ let gsap,
     plugin.add(startColor, 1, startColor[1], endColor[1]);
     plugin.add(startColor, 2, startColor[2], endColor[2]);
   },
-  _colorProperties = { tint: 1, lineColor: 1, fillColor: 1 },
+  _colorProperties = { tint: 1, lineColor: 1, fillColor: 1, strokeColor: 1 },
   _xyContexts = 'position,scale,skew,pivot,anchor,tilePosition,tileScale'.split(','),
   _contexts = { x: 'position', y: 'position', tileX: 'tilePosition', tileY: 'tilePosition' },
   _colorMatrixFilterProperties = { colorMatrixFilter: 1, saturation: 1, contrast: 1, hue: 1, colorize: 1, colorizeAmount: 1, brightness: 1, combineCMF: 1 },
@@ -316,11 +319,12 @@ let gsap,
     return pt;
   },
   _initCore = () => {
-    if (_windowExists()) {
-      _win = window;
+    if (!_coreInitted) {
       gsap = _getGSAP();
-      _PIXI = _coreInitted = _PIXI || _win.PIXI;
-      _isV4 = _PIXI && _PIXI.VERSION && _PIXI.VERSION.charAt(0) === '4';
+      _PIXI = _coreInitted = _PIXI || (_windowExists() && window.PIXI);
+      let version = (_PIXI && _PIXI.VERSION && Number.parseFloat(_PIXI.VERSION.split('.')[0])) || 0;
+      _isV4 = version === 4;
+      _isV8Plus = version >= 8;
       _splitColor = (color) => gsap.utils.splitColor(`${color}`.slice(0, 2) === '0x' ? `#${color.slice(2)}` : color); // some colors in PIXI are reported as "0xFF4421" instead of "#FF4421".
     }
   },
@@ -335,7 +339,7 @@ for (index = 0; index < _xyContexts.length; index++) {
 }
 
 export const PixiPlugin = {
-  version: '3.12.2',
+  version: '3.13.0',
   name: 'pixi',
   register(core, Plugin, propertyTween) {
     gsap = core;
@@ -343,28 +347,27 @@ export const PixiPlugin = {
     _getSetter = Plugin.getSetter;
     _initCore();
   },
+  headless: true, // doesn't need window
   registerPIXI(pixi) {
     _PIXI = pixi;
   },
-  init(target, values) {
+  init(target, values, tween, index, targets) {
     _PIXI || _initCore();
-    // aangepast door martijn@studiokloek.nl om mixins te ondersteunen
     if (!_PIXI) {
-      _warn('PIXI was not found. PixiPlugin.init();');
+      _warn('PIXI was not found. PixiPlugin.registerPIXI(PIXI);');
       return false;
     }
-
-    if (!(target instanceof _PIXI.DisplayObject) && !hasMixin(target, _PIXI.DisplayObject)) {
-      _warn(['Target is not a DisplayObject or PIXI was not found. PixiPlugin.init();', target]);
-      return false;
-    }
-
-    let context, axis, value, colorMatrix, filter, p, padding, index, data;
+    let context, axis, value, colorMatrix, filter, p, padding, index_, data, subProperty;
     for (p in values) {
       context = _contexts[p];
       value = values[p];
       if (context) {
-        axis = ~p.slice(-1).toLowerCase().indexOf('x') ? 'x' : 'y';
+        axis = ~p
+          .charAt(p.length - 1)
+          .toLowerCase()
+          .indexOf('x')
+          ? 'x'
+          : 'y';
         this.add(target[context], axis, target[context][axis], context === 'skew' ? _degreesToRadians(value) : value, 0, 0, 0, 0, 0, 1);
       } else if (p === 'scale' || p === 'anchor' || p === 'pivot' || p === 'tileScale') {
         this.add(target[p], 'x', target[p].x, value);
@@ -382,18 +385,20 @@ export const PixiPlugin = {
         this.add(filter, p, filter[p], value);
         if (values.blurPadding !== 0) {
           padding = values.blurPadding || Math.max(filter[p], value) * 2;
-          index = target.filters.length;
-          while (--index > -1) {
-            target.filters[index].padding = Math.max(target.filters[index].padding, padding); //if we don't expand the padding on all the filters, it can look clipped.
+          index_ = target.filters.length;
+          while (--index_ > -1) {
+            target.filters[index_].padding = Math.max(target.filters[index_].padding, padding); //if we don't expand the padding on all the filters, it can look clipped.
           }
         }
       } else if (_colorProperties[p]) {
-        if ((p === 'lineColor' || p === 'fillColor') && target instanceof _PIXI.Graphics) {
-          data = (target.geometry || target).graphicsData; //"geometry" was introduced in PIXI version 5
+        if ((p === 'lineColor' || p === 'fillColor' || p === 'strokeColor') && target instanceof _PIXI.Graphics) {
+          data = 'fillStyle' in target ? [target] : (target.geometry || target).graphicsData; //"geometry" was introduced in PIXI version 5
+          subProperty = p.slice(0, Math.max(0, p.length - 5));
+          _isV8Plus && subProperty === 'line' && (subProperty = 'stroke'); // in v8, lineColor became strokeColor.
           this._pt = new PropertyTween(this._pt, target, p, 0, 0, _renderDirtyCache, { g: target.geometry || target });
-          index = data.length;
-          while (--index > -1) {
-            _addColorTween(_isV4 ? data[index] : data[index][`${p.slice(0, 4)}Style`], _isV4 ? p : 'color', value, this);
+          index_ = data.length;
+          while (--index_ > -1) {
+            _addColorTween(_isV4 ? data[index_] : data[index_][`${subProperty}Style`], _isV4 ? p : 'color', value, this);
           }
         } else {
           _addColorTween(target, p, value, this);
