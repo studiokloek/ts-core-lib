@@ -76,7 +76,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     _add = true,
     _register = true,
   ): KloekSprite {
-    const sprite = !_asset ? new KloekSprite(undefined, _defaults) : KloekSprite.create(_asset, _defaults);
+    const sprite = _asset ? KloekSprite.create(_asset, _defaults) : new KloekSprite(undefined, _defaults);
 
     let addToTarget = false;
 
@@ -115,9 +115,10 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     _targetOrAdd: Container | boolean = true,
     _add = true,
     _register = true,
+    _isHtml = false,
   ): KloekText {
     const styleOverwrite = isPlainObject(_styleOverwriteOrTargetOrAdd) ? (_styleOverwriteOrTargetOrAdd as Record<string, unknown>) : undefined,
-      text = KloekText.create(_text, _style, styleOverwrite);
+      text = KloekText.create(_text, _style, styleOverwrite, _isHtml);
 
     if (_styleOverwriteOrTargetOrAdd && !styleOverwrite && typeof _styleOverwriteOrTargetOrAdd !== 'boolean') {
       text.setTarget(_styleOverwriteOrTargetOrAdd as Container);
