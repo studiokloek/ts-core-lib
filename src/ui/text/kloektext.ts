@@ -1,10 +1,10 @@
 import { HTMLText } from '@pixi/text-html';
-import { Container, Text, TextStyle } from 'pixi.js';
+import { Container, ObservablePoint, Text, TextStyle } from 'pixi.js';
 import { PrepareCleanupInterface } from '../../patterns';
 import { Stage } from '../../screen';
 import { getTextStyle, registerTextStyle } from './textstyles';
 
-export class KloekText implements PrepareCleanupInterface {
+export class KloekText extends Container implements PrepareCleanupInterface {
   protected isPrepared = false;
   protected target: Container | undefined;
   private _value = '';
@@ -17,10 +17,13 @@ export class KloekText implements PrepareCleanupInterface {
     _styleOverwrite?: Record<string, unknown>,
     _isHtml = false,
   ) {
+    super();
+
     this.isHtml = _isHtml;
 
     const style = getTextStyle(_style, _styleOverwrite);
     this.element = _isHtml ? new HTMLText('', style) : new Text('', style);
+    this.addChild(this.element);
 
     this.text = _text;
   }
@@ -77,16 +80,36 @@ export class KloekText implements PrepareCleanupInterface {
 
   addToTarget(): void {
     if (this.target) {
-      this.target.addChild(this.element);
+      this.target.addChild(this);
     }
   }
 
   removeFromTarget(): void {
-    if (this.target && this.element.parent) {
-      this.target.removeChild(this.element);
+    if (this.target && this.parent) {
+      this.target.removeChild(this);
     }
   }
 
+  // getters
+  get width(): number {
+    return this.element.width;
+  }
+  set width(value: number) {
+    this.element.width = value;
+  }
+
+  get height(): number {
+    return this.element.height;
+  }
+  set height(value: number) {
+    this.element.height = value;
+  }
+
+  get anchor(): ObservablePoint {
+    return this.element.anchor;
+  }
+
+  // static methods
   static create(
     _text: string | number,
     _style?: TextStyle | Record<string, unknown> | string,
