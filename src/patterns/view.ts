@@ -111,25 +111,29 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
   addText(
     _text: string | number,
     _style: string,
-    _styleOverwriteOrTargetOrAdd: Record<string, unknown> | Container | boolean = true,
-    _targetOrAdd: Container | boolean = true,
-    _add = true,
-    _register = true,
-    _isHtml = false,
+    _target?: Container,
+    _options?: {
+      _styleOverwrite?: Record<string, unknown>;
+      add?: boolean;
+      register?: boolean;
+      isHtml?: boolean;
+    },
   ): KloekText {
-    const styleOverwrite = isPlainObject(_styleOverwriteOrTargetOrAdd) ? (_styleOverwriteOrTargetOrAdd as Record<string, unknown>) : undefined,
-      text = KloekText.create(_text, _style, styleOverwrite, _isHtml);
+    const _styleOverwrite = get(_options, '_styleOverwrite'),
+      _add = get(_options, 'add', true),
+      _register = get(_options, 'register', true),
+      _isHtml = get(_options, 'isHtml', false);
 
-    if (_styleOverwriteOrTargetOrAdd && !styleOverwrite && typeof _styleOverwriteOrTargetOrAdd !== 'boolean') {
-      text.setTarget(_styleOverwriteOrTargetOrAdd as Container);
-    } else if (_targetOrAdd && typeof _targetOrAdd !== 'boolean') {
-      text.setTarget(_targetOrAdd);
-    } else {
+    const text = KloekText.create(_text, _style, _styleOverwrite, _isHtml);
+
+    if (_target === undefined) {
       text.setTarget(this);
+    } else {
+      text.setTarget(_target);
     }
 
     // ook toevoegen?
-    if (_styleOverwriteOrTargetOrAdd !== false && _targetOrAdd !== false && _add !== false) {
+    if (_add) {
       text.addToTarget();
 
       // als we al klaar zijn, gelijk laten zien
