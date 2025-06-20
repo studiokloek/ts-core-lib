@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get, isPlainObject } from 'lodash';
 import { Container } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
 import { DelayedMixin } from '../delay';
@@ -20,6 +20,13 @@ export interface ViewOptions {
 export interface OtherViewOptions extends ViewOptions {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
+}
+
+interface AddTextOptions {
+  styleOverwrite?: Record<string, unknown>;
+  add?: boolean;
+  register?: boolean;
+  isHtml?: boolean;
 }
 
 export interface ViewInterface extends Container {
@@ -108,29 +115,17 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     return sprite;
   }
 
-  addText(
-    _text: string | number,
-    _style: string,
-    _target?: Container,
-    _options?: {
-      _styleOverwrite?: Record<string, unknown>;
-      add?: boolean;
-      register?: boolean;
-      isHtml?: boolean;
-    },
-  ): KloekText {
-    const _styleOverwrite = get(_options, '_styleOverwrite'),
-      _add = get(_options, 'add', true),
-      _register = get(_options, 'register', true),
-      _isHtml = get(_options, 'isHtml', false);
+  addText(_text: string | number, _style: string, _targetOrOptions?: Container | AddTextOptions, _options?: AddTextOptions): KloekText {
+    // bepaal de opties
+    const target = isPlainObject(_targetOrOptions) ? undefined : (_targetOrOptions as Container),
+      options = isPlainObject(_targetOrOptions) ? (_targetOrOptions as AddTextOptions) : _options,
+      _styleOverwrite = get(options, '_styleOverwrite'),
+      _add = get(options, 'add', true),
+      _register = get(options, 'register', true),
+      _isHtml = get(options, 'isHtml', false);
 
     const text = KloekText.create(_text, _style, _styleOverwrite, _isHtml);
-
-    if (_target === undefined) {
-      text.setTarget(this);
-    } else {
-      text.setTarget(_target);
-    }
+    text.setTarget(target);
 
     // ook toevoegen?
     if (_add) {
