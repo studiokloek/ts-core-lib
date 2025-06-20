@@ -125,7 +125,12 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
       _isHtml = get(options, 'isHtml', false);
 
     const text = KloekText.create(_text, _style, _styleOverwrite, _isHtml);
-    text.setTarget(target);
+
+    if (target) {
+      text.setTarget(target);
+    } else {
+      text.setTarget(this);
+    }
 
     // ook toevoegen?
     if (_add) {
