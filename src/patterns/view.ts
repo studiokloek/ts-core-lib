@@ -1,15 +1,15 @@
-import { get, isPlainObject } from 'lodash';
+import { get } from 'lodash';
 import { Container } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
 import { DelayedMixin } from '../delay';
+import { SpriteAsset, SpriteAssetWithMeta } from '../loaders';
 import { getLogger } from '../logger';
 import { TickerMixin } from '../ticker';
 import { TweenMixin } from '../tween';
+import { KloekSprite, KloekSpriteDefaults, KloekText } from '../ui';
 import { Type } from '../util';
-import { isPrepareCleanup } from './preparecleanup';
 import type { PrepareCleanupInterface } from './preparecleanup';
-import { KloekSprite, KloekText, KloekSpriteDefaults } from '../ui';
-import { SpriteAsset, SpriteAssetWithMeta } from '../loaders';
+import { isPrepareCleanup } from './preparecleanup';
 
 const Logger = getLogger('mediator > view');
 
