@@ -1,2 +1,2 @@
 export * from './kloeksprite';
-export * from './kloektext';
+export * from './text/kloektext';
