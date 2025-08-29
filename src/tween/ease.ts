@@ -44,3 +44,17 @@ export const Easing = {
   RoughEase,
   ExpoScaleEase,
 };
+
+export const BeamEase: gsap.EaseFunction = (p) => {
+	const percentage = 0.05;
+
+	let v:number;
+
+	if (p <= 0.5) {
+		v = percentage * Power4.easeIn(p * 2);
+	} else {
+		v = 1 - percentage + percentage * Power4.easeOut(-1 + p * 2);
+	}
+
+	return v;
+};

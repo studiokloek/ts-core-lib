@@ -1,0 +1,1 @@
+export type ReducedTweenVars = GSAPTweenVars | 'skip' | 'ignore';
