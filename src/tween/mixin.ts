@@ -1,11 +1,9 @@
 import { gsap } from 'gsap';
-import { get, isNumber, pull, remove, set } from 'lodash';
-import type { DisplayObject } from 'pixi.js';
-import { getLogger } from '../logger';
-import type { ReducedTweenVars } from './types';
+import { isNumber, pull, remove } from 'lodash';
 import { getTweenVars } from './tween-vars';
+import type { ReducedTweenVars } from './types';
 
-const Logger = getLogger('tween > mixin');
+// const Logger = getLogger('tween > mixin');
 
 export class TweenMixin {
   private __tweens: GSAPTween[] = [];
