@@ -455,10 +455,7 @@ export class ConcreteStage {
   private setSizingOptions(_sizingOptions?: SizeOptions | MultiSizeOptions): void {
     let sizingOptions = _sizingOptions;
 
-    if (!sizingOptions) {
-      // helemaal geen sizing, dan default...
-      this._sizeOptions = { [DefaultSizeOptions.orientation]: DefaultSizeOptions };
-    } else {
+    if (sizingOptions) {
       // enkele sizing?
       sizingOptions = _sizingOptions as SizeOptions;
       if (isSizeOptions(sizingOptions)) {
@@ -471,6 +468,9 @@ export class ConcreteStage {
           this._sizeOptions = sizingOptions;
         }
       }
+    } else {
+      // helemaal geen sizing, dan default...
+      this._sizeOptions = { [DefaultSizeOptions.orientation]: DefaultSizeOptions };
     }
   }
 
@@ -687,7 +687,6 @@ export class ConcreteStage {
     this.renderer.backgroundColor = color;
     document.body.style.backgroundColor = alpha === 0 ? 'transparent' : hexToString(color, alpha);
   }
-  
 
   render(displayObject: IRenderableObject, options?: IRendererRenderOptions): void {
     this.renderer.render(displayObject, options);
