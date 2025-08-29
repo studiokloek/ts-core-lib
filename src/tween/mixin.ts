@@ -1,7 +1,9 @@
 import { gsap } from 'gsap';
 import { get, isNumber, pull, remove, set } from 'lodash';
-import { DisplayObject } from 'pixi.js';
+import type { DisplayObject } from 'pixi.js';
 import { getLogger } from '../logger';
+import type { ReducedTweenVars } from './types';
+import { getTweenVars } from './tween-vars';
 
 const Logger = getLogger('tween > mixin');
 
@@ -13,6 +15,8 @@ export class TweenMixin {
     durationOrProperties: number | GSAPTweenVars,
     propertiesOrSettings?: GSAPTweenVars,
     settings?: GSAPTweenVars,
+    reducedProperties?: ReducedTweenVars,
+    reducedSettings?: GSAPTweenVars
   ): { target: any; vars: Record<string, unknown> } {
     let target,
       duration = 0,
@@ -29,32 +33,7 @@ export class TweenMixin {
       properties = propertiesOrSettings as GSAPTweenVars;
     }
 
-    let variables: GSAPTweenVars;
-
-    if (settings) {
-      if ((target as DisplayObject).worldTransform !== undefined) {
-        // warn if props contain wrong values
-        if (get(properties, 'delay') || get(properties, 'ease') || get(properties, 'onComplete')) {
-          Logger.warn('Can not mix tween settings (delay/ease/onComplete/etc) into PIXI properties.');
-        }
-
-        // // fix rotation
-        const rotation = get(properties, 'rotation');
-        if (typeof rotation === 'number') {
-          set(properties, 'rotation', rotation * (180 / Math.PI));
-        }
-
-        variables = { pixi: properties, ...settings };
-      } else {
-        variables = { ...properties, ...settings };
-      }
-    } else {
-      variables = { ...properties };
-    }
-
-    variables.duration = duration;
-
-    return { target, vars: variables };
+    return { target, vars: getTweenVars(target, duration, properties, settings, reducedProperties, reducedSettings) };
   }
 
   private __registerTween(tween: GSAPTween): void {
@@ -80,9 +59,11 @@ export class TweenMixin {
     durationOrProperties: number | GSAPTweenVars,
     propertiesOrSettings?: GSAPTweenVars,
     settings?: GSAPTweenVars,
+    reducedProperties?: ReducedTweenVars,
+    reducedSettings?: GSAPTweenVars
   ): GSAPTween {
     // haal tween props op
-    const { target, vars } = this.__getTweenSettings(targetOrDuration, durationOrProperties, propertiesOrSettings, settings);
+    const { target, vars } = this.__getTweenSettings(targetOrDuration, durationOrProperties, propertiesOrSettings, settings, reducedProperties, reducedSettings);
 
     // maak tween aan
     const tween = gsap.from(target, vars);
@@ -98,9 +79,11 @@ export class TweenMixin {
     durationOrProperties: number | GSAPTweenVars,
     propertiesOrSettings?: GSAPTweenVars,
     settings?: GSAPTweenVars,
+    reducedProperties?: ReducedTweenVars,
+    reducedSettings?: GSAPTweenVars
   ): GSAPTween {
     // haal tween props op
-    const { target, vars } = this.__getTweenSettings(targetOrDuration, durationOrProperties, propertiesOrSettings, settings);
+    const { target, vars } = this.__getTweenSettings(targetOrDuration, durationOrProperties, propertiesOrSettings, settings, reducedProperties, reducedSettings);
 
     // maak tween aan
     const tween = gsap.to(target, vars);
