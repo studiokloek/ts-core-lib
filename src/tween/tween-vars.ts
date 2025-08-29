@@ -104,7 +104,7 @@ export function getTweenVars(
             properties.positionY !== undefined
         ) {
             // dan doen we de animatie met een beam ease
-            properties = { ...properties, ease: BeamEase };
+            settings = { ...settings, ease: BeamEase };
         }
 
         // zit er een scaling in de properties?
@@ -117,7 +117,7 @@ export function getTweenVars(
         ) {
             // dan doen we de animatie in stappen
             const steps = ceil(_duration * 3);
-            properties = { ...properties, ease: `steps(${steps})` };
+            settings = { ...settings, ease: `steps(${steps})` };
         }
     }
 
