@@ -119,7 +119,7 @@ export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin
     // bepaal de opties
     const target = isPlainObject(_targetOrOptions) ? undefined : (_targetOrOptions as Container),
       options = isPlainObject(_targetOrOptions) ? (_targetOrOptions as AddTextOptions) : _options,
-      _styleOverwrite = get(options, '_styleOverwrite'),
+      _styleOverwrite = get(options, 'styleOverwrite'),
       _add = get(options, 'add', true),
       _register = get(options, 'register', true),
       _isHtml = get(options, 'isHtml', false);
