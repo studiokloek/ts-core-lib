@@ -5,6 +5,8 @@ import { Stage } from '../../screen';
 import { HTMLText, HTMLTextStyle } from './html-text';
 import { getTextStyle, registerTextStyle } from './textstyles';
 
+export type KloekHTMLText = HTMLText;
+
 export class KloekText extends Container implements PrepareCleanupInterface {
   protected isPrepared = false;
   protected target: Container | undefined;
@@ -124,7 +126,7 @@ export class KloekText extends Container implements PrepareCleanupInterface {
     this.element.style = style;
   }
 
-  get textElement(): Text | HTMLText {
+  get textElement(): Text | KloekHTMLText {
     return this.element;
   }
 
