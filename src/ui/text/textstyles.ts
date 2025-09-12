@@ -1,6 +1,7 @@
 import { isPlainObject, set } from 'lodash';
 import { Logger } from '../../logger';
 import { ITextStyle, TextStyle } from 'pixi.js';
+import { HTMLTextStyle } from './html-text';
 
 const StylesRegister: Record<string, TextStyle> = {};
 
@@ -36,7 +37,7 @@ export function overwriteTextStyle(_base: TextStyle, _overwrite: Partial<ITextSt
   return style;
 }
 
-export function getTextStyle(_base?: TextStyle | Partial<ITextStyle> | string, _overwrite?: Partial<ITextStyle>): TextStyle | undefined {
+export function getTextStyle(_base?: TextStyle | Partial<ITextStyle> | string, _overwrite?: Partial<ITextStyle>, _html = false): TextStyle | HTMLTextStyle | undefined {
   if (!_base) {
     return;
   }
@@ -51,9 +52,11 @@ export function getTextStyle(_base?: TextStyle | Partial<ITextStyle> | string, _
     baseStyle = _base as TextStyle;
   }
 
+  const style = _html ? HTMLTextStyle.from(baseStyle) : baseStyle;
+
   if (!_overwrite) {
-    return baseStyle;
+    return style;
   }
 
-  return overwriteTextStyle(baseStyle, _overwrite);
+  return overwriteTextStyle(style, _overwrite);
 }

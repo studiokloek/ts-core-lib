@@ -26,7 +26,7 @@ export class KloekText extends Container implements PrepareCleanupInterface {
 
     this.isHtml = _isHtml;
 
-    const style = getTextStyle(_style, _styleOverwrite)
+    const style = getTextStyle(_style, _styleOverwrite, this.isHtml)
 
     if (this.isHtml) {
       this.element = new HTMLText('', style);
@@ -60,7 +60,7 @@ export class KloekText extends Container implements PrepareCleanupInterface {
   }
 
   updateStyle(_style?: TextStyle | Partial<ITextStyle> | string, _styleOverwrite?: Partial<ITextStyle>): void {
-    const style = getTextStyle(_style, _styleOverwrite);
+    const style = getTextStyle(_style, _styleOverwrite, this.isHtml);
     this.element.style = style ?? new TextStyle();
   }
 
@@ -158,8 +158,8 @@ export class KloekText extends Container implements PrepareCleanupInterface {
     registerTextStyle(_name, _baseOrStyle, _style);
   }
 
-  static getRegisteredStyle(_name: string): TextStyle | undefined {
-    return getTextStyle(_name);
+  static getRegisteredStyle(_name: string, _html = false): TextStyle | HTMLTextStyle | undefined {
+    return getTextStyle(_name, undefined, _html);
   }
 
   static registerFontsForHTMLText(_fonts: HTMLFontLoadInfo[]): void {
