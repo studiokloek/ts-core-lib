@@ -13,8 +13,8 @@ export class KloekText extends Container implements PrepareCleanupInterface {
 
   constructor(
     _text: string | number | undefined,
-    _style?: TextStyle | Record<string, unknown> | string,
-    _styleOverwrite?: Record<string, unknown>,
+    _style?: TextStyle | Partial<ITextStyle> | string,
+    _styleOverwrite?: Partial<ITextStyle>,
     _isHtml = false,
   ) {
     super();
@@ -46,7 +46,7 @@ export class KloekText extends Container implements PrepareCleanupInterface {
     this.element.text = this.text;
   }
 
-  updateStyle(_style?: TextStyle | Record<string, unknown> | string, _styleOverwrite?: Record<string, unknown>): void {
+  updateStyle(_style?: TextStyle | Partial<ITextStyle> | string, _styleOverwrite?: Partial<ITextStyle>): void {
     const style = getTextStyle(_style, _styleOverwrite);
     this.element.style = style ?? new TextStyle();
   }
@@ -126,14 +126,14 @@ export class KloekText extends Container implements PrepareCleanupInterface {
   // static methods
   static create(
     _text: string | number,
-    _style?: TextStyle | Record<string, unknown> | string,
-    _styleOverwrite?: Record<string, unknown>,
+    _style?: TextStyle | Partial<ITextStyle> | string,
+    _styleOverwrite?: Partial<ITextStyle>,
     _isHtml = false,
   ): KloekText {
     return new KloekText(_text, _style, _styleOverwrite, _isHtml);
   }
 
-  static registerStyle(_name: string, _baseOrStyle: string | TextStyle | Record<string, unknown>, _style?: Record<string, unknown>): void {
+  static registerStyle(_name: string, _baseOrStyle: string | TextStyle | Partial<ITextStyle>, _style?: Partial<ITextStyle>): void {
     registerTextStyle(_name, _baseOrStyle, _style);
   }
 

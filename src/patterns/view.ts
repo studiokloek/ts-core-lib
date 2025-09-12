@@ -1,5 +1,5 @@
 import { get, isPlainObject } from 'lodash';
-import { Container } from 'pixi.js';
+import { Container, ITextStyle } from 'pixi.js';
 import { Mixin } from 'ts-mixer';
 import { DelayedMixin } from '../delay';
 import { SpriteAsset, SpriteAssetWithMeta } from '../loaders';
@@ -23,7 +23,7 @@ export interface OtherViewOptions extends ViewOptions {
 }
 
 interface AddTextOptions {
-  styleOverwrite?: Record<string, unknown>;
+  styleOverwrite?: Partial<ITextStyle>;
   add?: boolean;
   register?: boolean;
   isHtml?: boolean;

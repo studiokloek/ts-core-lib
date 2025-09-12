@@ -1,10 +1,10 @@
 import { isPlainObject, set } from 'lodash';
 import { Logger } from '../../logger';
-import { TextStyle } from 'pixi.js';
+import { ITextStyle, TextStyle } from 'pixi.js';
 
 const StylesRegister: Record<string, TextStyle> = {};
 
-export function registerTextStyle(_name: string, _baseOrStyle: string | TextStyle | Record<string, unknown>, _style?: Record<string, unknown>): void {
+export function registerTextStyle(_name: string, _baseOrStyle: string | TextStyle | Partial<ITextStyle>, _style?: Partial<ITextStyle>): void {
   if (typeof _baseOrStyle === 'string' && _style) {
     const baseStyle = StylesRegister[_baseOrStyle];
 
@@ -23,10 +23,10 @@ export function registerTextStyle(_name: string, _baseOrStyle: string | TextStyl
     Logger.warn('registerTextStyle', `A style with the name '${_name}' already exists. It will be overwritten.`);
   }
 
-  StylesRegister[_name] = isPlainObject(_baseOrStyle) ? new TextStyle(_baseOrStyle as Record<string, unknown>) : (_baseOrStyle as TextStyle);
+  StylesRegister[_name] = isPlainObject(_baseOrStyle) ? new TextStyle(_baseOrStyle as Partial<ITextStyle>) : (_baseOrStyle as TextStyle);
 }
 
-export function overwriteTextStyle(_base: TextStyle, _overwrite: Record<string, unknown>): TextStyle {
+export function overwriteTextStyle(_base: TextStyle, _overwrite: Partial<ITextStyle>): TextStyle {
   const style = _base.clone();
 
   for (const [key, value] of Object.entries(_overwrite)) {
@@ -36,7 +36,7 @@ export function overwriteTextStyle(_base: TextStyle, _overwrite: Record<string, 
   return style;
 }
 
-export function getTextStyle(_base?: TextStyle | Record<string, unknown> | string, _overwrite?: Record<string, unknown>): TextStyle | undefined {
+export function getTextStyle(_base?: TextStyle | Partial<ITextStyle> | string, _overwrite?: Partial<ITextStyle>): TextStyle | undefined {
   if (!_base) {
     return;
   }
