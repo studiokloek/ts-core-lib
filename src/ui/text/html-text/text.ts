@@ -160,11 +160,6 @@ export class HTMLText extends Sprite {
 
         const { width, height } = contentBounds;
 
-        if (process.env.DEBUG) {
-            if (width > this.maxWidth || height > this.maxHeight) {
-                console.warn('[HTMLText] Large expanse of text, increase HTMLText.maxWidth or HTMLText.maxHeight property.');
-            }
-        }
 
         const contentWidth = Math.min(this.maxWidth, Math.ceil(width));
         const contentHeight = Math.min(this.maxHeight, Math.ceil(height));
