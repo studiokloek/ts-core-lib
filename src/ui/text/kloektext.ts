@@ -1,7 +1,8 @@
-import { HTMLText } from '@pixi/text-html';
+
 import { Container, ITextStyle, ObservablePoint, Text, TextStyle } from 'pixi.js';
 import { PrepareCleanupInterface } from '../../patterns';
 import { Stage } from '../../screen';
+import { HTMLText, HTMLTextStyle } from './html-text';
 import { getTextStyle, registerTextStyle } from './textstyles';
 
 export class KloekText extends Container implements PrepareCleanupInterface {
@@ -116,11 +117,15 @@ export class KloekText extends Container implements PrepareCleanupInterface {
     return this.element.tint;
   }
 
-  get style(): TextStyle | Partial<ITextStyle> {
+  get style(): TextStyle | HTMLTextStyle | Partial<ITextStyle> {
     return this.element.style;
   }
-  set style(style: TextStyle | Partial<ITextStyle>) {
+  set style(style: TextStyle | HTMLTextStyle | Partial<ITextStyle>) {
     this.element.style = style;
+  }
+
+  get textElement(): Text | HTMLText {
+    return this.element;
   }
 
   // static methods
