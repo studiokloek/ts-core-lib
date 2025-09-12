@@ -4,6 +4,7 @@ import { PrepareCleanupInterface } from '../../patterns';
 import { Stage } from '../../screen';
 import { HTMLText, HTMLTextStyle } from './html-text';
 import { getTextStyle, registerTextStyle } from './textstyles';
+import { HTMLFontLoadInfo, loadFontsInHTMLText, registerFontsForHTMLText } from './html-text/fonts';
 
 export type KloekHTMLText = HTMLText;
 
@@ -11,6 +12,7 @@ export class KloekText extends Container implements PrepareCleanupInterface {
   protected isPrepared = false;
   protected target: Container | undefined;
   private _value = '';
+  private _ready: Promise<void>;
   public readonly element: Text | HTMLText;
   public readonly isHtml: boolean;
 
@@ -24,8 +26,16 @@ export class KloekText extends Container implements PrepareCleanupInterface {
 
     this.isHtml = _isHtml;
 
-    const style = getTextStyle(_style, _styleOverwrite);
-    this.element = _isHtml ? new HTMLText('', style) : new Text('', style);
+    const style = getTextStyle(_style, _styleOverwrite)
+
+    if (this.isHtml) {
+      this.element = new HTMLText('', style);
+      this._ready = loadFontsInHTMLText(this.element);
+    } else {
+      this.element = new Text('', style);
+      this._ready = Promise.resolve();
+    }
+
     this.addChild(this.element);
 
     this.text = _text;
@@ -130,6 +140,10 @@ export class KloekText extends Container implements PrepareCleanupInterface {
     return this.element;
   }
 
+  get ready(): Promise<void> {
+    return this._ready;
+  }
+
   // static methods
   static create(
     _text: string | number,
@@ -146,5 +160,9 @@ export class KloekText extends Container implements PrepareCleanupInterface {
 
   static getRegisteredStyle(_name: string): TextStyle | undefined {
     return getTextStyle(_name);
+  }
+
+  static registerFontsForHTMLText(_fonts: HTMLFontLoadInfo[]): void {
+    registerFontsForHTMLText(_fonts);
   }
 }
