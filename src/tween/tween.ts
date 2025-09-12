@@ -1,40 +1,40 @@
 import { gsap } from "gsap";
 import { getTweenVars, setReducedMotion } from "./tween-vars";
-import type { ReducedTweenVars } from "./types";
+import type { KloekReducedTweenVars, KloekTween, KloekTweenTarget, KloekTweenVars } from "./types";
 
 export const Tween = {
   to: (
-    target: GSAPTweenTarget,
+    target: KloekTweenTarget,
     duration = 0,
-    properties: GSAPTweenVars,
-    settings?: GSAPTweenVars,
-    reducedProperties?: ReducedTweenVars,
-    reducedSettings?: GSAPTweenVars,
-  ): GSAPTween => {
+    properties: KloekTweenVars,
+    settings?: KloekTweenVars,
+    reducedProperties?: KloekReducedTweenVars,
+    reducedSettings?: KloekTweenVars,
+  ): KloekTween => {
     // maak tween aan
     const variables = getTweenVars(target, duration, properties, settings, reducedProperties, reducedSettings);
-    return gsap.to(target, variables) as GSAPTween;
+    return gsap.to(target, variables) as KloekTween;
   },
 
   from: (
-    target: GSAPTweenTarget,
+    target: KloekTweenTarget,
     duration = 0,
-    properties: GSAPTweenVars,
-    settings?: GSAPTweenVars,
-    reducedProperties?: ReducedTweenVars,
-    reducedSettings?: GSAPTweenVars,
-  ): GSAPTween => {
+    properties: KloekTweenVars,
+    settings?: KloekTweenVars,
+    reducedProperties?: KloekReducedTweenVars,
+    reducedSettings?: KloekTweenVars,
+  ): KloekTween => {
     // maak tween aan
     const variables = getTweenVars(target, duration, properties, settings, reducedProperties, reducedSettings);
-    return gsap.from(target, variables) as GSAPTween;
+    return gsap.from(target, variables) as KloekTween;
   },
 
-  set: (target: GSAPTweenTarget, properties: GSAPTweenVars): GSAPTween => {
-    return gsap.set(target, properties) as GSAPTween;
+  set: (target: KloekTweenTarget, properties: KloekTweenVars): KloekTween => {
+    return gsap.set(target, properties) as KloekTween;
   },
 
   killTweensOf: (
-    _target: GSAPTweenTarget,
+    _target: KloekTweenTarget,
     _properties?: object | string,
   ): void => {
     gsap.killTweensOf(_target, _properties);

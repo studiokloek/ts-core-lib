@@ -1,20 +1,20 @@
 import { gsap } from 'gsap';
 import { isNumber, pull, remove } from 'lodash';
 import { getTweenVars } from './tween-vars';
-import type { ReducedTweenVars } from './types';
+import type { KloekTween, KloekTweenTarget, KloekTweenVars, KloekReducedTweenVars } from './types';
 
 // const Logger = getLogger('tween > mixin');
 
 export class TweenMixin {
-  private __tweens: GSAPTween[] = [];
+  private __tweens: KloekTween[] = [];
 
   private __getTweenSettings(
-    targetOrDuration: GSAPTweenTarget | number,
-    durationOrProperties: number | GSAPTweenVars,
-    propertiesOrSettings?: GSAPTweenVars,
-    settings?: GSAPTweenVars,
-    reducedProperties?: ReducedTweenVars,
-    reducedSettings?: GSAPTweenVars
+    targetOrDuration: KloekTweenTarget | number,
+    durationOrProperties: number | KloekTweenVars,
+    propertiesOrSettings?: KloekTweenVars,
+    settings?: KloekTweenVars,
+    reducedProperties?: KloekReducedTweenVars,
+    reducedSettings?: KloekTweenVars
   ): { target: any; vars: Record<string, unknown> } {
     let target,
       duration = 0,
@@ -28,13 +28,13 @@ export class TweenMixin {
     } else {
       target = targetOrDuration;
       duration = durationOrProperties as number;
-      properties = propertiesOrSettings as GSAPTweenVars;
+      properties = propertiesOrSettings as KloekTweenVars;
     }
 
     return { target, vars: getTweenVars(target, duration, properties, settings, reducedProperties, reducedSettings) };
   }
 
-  private __registerTween(tween: GSAPTween): void {
+  private __registerTween(tween: KloekTween): void {
     // bewaar in lijst
     this.__tweens.push(tween);
 
@@ -53,13 +53,13 @@ export class TweenMixin {
   }
 
   protected tweenFrom(
-    targetOrDuration: GSAPTweenTarget | number,
-    durationOrProperties: number | GSAPTweenVars,
-    propertiesOrSettings?: GSAPTweenVars,
-    settings?: GSAPTweenVars,
-    reducedProperties?: ReducedTweenVars,
-    reducedSettings?: GSAPTweenVars
-  ): GSAPTween {
+    targetOrDuration: KloekTweenTarget | number,
+    durationOrProperties: number | KloekTweenVars,
+    propertiesOrSettings?: KloekTweenVars,
+    settings?: KloekTweenVars,
+    reducedProperties?: KloekReducedTweenVars,
+    reducedSettings?: KloekTweenVars
+  ): KloekTween {
     // haal tween props op
     const { target, vars } = this.__getTweenSettings(targetOrDuration, durationOrProperties, propertiesOrSettings, settings, reducedProperties, reducedSettings);
 
@@ -73,13 +73,13 @@ export class TweenMixin {
   }
 
   protected tween(
-    targetOrDuration: GSAPTweenTarget | number,
-    durationOrProperties: number | GSAPTweenVars,
-    propertiesOrSettings?: GSAPTweenVars,
-    settings?: GSAPTweenVars,
-    reducedProperties?: ReducedTweenVars,
-    reducedSettings?: GSAPTweenVars
-  ): GSAPTween {
+    targetOrDuration: KloekTweenTarget | number,
+    durationOrProperties: number | KloekTweenVars,
+    propertiesOrSettings?: KloekTweenVars,
+    settings?: KloekTweenVars,
+    reducedProperties?: KloekReducedTweenVars,
+    reducedSettings?: KloekTweenVars
+  ): KloekTween {
     // haal tween props op
     const { target, vars } = this.__getTweenSettings(targetOrDuration, durationOrProperties, propertiesOrSettings, settings, reducedProperties, reducedSettings);
 
@@ -111,7 +111,7 @@ export class TweenMixin {
     }
   }
 
-  protected killTweenOf(_target?: GSAPTweenTarget, _properties?: string): void {
+  protected killTweenOf(_target?: KloekTweenTarget, _properties?: string): void {
     if (_target) {
       // haal uit lijst
       const tweensToKill = remove(this.__tweens, (item) => item.targets().includes(_target));

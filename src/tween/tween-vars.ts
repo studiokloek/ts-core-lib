@@ -2,7 +2,7 @@ import { ceil, get, isNumber, set } from "lodash";
 import type { DisplayObject } from "pixi.js";
 import { Logger } from "../logger";
 import { BeamEase } from "./ease";
-import type { ReducedTweenVars } from "./types";
+import type { KloekReducedTweenVars, KloekTweenTarget, KloekTweenVars } from "./types";
 import { cleanVarsForNoTween, removeNaN } from "./utils";
 
 let reducedMotionIsEnabled = false;
@@ -11,8 +11,8 @@ export function setReducedMotion(value: boolean) {
     reducedMotionIsEnabled = value === true;
 }
 
-function getPixiVars(_target: GSAPTweenTarget, _properties: GSAPTweenVars, _settings?: GSAPTweenVars): GSAPTweenVars {
-    let variables: GSAPTweenVars;
+function getPixiVars(_target: KloekTweenTarget, _properties: KloekTweenVars, _settings?: KloekTweenVars): KloekTweenVars {
+    let variables: KloekTweenVars;
 
     if (_settings) {
         // is the target a PixiJS object?
@@ -28,7 +28,7 @@ function getPixiVars(_target: GSAPTweenTarget, _properties: GSAPTweenVars, _sett
                 set(_properties, 'rotation', rotation * (180 / Math.PI));
             }
 
-            variables = { pixi: _properties as GSAPTweenVars['pixi'], ..._settings };
+            variables = { pixi: _properties as KloekTweenVars['pixi'], ..._settings };
         } else {
             variables = { ..._properties, ..._settings };
         }
@@ -40,13 +40,13 @@ function getPixiVars(_target: GSAPTweenTarget, _properties: GSAPTweenVars, _sett
 }
 
 export function getTweenVars(
-    _target: GSAPTweenTarget,
+    _target: KloekTweenTarget,
     _duration: number,
-    _properties: GSAPTweenVars,
-    _settings?: GSAPTweenVars,
-    _reducedProperties?: ReducedTweenVars,
-    _reducedSettings?: GSAPTweenVars
-): GSAPTweenVars {
+    _properties: KloekTweenVars,
+    _settings?: KloekTweenVars,
+    _reducedProperties?: KloekReducedTweenVars,
+    _reducedSettings?: KloekTweenVars
+): KloekTweenVars {
     let properties = { ..._properties };
     let settings = { ..._settings };
 

@@ -1,3 +1,5 @@
+import { KloekTweenVars } from "./types";
+
 // lijstje om te checken of een callback type bestaat in vars
 const CallBackTypeValues = new Map([
 	['onComplete', true],
@@ -9,8 +11,8 @@ const CallBackTypeValues = new Map([
 ]);
 
 
-export function cleanVarsForNoTween(vars: GSAPTweenVars): GSAPTweenVars {
-	const newVars: GSAPTweenVars = {};
+export function cleanVarsForNoTween(vars: KloekTweenVars): KloekTweenVars {
+	const newVars: KloekTweenVars = {};
 
 	for (const [key, value] of Object.entries(vars)) {
 		if (key === 'duration' || CallBackTypeValues.has(key)) {
@@ -21,7 +23,7 @@ export function cleanVarsForNoTween(vars: GSAPTweenVars): GSAPTweenVars {
 	return newVars;
 }
 
-export function removeNaN(obj: GSAPTweenVars): GSAPTweenVars {
+export function removeNaN(obj: KloekTweenVars): KloekTweenVars {
 	const newObj = { ...obj };
 
 	for (const [key, value] of Object.entries(newObj)) {
