@@ -59,7 +59,7 @@ export class SoundLibraryItem {
       autoplay: false,
       preload: false,
       loop: false,
-      html5: this.options?.buffer ?? false,
+      html5: this.options?.buffer === true ? true : false,
       volume: 0.5,
 
       // we maken een main sprite aan, zodat we goed kunnen loopen

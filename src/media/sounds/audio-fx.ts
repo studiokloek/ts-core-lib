@@ -1,4 +1,4 @@
-import { Howl, Howler } from 'howler';
+import { Howl, Howler, PannerAttributes } from 'howler';
 import { Bind } from 'lodash-decorators';
 import { round } from 'lodash';
 import { Delayed } from '../../delay';
@@ -18,6 +18,12 @@ export interface AudioFXOptions {
   fade?: number;
   randomStart?: boolean;
   position?: number;
+
+  // spatial audio opties
+  spatial?: boolean;
+  spatialPosition?: { x: number; y: number; z: number }; // bronpositie
+  spatialOrientation?: { x: number; y: number; z: number }; // bronoriëntatie
+  spatialPanner?: Partial<PannerAttributes>; // extra fine-tuning
 }
 
 class ConcreteSoundsPlayer {
@@ -47,7 +53,7 @@ class ConcreteSoundsPlayer {
     player.volume(0, id);
 
     player.once('play', () => this.registerPlayer(player, id), id);
-    player.once('end', () => this.unregisterPlayer(player, id), id);
+    player.once('end', () => this.unregisterPlayer(player, id), id); r
     player.once('stop', () => this.unregisterPlayer(player, id), id);
 
     player.pause(id);
@@ -99,6 +105,29 @@ class ConcreteSoundsPlayer {
       player.fade(0, targetVolume, options.fade * 1000, id);
     } else {
       player.volume(targetVolume, id);
+    }
+
+    // spatial audio?
+    if (options?.spatial === true) {
+      try {
+        // optionele bron positie
+        if (options.spatialPosition) {
+          player.pos(options.spatialPosition.x, options.spatialPosition.y, options.spatialPosition.z, id);
+        }
+
+        // optionele bron oriëntatie
+        if (options.spatialOrientation) {
+          const o = options.spatialOrientation;
+          player.orientation(o.x, o.y, o.z, id);
+        }
+
+        // optionele panner attributen
+        if (options.spatialPanner) {
+          player.pannerAttr(options.spatialPanner, id);
+        }
+      } catch (error) {
+        // spatial werkt niet (bv html5=true), negeren
+      }
     }
 
     player.play(id);
@@ -220,6 +249,8 @@ class ConcreteSoundsPlayer {
     player.play(id);
   }
 
+  // GLOBAL PAUSE/RESUME HANDLING
+
   resumeAll(): void {
     for (const id in this.playingSounds) {
       const player = this.playingSounds[id];
@@ -274,6 +305,7 @@ class ConcreteSoundsPlayer {
     }
   }
 
+  // GLOBAL VOLUME HANDLING
   @Bind
   private fadeAllUpdater(): void {
     Howler.volume(this.volumeFader.value);
@@ -282,6 +314,8 @@ class ConcreteSoundsPlayer {
   setVolume(_value: number): void {
     Howler.volume(_value);
   }
+
+  // CONTEXT SUSPEND/RESUME HANDLING
 
   // before webview pause，suspend the AudioContext
   async suspendContext(): Promise<void> {
@@ -307,6 +341,85 @@ class ConcreteSoundsPlayer {
     this.fadeTo(1, 0.3);
     this.resumeAll();
   }
+
+
+  // SPATIAL SOUND HANDLING
+  spatialPosition(asset: SoundAsset, pos: { x: number; y: number; z: number }, id?: number): void {
+    const player = SoundLibrary.getItemByAsset(asset)?.getPlayer();
+    if (!player) return;
+
+    if (typeof id === 'number') {
+      // specifiek instance
+      try {
+        player.pos(pos.x, pos.y, pos.z, id);
+      } catch { }
+      return;
+    }
+
+    // alle instances van deze sound
+    for (const instanceId in this.playingSounds) {
+      const p = this.playingSounds[instanceId];
+      if (p === player) {
+        try {
+          p.pos(pos.x, pos.y, pos.z, Number(instanceId));
+        } catch { }
+      }
+    }
+  }
+
+  spatialOrientation(asset: SoundAsset, o: { x: number; y: number; z: number }, id?: number): void {
+    const player = SoundLibrary.getItemByAsset(asset)?.getPlayer();
+    if (!player) return;
+
+    if (typeof id === 'number') {
+      try {
+        player.orientation(o.x, o.y, o.z, id);
+      } catch { }
+      return;
+    }
+
+    for (const instanceId in this.playingSounds) {
+      const p = this.playingSounds[instanceId];
+      if (p === player) {
+        try {
+          p.orientation(o.x, o.y, o.z, Number(instanceId));
+        } catch { }
+      }
+    }
+  }
+
+  spatialPanner(attr: Partial<PannerAttributes>, asset: SoundAsset, id?: number): void {
+    const player = SoundLibrary.getItemByAsset(asset)?.getPlayer();
+    if (!player) return;
+
+    if (typeof id === 'number') {
+      try {
+        player.pannerAttr(attr, id);
+      } catch { }
+      return;
+    }
+
+    for (const instanceId in this.playingSounds) {
+      const p = this.playingSounds[instanceId];
+      if (p === player) {
+        try {
+          p.pannerAttr(attr, Number(instanceId));
+        } catch { }
+      }
+    }
+  }
+
+  setListenerPosition(x: number, y: number, z: number): void {
+    Howler.pos(x, y, z);
+  }
+
+  setListenerOrientation(
+    fx: number, fy: number, fz: number,
+    ux = 0, uy = 1, uz = 0
+  ): void {
+    Howler.orientation(fx, fy, fz, ux, uy, uz);
+  }
+
 }
 
 export const AudioFX = new ConcreteSoundsPlayer();
