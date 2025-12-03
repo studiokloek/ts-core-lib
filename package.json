@@ -36,16 +36,16 @@
     "access": "public"
   },
   "dependencies": {
-    "@capacitor/app": "^7.1.0",
+    "@capacitor/app": "^7.1.1",
     "@capacitor/core": "^7.4.4",
-    "@capacitor/device": "^7.0.2",
-    "@capacitor/network": "^7.0.2",
-    "@capacitor/preferences": "^7.0.2",
-    "@capacitor/splash-screen": "^7.0.3",
-    "@capacitor/status-bar": "^7.0.3",
+    "@capacitor/device": "^7.0.3",
+    "@capacitor/network": "^7.0.3",
+    "@capacitor/preferences": "^7.0.3",
+    "@capacitor/splash-screen": "^7.0.4",
+    "@capacitor/status-bar": "^7.0.4",
     "@types/howler": "^2.2.12",
-    "@types/lodash": "^4.17.20",
-    "bowser": "^2.12.1",
+    "@types/lodash": "^4.17.21",
+    "bowser": "^2.13.1",
     "fontfaceobserver": "^2.3.0",
     "gsap": "3.13.0",
     "howler": "^2.2.4",
@@ -80,7 +80,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.8",
     "prettier-package-json": "^2.8.0",
-    "rimraf": "^6.0.1",
+    "rimraf": "^6.1.2",
     "typescript": "5.3.3"
   },
   "browserslist": [
