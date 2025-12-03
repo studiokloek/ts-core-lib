@@ -53,7 +53,7 @@ class ConcreteSoundsPlayer {
     player.volume(0, id);
 
     player.once('play', () => this.registerPlayer(player, id), id);
-    player.once('end', () => this.unregisterPlayer(player, id), id); r
+    player.once('end', () => this.unregisterPlayer(player, id), id);
     player.once('stop', () => this.unregisterPlayer(player, id), id);
 
     player.pause(id);
