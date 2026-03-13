@@ -12,6 +12,11 @@ type InteractionPointerEvents =
   | 'pointerover'
   | 'pointerout';
 
+/**
+ * Naamgeving voor gebruikersinteracties (tikken, slepen, enz.) die PIXI.js begrijpt.
+ * Gebruik deze constanten bij het registreren van interactielisteners op PIXI-objecten.
+ * Bijvoorbeeld: `TouchEvent.TAP` staat gelijk aan `'pointertap'`.
+ */
 export const TouchEvent: { [key in TouchEventTypes]: InteractionPointerEvents } = {
   TAP: 'pointertap',
   START: 'pointerdown',
@@ -24,6 +29,11 @@ export const TouchEvent: { [key in TouchEventTypes]: InteractionPointerEvents } 
 };
 
 // APP EVENTS
+/**
+ * Namen van app-brede berichten voor gebruik met `PubSub`.
+ * Elke naam krijgt automatisch het voorvoegsel `'APP_'` (bijv. `AppEvent.READY` → `'APP_READY'`).
+ * Luister naar berichten via `PubSub.subscribe(AppEvent.READY, handler)`.
+ */
 export const AppEvent = {
   RESIZED: 'resized',
   DEBUG_VALUE: 'debug_value',

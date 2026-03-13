@@ -5,6 +5,7 @@ import { stringSizeInKb } from './util';
 
 const Logger = getLogger('data > request');
 
+/** Soorten fouten die kunnen optreden bij een netwerkverzoek: `DEFAULT`, `TIMEOUT`, `TERMINATED`, `NOT_FOUND` of `OFFLINE`. */
 export const ResponseErrorTypes = {
   DEFAULT: 'default',
   TIMEOUT: 'timeout',
@@ -13,12 +14,14 @@ export const ResponseErrorTypes = {
   OFFLINE: 'offline',
 };
 
+/** Informatie over een fout bij een netwerkverzoek: het type fout, een beschrijving en de HTTP-statuscode. */
 export interface ResponseError {
   type: string;
   message: string;
   code: number;
 }
 
+/** Het resultaat van een netwerkverzoek: ofwel een `body` met de ontvangen gegevens, ofwel een `error` als het mislukt is. */
 export interface ResponseResult {
   error?: ResponseError;
   body?: {} | string;
@@ -49,6 +52,10 @@ async function checkNetworkStatus(): Promise<ResponseError | void> {
   }
 }
 
+/**
+ * Haalt de tekst op van een lokale URL (bijvoorbeeld een bestand dat in de app is meegeleverd).
+ * Geeft een resultaat terug met de tekst bij succes, of een fout als het mislukt.
+ */
 export async function getLocalUrlContents(_url: string): Promise<ResponseResult> {
   Logger.debug(`getLocalUrlContents() start loading '${_url}'`);
 
@@ -77,6 +84,11 @@ export async function getLocalUrlContents(_url: string): Promise<ResponseResult>
   return result;
 }
 
+/**
+ * Haalt gegevens op van een API-eindpunt en controleert eerst of er een internetverbinding is.
+ * Geeft het JSON-antwoord terug bij succes, of een fout als het mislukt.
+ * @param _timeout Optionele time-out in seconden.
+ */
 export async function getAPIRequest(_url: string, _timeout?: { response: number; deadline?: number }): Promise<ResponseResult> {
   Logger.debug(`getAPIRequest() start loading '${_url}'`);
 
@@ -111,6 +123,11 @@ export async function getAPIRequest(_url: string, _timeout?: { response: number;
   return result;
 }
 
+/**
+ * Stuurt gegevens naar een API-eindpunt en controleert eerst of er een internetverbinding is.
+ * Geeft het JSON-antwoord terug bij succes, of een fout als het mislukt.
+ * @param _timeout Optionele time-out in seconden.
+ */
 export async function postAPIRequest(_url: string, _body?: {}, _timeout?: { response: number; deadline?: number }): Promise<ResponseResult> {
   Logger.debug(`postAPIRequest() posting to '${_url}' with body`, _body);
 

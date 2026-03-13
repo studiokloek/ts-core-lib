@@ -44,6 +44,7 @@ const Logger = getLogger('device > stage');
 // geen pixi bericht
 utils.skipHello();
 
+/** Laagdrempelige Pixi.js-rendererconfiguratieopties. Geef de voorkeur aan `StageOptions` voor normaal gebruik; deze interface is beschikbaar voor geavanceerde rendererpersonalisatie. */
 export interface RendererOptions {
   width?: number;
   height?: number;
@@ -60,6 +61,7 @@ export interface RendererOptions {
   powerPreference?: string;
 }
 
+/** Configuratieopties voor het initialiseren van het Pixi.js-renderstage. */
 export interface StageOptions {
   backgroundColor?: number | undefined;
   fps: number;
@@ -67,6 +69,10 @@ export interface StageOptions {
   target: HTMLElement | string;
 }
 
+/**
+ * Definieert de maatvoering en verhoudingsbeperkingen voor één schermoriëntatie.
+ * Geeft de ontwerp-`default`-maat, toegestane `minimum`- en `maximum`-afmetingen en het beeldverhouding-bereik op.
+ */
 export interface SizeOptions {
   orientation: string;
   size: {
@@ -89,10 +95,12 @@ export interface SizeOptions {
   };
 }
 
+/** Type guard die `true` teruggeeft als `_options` een geldig `SizeOptions`-object is met `orientation`-, `size`- en `ratio`-eigenschappen. */
 export function isSizeOptions(_options: SizeOptions): _options is SizeOptions {
   return _options && typeof _options.orientation === 'string' && typeof _options.size === 'object' && typeof _options.ratio === 'object';
 }
 
+/** Een map van `SizeOptions` met oriëntatie-string als sleutel (bijv. `'landscape'`, `'portrait'`). Geef door aan `Stage.init()` om meerdere oriëntaties met verschillende maatbeperkingen te ondersteunen. */
 export interface MultiSizeOptions {
   [key: string]: SizeOptions | undefined;
 }
@@ -129,6 +137,11 @@ const DefaultSizeOptions: SizeOptions = {
 const gpuInfo: GPUInfo = getGPUInfo();
 const GSAPTicker = gsap.ticker;
 
+/**
+ * Beheert de Pixi.js-renderer, ticker, maatvoering, slaap/waak-levenscyclus en textuurresolutie.
+ * Verzorgt responsief schalen ten opzichte van configureerbare ontwerpafmetingen en beeldverhoudingen.
+ * Gebruik de `Stage` singleton in plaats van direct te instantiëren.
+ */
 export class ConcreteStage {
   private _width = 640;
   private _height = 480;
@@ -714,4 +727,5 @@ export class ConcreteStage {
   }
 }
 
+/** Singleton-instantie van `ConcreteStage`. De primaire interface naar de Pixi.js-renderer en animatielus. Roep `Stage.init()` aan met `StageOptions` en optionele maatopties om te starten. */
 export const Stage = new ConcreteStage();

@@ -56,6 +56,15 @@ async function waitFor(_delay: number = 0): Promise<void> {
   return new Promise(resolve => gsap.delayedCall(_delay, resolve));
 }
 
+/**
+ * Hulpobject voor het inplannen van vertraagde acties:
+ *
+ * - `call(callback, delay, params?)` — voer een actie uit na `delay` seconden.
+ * - `kill(callback)` — annuleer een ingeplande actie.
+ * - `pause(callback)` / `resume(callback)` — zet een actie tijdelijk stil of hervat hem.
+ * - `async(callback)` — voer een actie uit op het volgende animatieframe.
+ * - `wait(delay?)` — wacht `delay` seconden (bruikbaar met `await`).
+ */
 export const Delayed = {
   call: addDelay,
   kill: killDelay,

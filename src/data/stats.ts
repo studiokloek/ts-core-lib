@@ -11,11 +11,13 @@ declare global {
   }
 }
 
+/** Gegevens voor het registreren van een paginabezoek: het URL-pad en de paginatitel. */
 export interface StatsPageData {
   path: string;
   title: string;
 }
 
+/** Gegevens voor het registreren van een analytics-gebeurtenis: het subpad en een optionele waarde. */
 export interface StatsEventData {
   path: string;
   value?: string | number;
@@ -145,6 +147,12 @@ function registerEventStats(_data?: StatsEventData): void {
   }
 }
 
+/**
+ * Google Analytics-koppeling voor het bijhouden van paginabezoeken en gebeurtenissen.
+ * Roep `Stats.initStats(ua)` aan met een tracking-ID om tracking te activeren.
+ * Gebruik `Stats.registerPage()` voor paginabezoeken en `Stats.registerEvent()` voor gebeurtenissen.
+ * Tracking wordt automatisch uitgeschakeld in debug-modus.
+ */
 export const Stats = {
   registerPage: registerPageStats,
   registerEvent: registerEventStats,

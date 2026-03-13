@@ -1,3 +1,7 @@
+/**
+ * Het globale `window.APP`-instellingenobject dat in de HTML-pagina staat.
+ * Bevat de naam, versie en weergaveopties van de app.
+ */
 interface AppSettings {
   inited: boolean;
 
@@ -28,6 +32,7 @@ declare global {
   }
 }
 
+/** De globale app-instellingen uit `window.APP`: versie, id en weergaveopties. */
 export const AppData = window.APP as AppSettings;
 
 export * from './info';

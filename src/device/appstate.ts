@@ -45,6 +45,11 @@ function handleWindowFocus(): void {
   handleAppState(true);
 }
 
+/**
+ * Begint te luisteren naar veranderingen in de app-status (actief, inactief, op de voorgrond, op de achtergrond).
+ * Stuurt `AppEvent.STATE_ACTIVE`, `.STATE_INACTIVE`, `.STATE_BLURRED` en `.STATE_FOCUSSED` berichten.
+ * Heeft geen effect als de pagina opnieuw geladen is.
+ */
 export async function initAppStateDetection(): Promise<void> {
   if (isReloadedPage()) {
     return;

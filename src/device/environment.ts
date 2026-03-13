@@ -1,5 +1,6 @@
 import { memoize, isNil } from 'lodash';
 
+/** Geeft `true` terug als de pagina geladen is binnen een iframe. Het resultaat wordt onthouden na de eerste aanroep. */
 export const isInFrame = memoize(() => {
   let inFrame = false;
 
@@ -12,14 +13,15 @@ export const isInFrame = memoize(() => {
   return inFrame;
 });
 
+/** Geeft `true` terug als de app lokaal (op localhost) wordt uitgevoerd. Het resultaat wordt onthouden na de eerste aanroep. */
 export const isLocalhost = memoize(() => {
   const hostname = window.location.hostname;
 
   return Boolean(
     hostname === 'localhost' ||
-      // [::1] is the IPv6 localhost address.
-      hostname === '[::1]' ||
-      // 127.0.0.1/8 is considered localhost for IPv4.
-      /^127(?:\.(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})){3}$/.test(hostname),
+    // [::1] is the IPv6 localhost address.
+    hostname === '[::1]' ||
+    // 127.0.0.1/8 is considered localhost for IPv4.
+    /^127(?:\.(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})){3}$/.test(hostname),
   );
 });

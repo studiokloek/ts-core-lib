@@ -10,11 +10,11 @@ import { ISize, Rectangle } from 'pixi.js';
 import { HTMLTextStyle } from './style';
 
 /**
- * Alternative to {@link PIXI.Text|Text} but supports multi-style HTML text. There are
- * few key differences between this and {@link PIXI.Text|Text}:
- * <br>&bull; HTMLText not support {@link https://caniuse.com/mdn-svg_elements_foreignobject|Internet Explorer}.
- * <br>&bull; Rendering is text asynchronous. If statically rendering, listen to `update` event on BaseTexture.
- * <br>&bull; Does not support all style options (e.g., `lineJoin`, `leading`, `textBaseline`, `trim`, `miterLimit`,
+ * Alternatief voor {@link PIXI.Text|Text} met ondersteuning voor multi-stijl HTML-tekst. Er zijn
+ * enkele belangrijke verschillen met {@link PIXI.Text|Text}:
+ * <br>&bull; HTMLText ondersteunt geen {@link https://caniuse.com/mdn-svg_elements_foreignobject|Internet Explorer}.
+ * <br>&bull; Rendering is asynchroon. Bij statisch renderen, luister naar het `update`-event op BaseTexture.
+ * <br>&bull; Ondersteunt niet alle stijlopties (bijv. `lineJoin`, `leading`, `textBaseline`, `trim`, `miterLimit`,
  *   `fillGradientStops`, `fillGradientType`)
  * @example
  * import { HTMLText } from 'pixi.js';
@@ -31,11 +31,11 @@ import { HTMLTextStyle } from './style';
  */
 export class HTMLText extends Sprite {
     /**
-     * Default opens when destroying.
+     * Standaard opties bij het vernietigen.
      * @type {PIXI.IDestroyOptions}
-     * @property {boolean} [texture=true] - Whether to destroy the texture.
-     * @property {boolean} [children=false] - Whether to destroy the children.
-     * @property {boolean} [baseTexture=true] - Whether to destroy the base texture.
+     * @property {boolean} [texture=true] - Of de textuur vernietigd moet worden.
+     * @property {boolean} [children=false] - Of de kinderen vernietigd moeten worden.
+     * @property {boolean} [baseTexture=true] - Of de basistextuur vernietigd moet worden.
      */
     public static defaultDestroyOptions: IDestroyOptions = {
         texture: true,
@@ -43,22 +43,22 @@ export class HTMLText extends Sprite {
         baseTexture: true,
     };
 
-    /** Default maxWidth, set at construction */
+    /** Standaard maximumbreedte, ingesteld bij het aanmaken */
     public static defaultMaxWidth = 2024;
 
-    /** Default maxHeight, set at construction */
+    /** Standaard maximumhoogte, ingesteld bij het aanmaken */
     public static defaultMaxHeight = 2024;
 
-    /** Default resolution, make sure autoResolution or defaultAutoResolution is `false`. */
+    /** Standaard resolutie; zorg ervoor dat autoResolution of defaultAutoResolution op `false` staat. */
     public static defaultResolution: number | undefined;
 
-    /** Default autoResolution for all HTMLText objects */
+    /** Standaard autoResolutie voor alle HTMLText-objecten */
     public static defaultAutoResolution = true;
 
-    /** The maximum width in rendered pixels that the content can be, any larger will be hidden */
+    /** De maximale breedte in gerenderde pixels van de inhoud; grotere waarden worden afgekapt */
     public maxWidth: number;
 
-    /** The maximum height in rendered pixels that the content can be, any larger will be hidden */
+    /** De maximale hoogte in gerenderde pixels van de inhoud; grotere waarden worden afgekapt */
     public maxHeight: number;
 
     private _domElement: HTMLElement;
@@ -75,14 +75,14 @@ export class HTMLText extends Sprite {
     private dirty = false;
     private _updateID = 0;
 
-    /** The HTMLTextStyle object is owned by this instance */
+    /** Het HTMLTextStyle-object is eigendom van deze instantie */
     private ownsStyle = false;
 
     /**
-     * @param {string} [text] - Text contents
-     * @param {PIXI.HTMLTextStyle|PIXI.TextStyle|PIXI.ITextStyle} [style] - Style setting to use.
-     *        Strongly recommend using an HTMLTextStyle object. Providing a PIXI.TextStyle
-     *        will convert the TextStyle to an HTMLTextStyle and will no longer be linked.
+     * @param {string} [text] - Tekstinhoud
+     * @param {PIXI.HTMLTextStyle|PIXI.TextStyle|PIXI.ITextStyle} [style] - Te gebruiken stijlinstelling.
+     *        Sterk aanbevolen om een HTMLTextStyle-object te gebruiken. Het doorgeven van een PIXI.TextStyle
+     *        converteert de TextStyle naar een HTMLTextStyle en is daarna niet meer gekoppeld.
      */
     constructor(text = '', style: HTMLTextStyle | TextStyle | Partial<ITextStyle> = {}) {
         super(Texture.EMPTY);
@@ -130,14 +130,14 @@ export class HTMLText extends Sprite {
     }
 
     /**
-     * Calculate the size of the output text without actually drawing it.
-     * This includes the `padding` in the `style` object.
-     * This can be used as a fast-pass to do things like text-fitting.
-     * @param {object} [overrides] - Overrides for the text, style, and resolution.
-     * @param {string} [overrides.text] - The text to measure, if not specified, the current text is used.
-     * @param {PIXI.HTMLTextStyle} [overrides.style] - The style to measure, if not specified, the current style is used.
-     * @param {number} [overrides.resolution] - The resolution to measure, if not specified, the current resolution is used.
-     * @returns {PIXI.ISize} Width and height of the measured text.
+     * Berekent de grootte van de uitvoertekst zonder deze daadwerkelijk te tekenen.
+     * Dit omvat de `padding` uit het `style`-object.
+     * Kan worden gebruikt als snelle controle voor zaken zoals tekst-fitting.
+     * @param {object} [overrides] - Overschrijvingen voor de tekst, stijl en resolutie.
+     * @param {string} [overrides.text] - De te meten tekst; indien niet opgegeven, wordt de huidige tekst gebruikt.
+     * @param {PIXI.HTMLTextStyle} [overrides.style] - De te meten stijl; indien niet opgegeven, wordt de huidige stijl gebruikt.
+     * @param {number} [overrides.resolution] - De te gebruiken resolutie; indien niet opgegeven, wordt de huidige resolutie gebruikt.
+     * @returns {PIXI.ISize} Breedte en hoogte van de gemeten tekst.
      */
     measureText(overrides?: { text?: string, style?: HTMLTextStyle, resolution?: number }): ISize {
         const { text, style, resolution } = Object.assign({
@@ -183,10 +183,10 @@ export class HTMLText extends Sprite {
     }
 
     /**
-     * Manually refresh the text.
+     * Vernieuwt de tekst handmatig.
      * @public
-     * @param {boolean} respectDirty - Whether to abort updating the
-     *        text if the Text isn't dirty and the function is called.
+     * @param {boolean} respectDirty - Of het bijwerken van de tekst
+     *        moet worden afgebroken als de tekst niet gewijzigd is.
      */
     async updateText(respectDirty = true): Promise<void> {
         const { style, _image: image, _loadImage: loadImage } = this;
@@ -241,13 +241,13 @@ export class HTMLText extends Sprite {
         });
     }
 
-    /** The raw image element that is rendered under-the-hood. */
+    /** Het onbewerkte afbeeldingselement dat intern wordt gerenderd. */
     public get source(): HTMLImageElement {
         return this._image;
     }
 
     /**
-     * Update the texture resource.
+     * Werkt de textuurresource bij.
      * @private
      */
     updateTexture() {
@@ -272,8 +272,8 @@ export class HTMLText extends Sprite {
     }
 
     /**
-     * Renders the object using the WebGL renderer
-     * @param {PIXI.Renderer} renderer - The renderer
+     * Rendert het object met de WebGL-renderer.
+     * @param {PIXI.Renderer} renderer - De renderer
      * @private
      */
     _render(renderer: Renderer) {
@@ -288,9 +288,9 @@ export class HTMLText extends Sprite {
     }
 
     /**
-     * Renders the object using the Canvas Renderer.
+     * Rendert het object met de Canvas-renderer.
      * @private
-     * @param {PIXI.CanvasRenderer} renderer - The renderer
+     * @param {PIXI.CanvasRenderer} renderer - De renderer
      */
     _renderCanvas(renderer: Renderer) {
         if (this._autoResolution && this._resolution !== renderer.resolution) {
@@ -306,9 +306,9 @@ export class HTMLText extends Sprite {
     }
 
     /**
-     * Get the local bounds.
-     * @param {PIXI.Rectangle} rect - Input rectangle.
-     * @returns {PIXI.Rectangle} Local bounds
+     * Geeft de lokale grenzen terug.
+     * @param {PIXI.Rectangle} rect - Invoerrechthoek.
+     * @returns {PIXI.Rectangle} Lokale grenzen
      */
     getLocalBounds(rect: Rectangle) {
         this.updateText(true);
@@ -324,7 +324,7 @@ export class HTMLText extends Sprite {
     }
 
     /**
-     * Handle dirty style changes
+     * Verwerkt gewijzigde stijlwijzigingen
      * @private
      */
     _onStyleChange() {
@@ -332,8 +332,8 @@ export class HTMLText extends Sprite {
     }
 
     /**
-     * Destroy this Text object. Don't use after calling.
-     * @param {boolean|object} options - Same as Sprite destroy options.
+     * Vernietigt dit Text-object. Gebruik het niet meer na aanroepen.
+     * @param {boolean|object} options - Zelfde als Sprite-vernietigopties.
      */
     destroy(options?: boolean | IDestroyOptions | undefined) {
         if (typeof options === 'boolean') {
@@ -368,7 +368,7 @@ export class HTMLText extends Sprite {
     }
 
     /**
-     * Get the width in pixels.
+     * Geeft de breedte in pixels terug.
      * @member {number}
      */
     get width() {
@@ -388,7 +388,7 @@ export class HTMLText extends Sprite {
     }
 
     /**
-     * Get the height in pixels.
+     * Geeft de hoogte in pixels terug.
      * @member {number}
      */
     get height() {
@@ -407,7 +407,7 @@ export class HTMLText extends Sprite {
         this._height = value;
     }
 
-    /** The base style to render with text. */
+    /** De basisstijl voor het renderen van de tekst. */
     get style(): HTMLTextStyle {
         return this._style as HTMLTextStyle;
     }
@@ -442,7 +442,7 @@ export class HTMLText extends Sprite {
     }
 
     /**
-     * Contents of text. This can be HTML text and include tags.
+     * Inhoud van de tekst. Dit kan HTML-tekst zijn inclusief tags.
      * @example
      * const text = new HTMLText('This is a <em>styled</em> text!');
      * @member {string}
@@ -464,8 +464,8 @@ export class HTMLText extends Sprite {
     }
 
     /**
-     * The resolution / device pixel ratio of the canvas.
-     * This is set to automatically match the renderer resolution by default, but can be overridden by setting manually.
+     * De resolutie / apparaatpixelverhouding van het canvas.
+     * Standaard ingesteld om automatisch overeen te komen met de rendererresolutie, maar kan handmatig worden overschreven.
      * @member {number}
      * @default 1
      */
@@ -486,7 +486,7 @@ export class HTMLText extends Sprite {
     }
 
     /**
-     * Sanitise text - replace `<br>` with `<br/>`, `&nbsp;` with `&#160;`
+     * Zuivert tekst — vervangt `<br>` door `<br/>`, `&nbsp;` door `&#160;`.
      * @param text
      * @see https://www.sitepoint.com/community/t/xhtml-1-0-transitional-xml-parsing-error-entity-nbsp-not-defined/3392/3
      */

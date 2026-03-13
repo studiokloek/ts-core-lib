@@ -5,6 +5,13 @@ import type { KloekTween, KloekTweenTarget, KloekTweenVars, KloekReducedTweenVar
 
 // const Logger = getLogger('tween > mixin');
 
+/**
+ * Mixin die lifecycle-bewust tween-beheer aan een klasse toevoegt. Geregistreerde tweens worden
+ * automatisch bijgehouden en na afloop verwijderd. Biedt `tween()` en `tweenFrom()` voor het aanmaken van
+ * GSAP-animaties (gericht op `this` of een expliciet doel), `killTweens` / `killTweenOf` voor
+ * het stoppen van tweens, en `pauseTweens` / `resumeTweens` voor het pauzeren en hervatten ervan.
+ * Gebruik via `Mixin(BaseClass, TweenMixin)` vanuit ts-mixer.
+ */
 export class TweenMixin {
   private __tweens: KloekTween[] = [];
 

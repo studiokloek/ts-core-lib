@@ -96,8 +96,15 @@ class LoggerClass {
 
 const table: { [key: string]: LoggerClass } = {};
 
+/**
+ * De standaard logger. Gebruik dit voor algemene meldingen als je geen eigen logger naam nodig hebt.
+ */
 export const Logger = getLogger();
 
+/**
+ * Past het ingestelde logniveau toe op alle loggers.
+ * Roep dit aan na `initCoreLibrary()`.
+ */
 export function initLogger(): void {
   const loggers = Object.values(table);
 
@@ -106,6 +113,10 @@ export function initLogger(): void {
   }
 }
 
+/**
+ * Geeft een logger met de opgegeven naam terug; maakt hem aan als hij nog niet bestaat.
+ * Loggers worden hergebruikt op naam. Gebruik `' > '` voor hiërarchische namen (bijv. `'audio > sfx'`).
+ */
 export function getLogger(prefix = 'default'): LoggerClass {
   prefix = prefix.toLowerCase();
 

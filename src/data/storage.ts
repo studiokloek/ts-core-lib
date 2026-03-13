@@ -7,8 +7,12 @@ const Logger = getLogger('data > localstorage');
 
 const IS_MIGRATED_KEY = 'capacitor-storage-migrated';
 
+/**
+ * Sla gegevens op als sleutel-waardeparen die bewaard blijven, ook na het sluiten van de app.
+ * Waarden worden automatisch omgezet naar JSON. Gebruik via de `LocalStorage`-instantie.
+ */
 class ConcreteStorage {
-  constructor() {}
+  constructor() { }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async set(key?: string, value?: any): Promise<void> {
@@ -75,14 +79,14 @@ class ConcreteStorage {
 
   async migrate(): Promise<void> {
     Logger.verbose('migrate() -> start...');
- 
+
     if (await this.get(IS_MIGRATED_KEY)) {
       Logger.verbose('migrate() -> allready migrated!');
       return;
     }
 
     await Preferences.migrate();
-    
+
     Logger.verbose('migrate() -> removing old data...');
     await Preferences.removeOld();
 
@@ -92,4 +96,5 @@ class ConcreteStorage {
   }
 }
 
+/** De gedeelde opslaginstantie. Gebruik `.get()`, `.set()`, `.remove()`, `.keys()`, `.clear()` en `.migrate()`. */
 export const LocalStorage = new ConcreteStorage();

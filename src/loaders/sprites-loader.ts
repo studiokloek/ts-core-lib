@@ -7,12 +7,14 @@ import { CoreLibraryOptions, getAppVersion, isApp } from '..';
 
 const Logger = getLogger('loader > sprite');
 
+/** Vertegenwoordigt een enkele sprite binnen een geladen sprite sheet, met het `id`, `width` en `height` in pixels. */
 export interface SpriteAsset {
   id: string;
   width: number;
   height: number;
 }
 
+/** Breidt `SpriteAsset` uit met lay-outmetadata (positie, zIndex, opacity) voor sprites die plaatsingsinformatie meeleveren die in de sprite sheet is opgenomen. */
 export interface SpriteAssetWithMeta extends SpriteAsset {
   x: number;
   y: number;
@@ -20,18 +22,22 @@ export interface SpriteAssetWithMeta extends SpriteAsset {
   opacity: number;
 }
 
+/** Controlefunctie: geeft `true` terug als `_info` een `SpriteAsset` is. */
 export function isSpriteAsset(_info: SpriteAsset): _info is SpriteAsset {
   return _info && (_info as SpriteAsset).id !== undefined;
 }
 
+/** Controlefunctie: geeft `true` terug als `_info` een `SpriteAssetWithMeta` is. */
 export function isSpriteAssetWithMeta(_info: SpriteAsset | SpriteAssetWithMeta): _info is SpriteAssetWithMeta {
   return isSpriteAsset(_info) && (_info as SpriteAssetWithMeta).zIndex !== undefined;
 }
 
+/** Recursieve map van sprite-assets met naam als sleutel. Waarden zijn ofwel een `SpriteAsset`-blad of een geneste `SpriteAssetList`-groep. Gebruikt in `SpriteAssetInfo.assets`. */
 export interface SpriteAssetList {
   [key: string]: SpriteAsset | SpriteAssetList;
 }
 
+/** Beschrijving van een sprite sheet die geladen moet worden. Ondersteunt meerdelige sheets en een optionele vaste resolutie. */
 export interface SpriteAssetInfo {
   assets: SpriteAssetList;
   fileName: string;
@@ -47,6 +53,10 @@ interface SpriteLoaderOptions {
   resolution?: number;
 }
 
+/**
+ * Laadt een of meer sprite sheet-bestanden en voegt de texturen samen.
+ * Kiest automatisch `@2x`-varianten op retina-schermen. Maak aan via `createSpriteLoader()`.
+ */
 export class SpriteLoader implements AssetLoaderInterface {
   private options: SpriteLoaderOptions;
 
@@ -211,6 +221,7 @@ export class SpriteLoader implements AssetLoaderInterface {
   }
 }
 
+/** Maakt een `SpriteLoader`-instantie aan voor de opgegeven `SpriteAssetInfo`, waarbij het asset-pad wordt opgelost vanuit `CoreLibraryOptions.ASSET_BASE_PATH`. Wordt intern door `AssetLoader` gebruikt. */
 export function createSpriteLoader(assetInfo: SpriteAssetInfo): SpriteLoader {
   const loader = new SpriteLoader({
     assetName: assetInfo.fileName,

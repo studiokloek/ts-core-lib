@@ -1,0 +1,1590 @@
+# @studiokloek/ts-core-lib
+
+> Kern TypeScript-bibliotheek voor de interactieve webprojecten van Studio Kloek (games, animaties, mediarijke applicaties).
+
+Biedt een uniforme toolkit die PIXI.js (2D-graphics), GSAP (animaties), Howler.js (audio) en Capacitor (native app-koppeling) integreert. Ontworpen als de gemeenschappelijke basislaag voor alle Studio Kloek-projecten.
+
+**Version:** 2.7.48
+
+## Initialisatie
+
+Roep `initCoreLibrary(options?)` eenmalig aan bij het opstarten van de applicatie, vóór het gebruik van enig ander onderdeel van de bibliotheek.
+
+```typescript
+import { initCoreLibrary } from '@studiokloek/ts-core-lib';
+
+await initCoreLibrary({
+  assetsBasePath: './assets/',
+  resolutionBreakPoints: { ios: 1024, android: 1280, desktop: 1280 },
+});
+```
+
+Intern stelt dit GSAP/PixiPlugin in, voert Capacitor apparaat-/netwerk-/app-detectie uit, en initialiseert de schermbeheerder en de logger.
+
+`CoreLibraryOptions` biedt toegang tot de opgeloste runtime-waarden:
+- `CoreLibraryOptions.ASSET_BASE_PATH` — basispad dat voor alle asset-URLs wordt geplaatst
+- `CoreLibraryOptions.RESOLUTION_BREAKPOINTS` — pixelbreekpunten per platform
+
+## Re-exports van derde partijen
+
+`Mixin`, `hasMixin` — van **ts-mixer**, gebruikt om View/Mediator/Mixin-klassen samen te stellen.
+`AsyncEvent`, `SyncEvent` — van **ts-events**, getypeerde event-emitters.
+
+## Patterns
+
+### `MediatorInterface` *(interface)*
+
+Lifecycle-interface voor niet-visuele coördinatorklassen. Definieert de asynchrone `init`-methode
+en de prepare/cleanup- en activate/deactivate-lifecycle-hooks die elke mediator moet implementeren.
+
+```typescript
+any
+```
+
+### `ObjectPoolItem` *(interface)*
+
+Interface voor constructortypes die beheerd kunnen worden door `ObjectPool`.
+Definieer optioneel een statische `reset()`-methode om een instantie naar zijn beginwaarden te herstellen
+voordat deze naar de pool wordt teruggezet.
+
+```typescript
+any
+```
+
+### `OtherViewOptions` *(interface)*
+
+Uitgebreide view-opties die willekeurige aanvullende sleutel-waardeparen toestaan.
+Gebruik dit type wanneer de constructor van een view aangepaste configuratie accepteert naast de basis `ViewOptions`.
+
+```typescript
+any
+```
+
+### `PrepareCleanupInterface` *(interface)*
+
+Minimale lifecycle-interface voor objecten die na het laden van assets voorbereid moeten worden
+en vóór het verwijderen van assets opgeruimd moeten worden. Implementeer deze interface op elk
+display-object of component dat deelneemt aan de prepare/cleanup-lifecycle.
+
+```typescript
+any
+```
+
+### `ViewInterface` *(interface)*
+
+Lifecycle-interface voor alle PIXI-gebaseerde view-componenten. Definieert de zes lifecycle-hooks
+die elke view moet implementeren: `init` voor de initiële opzet, `prepareAfterLoad` / `cleanupBeforeUnload`
+voor het beheer van de asset-lifecycle, `activate` / `deactivate` voor het pauzeren en hervatten van de
+interactieve toestand, en `setTarget` voor het toewijzen van de bovenliggende container.
+
+```typescript
+any
+```
+
+### `ViewOptions` *(interface)*
+
+Basisopties voor het aanmaken van een `View`. De optionele `target`-container geeft aan
+aan welke PIXI `Container` deze view als kind wordt toegevoegd.
+
+```typescript
+any
+```
+
+### `Mediator` *(class)*
+
+Basisklasse voor niet-visuele coördinatorobjecten die views en kind-mediatoren aansturen.
+Mixt `PubSubMixin`, `TickerMixin` en `DelayedMixin` in, zodat subklassen applicatie-events kunnen
+abonneren, per-frame ticker-callbacks kunnen registreren en vertraagde aanroepen kunnen inplannen.
+Overschrijf de asynchrone `init()`-methode voor de opzet; lifecycle-methoden worden automatisch
+doorgegeven aan alle geregistreerde kind-mediatoren en views.
+
+Gebruik via `Mixin(BaseClass, Mediator)` vanuit ts-mixer bij het combineren met andere mixins.
+
+```typescript
+typeof Mediator
+```
+
+### `ObjectPool` *(class)*
+
+Generieke objectpool voor het hergebruiken van klasse-instanties om garbage collection-overhead te vermijden.
+Haal objecten op met `getItem()`, verwarm de pool voor met `prepareItem()`, en geef
+objecten terug met `releaseItem()`. De pool roept de statische `reset()`-methode aan op de
+constructor (indien gedefinieerd via `ObjectPoolItem`) voordat een object naar de pool wordt teruggezet.
+
+```typescript
+typeof ObjectPool
+```
+
+### `View` *(class)*
+
+Basisklasse voor alle visuele PIXI-display-objecten met een volledige lifecycle. Breidt PIXI `Container`
+uit en mixt `TickerMixin`, `TweenMixin` en `DelayedMixin` in, zodat subklassen beschikken over geïntegreerde
+per-frame updates, tween-beheer en vertraagde callbacks. Overschrijf `init()` voor de opzet van
+kind-display-objecten; de prepare/cleanup- en activate/deactivate-paren worden automatisch
+doorgegeven aan geregistreerde kind-views, sprites en teksten.
+
+Gebruik via `Mixin(BaseClass, View)` vanuit ts-mixer bij het combineren met andere mixins.
+
+```typescript
+typeof View
+```
+
+### `isPrepareCleanup` *(function)*
+
+Type guard die controleert of een object `PrepareCleanupInterface` implementeert.
+Geeft `true` terug als de instantie een `cleanupBeforeUnload`-methode heeft, en versmalt het type dienovereenkomstig.
+
+```typescript
+(instance: any): instance is PrepareCleanupInterface
+```
+
+## Ticker
+
+### `TickerMixin` *(class)*
+
+Mixin die per-frame ticker-callback-beheer aan een klasse toevoegt. Elke instantie
+krijgt zijn eigen auto-sleep `ConcreteTicker` (vernoemd naar de `name` of `id` van de instantie).
+Gebruik `addTicker(callback)` om een frame-updatefunctie te registreren en `removeTicker` /
+`removeTickers` om de registratie ongedaan te maken. `pauseTickers` / `resumeTickers` pauzeren en hervatten
+de onderliggende ticker. Gebruik via `Mixin(BaseClass, TickerMixin)` vanuit ts-mixer.
+
+```typescript
+typeof TickerMixin
+```
+
+### `getTicker` *(function)*
+
+Geeft de benoemde `ConcreteTicker` terug en maakt deze aan als hij nog niet bestaat. Door
+`autoSleep = true` mee te geven slaapt de ticker automatisch wanneer er geen callbacks
+geregistreerd zijn en wordt hij weer wakker zodra er een wordt toegevoegd. De globale tijdschaal
+wordt direct toegepast op de teruggegeven ticker.
+
+```typescript
+(name?: string, autoSleep?: boolean): ConcreteTicker
+```
+
+### `restoreTickerTimeAfterSleep` *(function)*
+
+Herstelt de tijdtoestand van alle tickers nadat de applicatie uit slaap ontwaakt,
+waarbij de verstreken slaaptijd wordt gecompenseerd zodat animaties correct worden hervat.
+Gebruik samen met `storeTickerTimeBeforeSleep`.
+
+```typescript
+(): void
+```
+
+### `setTickerGlobalTimeScale` *(function)*
+
+Stelt de globale tijdschaalfactor in die op alle geregistreerde tickers wordt toegepast. Een waarde van `1` is
+normale snelheid; `0.5` is halve snelheid; `2` is dubbele snelheid. Dit beïnvloedt elke ticker in
+de applicatie tegelijkertijd.
+
+```typescript
+(_value: number): void
+```
+
+### `storeTickerTimeBeforeSleep` *(function)*
+
+Slaat de huidige tijdtoestand op van alle tickers voordat de applicatie in slaap gaat
+(bijv. wanneer het browsertabblad verborgen wordt). Roep dit aan in je `visibilitychange`- of
+Page Lifecycle-handler vóór het pauzeren. Gebruik samen met `restoreTickerTimeAfterSleep`.
+
+```typescript
+(): void
+```
+
+### `Ticker` *(const)*
+
+De standaard applicatie-ticker-instantie (naam: `'default'`). Gebruik deze voor algemene
+per-frame updates. Voor geïsoleerde subsystemen die een onafhankelijke tijdschaal nodig hebben,
+maak een aparte ticker aan via `getTicker('myName')`.
+
+```typescript
+ConcreteTicker
+```
+
+## Tween
+
+### `TweenMixin` *(class)*
+
+Mixin die lifecycle-bewust tween-beheer aan een klasse toevoegt. Geregistreerde tweens worden
+automatisch bijgehouden en na afloop verwijderd. Biedt `tween()` en `tweenFrom()` voor het aanmaken van
+GSAP-animaties (gericht op `this` of een expliciet doel), `killTweens` / `killTweenOf` voor
+het stoppen van tweens, en `pauseTweens` / `resumeTweens` voor het pauzeren en hervatten ervan.
+Gebruik via `Mixin(BaseClass, TweenMixin)` vanuit ts-mixer.
+
+```typescript
+typeof TweenMixin
+```
+
+### `initTweens` *(function)*
+
+Initialiseert GSAP met de PIXI.js-instantie van de applicatie. Moet eenmalig worden aangeroepen bij
+het opstarten van de applicatie, vóór het aanmaken van tweens. Stelt de standaard overschrijfmodus van GSAP
+in op `'auto'` en registreert de PixiPlugin zodat PIXI display-objecteigenschappen direct
+geanimeerd kunnen worden.
+
+```typescript
+(): void
+```
+
+### `BeamEase` *(const)*
+
+Aangepaste GSAP-easingfunctie ontworpen voor reduced-motion-verplaatsingen en -rotaties.
+Produceert een zeer subtiele beweging (5% van het volledige bereik) door een `Power4`-curve
+symmetrisch toe te passen op beide helften van de tween, waarbij de beweging waarneembaar maar minimaal
+blijft voor gebruikers die de voorkeur geven aan verminderde animatie.
+
+```typescript
+(progress: number): number
+```
+
+### `Easing` *(const)*
+
+Verzameling van alle GSAP-easingfuncties en -constructors, opnieuw geëxporteerd als één
+benoemd object voor gemakkelijk gebruik. Bevat standaard GSAP-easings (Back, Bounce, Circ,
+Cubic, Elastic, Expo, Linear, Power0–4, Quad, Quart, Quint, Sine, SteppedEase, Strong)
+evenals EasePack-uitbreidingen (SlowMo, RoughEase, ExpoScaleEase).
+
+### `Tween` *(const)*
+
+GSAP-gebaseerde tween-facade voor het aanmaken en beheren van animaties in de applicatie.
+Verwerkt PIXI.js display-objecteigenschappen automatisch (door ze in `pixi: {}` te wikkelen en
+rotatie van radialen naar graden om te zetten) en past reduced-motion-vervangingen toe wanneer
+ingeschakeld via `setReduceMotion(true)`.
+
+- `to` / `from`: animeer een doel naar of vanuit de opgegeven eigenschappen.
+- `set`: pas eigenschappen direct toe zonder animatie.
+- `killTweensOf`: stop alle actieve tweens op een doel.
+- `setReduceMotion`: schakel reduced-motion-gedrag globaal in of uit.
+
+## Delay
+
+### `DelayedMixin` *(class)*
+
+Voegt beheer van vertraagde acties toe aan een klasse.
+Bijgehouden acties kunnen allemaal tegelijk gestopt worden met `killDelays`,
+of tijdelijk gestopt/hervat met `pauseDelays` / `resumeDelays`.
+Individuele acties stoppen kan met `killDelay(callback)`.
+Voeg toe via `Mixin(BaseClass, DelayedMixin)`.
+
+```typescript
+typeof DelayedMixin
+```
+
+### `Delayed` *(const)*
+
+Hulpobject voor het inplannen van vertraagde acties:
+
+- `call(callback, delay, params?)` — voer een actie uit na `delay` seconden.
+- `kill(callback)` — annuleer een ingeplande actie.
+- `pause(callback)` / `resume(callback)` — zet een actie tijdelijk stil of hervat hem.
+- `async(callback)` — voer een actie uit op het volgende animatieframe.
+- `wait(delay?)` — wacht `delay` seconden (bruikbaar met `await`).
+
+## Events
+
+### `PubSubCallback` *(type)*
+
+Het type van een luisterfunctie die reageert op `PubSub`-berichten.
+De functie ontvangt de verstuurde gegevens als enig argument.
+
+```typescript
+any
+```
+
+### `PubSubMixin` *(class)*
+
+Voegt berichtluisteren en -sturen toe aan een klasse via `PubSub`.
+Alle actieve luisteraars kunnen in één keer verwijderd worden met `unsubscribeAll()`.
+Voeg toe via `Mixin(BaseClass, PubSubMixin)`.
+
+```typescript
+typeof PubSubMixin
+```
+
+### `fixEventNames` *(function)*
+
+Past alle waarden in `eventObject` aan door `suffix` als voorvoegsel toe te voegen in hoofdletters.
+Voorbeeld: `{ READY: 'ready' }` + suffix `'app'` → `{ READY: 'APP_READY' }`.
+
+```typescript
+(eventObject: { [key: string]: string; }, suffix: string): void
+```
+
+### `AppEvent` *(const)*
+
+Namen van app-brede berichten voor gebruik met `PubSub`.
+Elke naam krijgt automatisch het voorvoegsel `'APP_'` (bijv. `AppEvent.READY` → `'APP_READY'`).
+Luister naar berichten via `PubSub.subscribe(AppEvent.READY, handler)`.
+
+### `PubSub` *(const)*
+
+Globale berichtenbus om berichten te versturen en te ontvangen in de app:
+
+- `subscribe(message, callback)` — luister naar een bericht; geeft een id terug.
+- `subscribeOnce(message, callback)` — luister precies één keer naar een bericht.
+- `unsubscribe(callbackOrId)` — stop met luisteren via callback of id.
+  Geef `_async = true` mee om dit naar de volgende stap uit te stellen.
+- `publish(message, data?)` — verstuur een bericht (asynchroon).
+- `publishSync(message, data?)` — verstuur een bericht (direct).
+
+### `TouchEvent` *(const)*
+
+Naamgeving voor gebruikersinteracties (tikken, slepen, enz.) die PIXI.js begrijpt.
+Gebruik deze constanten bij het registreren van interactielisteners op PIXI-objecten.
+Bijvoorbeeld: `TouchEvent.TAP` staat gelijk aan `'pointertap'`.
+
+## Screen & Stage
+
+### `MultiSizeOptions` *(interface)*
+
+Een map van `SizeOptions` met oriëntatie-string als sleutel (bijv. `'landscape'`, `'portrait'`). Geef door aan `Stage.init()` om meerdere oriëntaties met verschillende maatbeperkingen te ondersteunen.
+
+```typescript
+any
+```
+
+### `RendererOptions` *(interface)*
+
+Laagdrempelige Pixi.js-rendererconfiguratieopties. Geef de voorkeur aan `StageOptions` voor normaal gebruik; deze interface is beschikbaar voor geavanceerde rendererpersonalisatie.
+
+```typescript
+any
+```
+
+### `ResolutionBreakpoint` *(interface)*
+
+Definieert de minimale viewport-grootte (in pixels) waarbij retina/high-DPI-rendering wordt ingeschakeld, opgesplitst per platform.
+
+```typescript
+any
+```
+
+### `SizeOptions` *(interface)*
+
+Definieert de maatvoering en verhoudingsbeperkingen voor één schermoriëntatie.
+Geeft de ontwerp-`default`-maat, toegestane `minimum`- en `maximum`-afmetingen en het beeldverhouding-bereik op.
+
+```typescript
+any
+```
+
+### `StageInfo` *(interface)*
+
+Payload gepubliceerd met `AppEvent.RESIZED`, beschrijft de huidige stage-positie, schaal en grootte na een resize.
+
+```typescript
+any
+```
+
+### `StageOptions` *(interface)*
+
+Configuratieopties voor het initialiseren van het Pixi.js-renderstage.
+
+```typescript
+any
+```
+
+### `ResolutionMode` *(enum)*
+
+Enum die renderresolutieniveaus vertegenwoordigt. `RETINA` (2) schakelt high-DPI-rendering in; `NORMAL` (1) gebruikt standaardresolutie.
+
+```typescript
+typeof ResolutionMode
+```
+
+### `ConcreteStage` *(class)*
+
+Beheert de Pixi.js-renderer, ticker, maatvoering, slaap/waak-levenscyclus en textuurresolutie.
+Verzorgt responsief schalen ten opzichte van configureerbare ontwerpafmetingen en beeldverhoudingen.
+Gebruik de `Stage` singleton in plaats van direct te instantiëren.
+
+```typescript
+typeof ConcreteStage
+```
+
+### `initScreen` *(function)*
+
+Initialiseert de `Screen` singleton door window-resize-listeners te koppelen en de beginafmetingen en -resolutie te berekenen. Moet eenmalig worden aangeroepen voordat schermafhankelijke functies worden gebruikt.
+
+```typescript
+(): void
+```
+
+### `isSizeOptions` *(function)*
+
+Type guard die `true` teruggeeft als `_options` een geldig `SizeOptions`-object is met `orientation`-, `size`- en `ratio`-eigenschappen.
+
+```typescript
+(_options: SizeOptions): _options is SizeOptions
+```
+
+### `determineResolution` *(const)*
+
+Bepaalt de geschikte scherm- en textuurresolutiemodi op basis van de apparaat-pixelverhouding, het platform en de viewport-grootte.
+Geeft afzonderlijke `screen`- en `texture`-`ResolutionMode`-waarden terug, zodat de textuurkwaliteit onafhankelijk van de rendererresolutie kan worden verhoogd.
+Resultaat wordt na de eerste aanroep opgeslagen via memoize.
+
+```typescript
+(): { screen: ResolutionMode; texture: ResolutionMode; }
+```
+
+### `OrientationMode` *(const)*
+
+Oriëntatiemodus-constanten. Gebruik `LANDSCAPE`, `PORTRAIT` of `NONE` (lege string) om de schermoriëntatie op te geven of te vergelijken.
+
+### `Screen` *(const)*
+
+Singleton-instantie van `ConcreteScreen`. Houdt de huidige viewport-`width`, `height`, `orientation` en `resolution` bij. Roep `Screen.init()` (of `initScreen()`) aan voor gebruik.
+
+```typescript
+ConcreteScreen
+```
+
+### `Stage` *(const)*
+
+Singleton-instantie van `ConcreteStage`. De primaire interface naar de Pixi.js-renderer en animatielus. Roep `Stage.init()` aan met `StageOptions` en optionele maatopties om te starten.
+
+```typescript
+ConcreteStage
+```
+
+## Asset Loaders
+
+### `AssetLoaderInterface` *(interface)*
+
+Interface die alle individuele loaders (sprites, fonts, sounds, spine) gemeenschappelijk hebben. Wordt intern door `AssetLoader` gebruikt.
+
+```typescript
+any
+```
+
+### `FontAsset` *(interface)*
+
+Vertegenwoordigt een succesvol geladen font, met de font-familienaam en een optionele variant.
+
+```typescript
+any
+```
+
+### `FontAssetInfo` *(interface)*
+
+Asset-descriptor voor een webfont. Wordt doorgegeven aan `createFontLoader()` of opgenomen in `LoaderAssets.fonts`.
+
+```typescript
+any
+```
+
+### `LoaderAssets` *(interface)*
+
+De te laden assets, gegroepeerd per type. Elke eigenschap is een array of een functie die een array teruggeeft.
+
+```typescript
+any
+```
+
+### `LoaderOptions` *(interface)*
+
+Instellingen voor `AssetLoader`: maximaal aantal gelijktijdige laadacties en een optionele naam.
+
+```typescript
+any
+```
+
+### `SoundAsset` *(interface)*
+
+Beschrijft een enkel geluidsbestand met het asset-`id` (gebruikt voor het opbouwen van de bestands-URL), `duration` in seconden en weergave-`name`.
+
+```typescript
+any
+```
+
+### `SoundAssetList` *(interface)*
+
+Recursieve map van geluid-assets. Bladwaarden zijn `SoundAsset`-objecten; groepen zijn geneste maps. Gebruikt in `SoundsAssetInfo.assets`.
+
+```typescript
+any
+```
+
+### `SoundsAssetInfo` *(interface)*
+
+Asset-descriptor voor een groep geluiden gekoppeld aan een benoemde asset-bundel. Wordt doorgegeven aan `createSoundsLoader()` of opgenomen in `LoaderAssets.sounds`.
+
+```typescript
+any
+```
+
+### `SpineAsset` *(interface)*
+
+Vertegenwoordigt een geladen Spine-skelet, met een `id` en de geparseerde `SkeletonData`.
+
+```typescript
+any
+```
+
+### `SpineAssetInfo` *(interface)*
+
+Asset-descriptor voor een Spine-animatie. Wordt doorgegeven aan `createSpineLoader()` of opgenomen in `LoaderAssets.spine`.
+
+```typescript
+any
+```
+
+### `SpineLoaderOptions` *(interface)*
+
+Interne instellingen voor `SpineLoader`: asset-pad, naam, map en aantal onderdelen.
+
+```typescript
+any
+```
+
+### `SpriteAsset` *(interface)*
+
+Vertegenwoordigt een enkele sprite binnen een geladen sprite sheet, met het `id`, `width` en `height` in pixels.
+
+```typescript
+any
+```
+
+### `SpriteAssetInfo` *(interface)*
+
+Beschrijving van een sprite sheet die geladen moet worden. Ondersteunt meerdelige sheets en een optionele vaste resolutie.
+
+```typescript
+any
+```
+
+### `SpriteAssetList` *(interface)*
+
+Recursieve map van sprite-assets met naam als sleutel. Waarden zijn ofwel een `SpriteAsset`-blad of een geneste `SpriteAssetList`-groep. Gebruikt in `SpriteAssetInfo.assets`.
+
+```typescript
+any
+```
+
+### `SpriteAssetWithMeta` *(interface)*
+
+Breidt `SpriteAsset` uit met lay-outmetadata (positie, zIndex, opacity) voor sprites die plaatsingsinformatie meeleveren die in de sprite sheet is opgenomen.
+
+```typescript
+any
+```
+
+### `AssetLoaderInfo` *(type)*
+
+Alle asset-beschrijvingstypes die `AssetLoader.addAsset()` accepteert.
+
+```typescript
+any
+```
+
+### `AssetLoader` *(class)*
+
+Laadt meerdere asset-typen (sprites, fonts, sounds, spine) gelijktijdig.
+Verstuurt `progressed` (0–100) en `loaded` events tijdens en na het laden.
+Ondersteunt het dynamisch toevoegen van assets en `unload()` om geheugen vrij te geven.
+
+```typescript
+typeof AssetLoader
+```
+
+### `FontLoader` *(class)*
+
+Laadt een webfont en wacht tot het beschikbaar is in de browser.
+Maak aan via `createFontLoader()`.
+
+```typescript
+typeof FontLoader
+```
+
+### `SoundsLoader` *(class)*
+
+Laadt een verzameling geluid-assets in `SoundLibrary`, maximaal 8 tegelijk.
+Maak aan via `createSoundsLoader()`.
+
+```typescript
+typeof SoundsLoader
+```
+
+### `SpineLoader` *(class)*
+
+Laadt een Spine-animatie (JSON-skelet + texturatlas).
+Kiest automatisch `@2x`-texturen op retina-schermen. Maak aan via `createSpineLoader()`.
+
+```typescript
+typeof SpineLoader
+```
+
+### `SpriteLoader` *(class)*
+
+Laadt een of meer sprite sheet-bestanden en voegt de texturen samen.
+Kiest automatisch `@2x`-varianten op retina-schermen. Maak aan via `createSpriteLoader()`.
+
+```typescript
+typeof SpriteLoader
+```
+
+### `createFontLoader` *(function)*
+
+Maakt een `FontLoader` aan voor het opgegeven font.
+
+```typescript
+(asset: FontAssetInfo): FontLoader
+```
+
+### `createSoundsLoader` *(function)*
+
+Maakt een `SoundsLoader`-instantie aan voor de opgegeven `SoundsAssetInfo`. Wordt intern door `AssetLoader` gebruikt bij het verwerken van geluid-assets.
+
+```typescript
+(assetInfo: SoundsAssetInfo): SoundsLoader
+```
+
+### `createSpineLoader` *(function)*
+
+Maakt een `SpineLoader`-instantie aan voor de opgegeven `SpineAssetInfo`, waarbij het asset-pad wordt opgelost vanuit `CoreLibraryOptions.ASSET_BASE_PATH`. Wordt intern door `AssetLoader` gebruikt.
+
+```typescript
+(asset: SpineAssetInfo): SpineLoader
+```
+
+### `createSpriteLoader` *(function)*
+
+Maakt een `SpriteLoader`-instantie aan voor de opgegeven `SpriteAssetInfo`, waarbij het asset-pad wordt opgelost vanuit `CoreLibraryOptions.ASSET_BASE_PATH`. Wordt intern door `AssetLoader` gebruikt.
+
+```typescript
+(assetInfo: SpriteAssetInfo): SpriteLoader
+```
+
+### `isFontAsset` *(function)*
+
+Controlefunctie: geeft `true` terug als `_info` een `FontAsset` is.
+
+```typescript
+(_info: FontAsset): _info is FontAsset
+```
+
+### `isSoundAsset` *(function)*
+
+Controlefunctie: geeft `true` terug als `_info` een `SoundAsset` is.
+
+```typescript
+(_info: SoundAsset): _info is SoundAsset
+```
+
+### `isSpineAsset` *(function)*
+
+Controlefunctie: geeft `true` terug als `_info` een `SpineAsset` is.
+
+```typescript
+(_info: SpineAsset): _info is SpineAsset
+```
+
+### `isSpriteAsset` *(function)*
+
+Controlefunctie: geeft `true` terug als `_info` een `SpriteAsset` is.
+
+```typescript
+(_info: SpriteAsset): _info is SpriteAsset
+```
+
+### `isSpriteAssetWithMeta` *(function)*
+
+Controlefunctie: geeft `true` terug als `_info` een `SpriteAssetWithMeta` is.
+
+```typescript
+(_info: SpriteAsset | SpriteAssetWithMeta): _info is SpriteAssetWithMeta
+```
+
+### `LoaderAssetTypes` *(const)*
+
+De mogelijke asset-types: `SPRITES`, `FONT`, `SOUNDS` en `SPINE`.
+
+## Audio
+
+### `AudioFXOptions` *(interface)*
+
+Opties voor `AudioFX.play()`: herhaling, snelheid, fade-effect, startpositie en ruimtelijke audio.
+
+```typescript
+any
+```
+
+### `SoundLibraryItemOptions` *(interface)*
+
+Opties voor `SoundLibraryItem`. Zet `buffer: true` voor lange geluiden die via HTML5 Audio afgespeeld moeten worden.
+
+```typescript
+any
+```
+
+### `SoundLibraryItem` *(class)*
+
+Beheert één geluid-asset: laden, verwijderen en delen over meerdere scènes.
+Het geluid wordt pas verwijderd als geen enkele scène het meer gebruikt.
+
+```typescript
+typeof SoundLibraryItem
+```
+
+### `AudioFX` *(const)*
+
+De gedeelde audio-instantie voor het afspelen van geluiden in de app.
+Gebruik `AudioFX.play(asset)`, `.stop()`, `.pause()`, `.resume()`,
+`.fadeTo()`, `.pauseAll()`, `.resumeAll()`, `.suspendContext()` en `.resumeContext()`.
+
+```typescript
+ConcreteSoundsPlayer
+```
+
+### `SoundLibrary` *(const)*
+
+De gedeelde geluidsbibliotheek. Gebruik `SoundLibrary.load()` en `.unload()` om geluiden te beheren; `getItemByAsset()` en `getZoneSounds()` voor opzoekingen.
+
+```typescript
+ConcreteSoundsLibrary
+```
+
+## Device
+
+### `GPUInfo` *(interface)*
+
+Informatie over de grafische mogelijkheden van het apparaat (WebGL-ondersteuning, GPU-naam).
+Wordt gebruikt om te bepalen welke rendermethode het best werkt op dit apparaat.
+
+```typescript
+any
+```
+
+### `initAppStateDetection` *(function)*
+
+Begint te luisteren naar veranderingen in de app-status (actief, inactief, op de voorgrond, op de achtergrond).
+Stuurt `AppEvent.STATE_ACTIVE`, `.STATE_INACTIVE`, `.STATE_BLURRED` en `.STATE_FOCUSSED` berichten.
+Heeft geen effect als de pagina opnieuw geladen is.
+
+```typescript
+(): Promise<void>
+```
+
+### `initDeviceChrome` *(function)*
+
+Stelt de statusbalk van het apparaat in (lichte stijl, verborgen) voor native iOS/Android-apps.
+Heeft geen effect in een webbrowser.
+
+```typescript
+(): Promise<void>
+```
+
+### `initDeviceInfo` *(function)*
+
+Haalt de informatie en het unieke ID van het apparaat op.
+Moet worden aangeroepen voordat `getDeviceInfo()` of `getDeviceId()` gebruikt worden.
+
+```typescript
+(): Promise<void>
+```
+
+### `initNetworkStatusDetection` *(function)*
+
+Begint te luisteren naar veranderingen in de internetverbinding.
+Stuurt `AppEvent.NETWORK_ONLINE` of `AppEvent.NETWORK_OFFLINE` wanneer de verbinding wijzigt.
+Kan meerdere keren aangeroepen worden zonder problemen.
+
+```typescript
+(): Promise<void>
+```
+
+### `isOnline` *(function)*
+
+Geeft `true` terug als er momenteel een internetverbinding is.
+
+```typescript
+(): boolean
+```
+
+### `browserInfoParser` *(const)*
+
+Een browserdetectie-instantie gebaseerd op de gebruikersagent van de huidige browser.
+
+```typescript
+Parser
+```
+
+### `browserSatisfies` *(const)*
+
+Geeft `true` terug als de huidige browser aan de opgegeven conditie voldoet.
+
+```typescript
+(info: checkTree): boolean
+```
+
+### `deviceNeedsMediaTrigger` *(const)*
+
+Geeft `true` terug als de gebruiker eerst iets moet aantikken of klikken voordat audio of video kan starten.
+Native apps hebben dit nooit nodig; mobiele en moderne desktopbrowsers wel.
+Het resultaat wordt onthouden na de eerste aanroep.
+
+```typescript
+(): boolean
+```
+
+### `getDeviceId` *(const)*
+
+Geeft een unieke herkenningsstring voor dit apparaat terug, in de vorm `platform-identifier`.
+
+```typescript
+(): string
+```
+
+### `getDeviceInfo` *(const)*
+
+Geeft de apparaatdetails terug (platform, OS-versie, model, enz.).
+
+```typescript
+(): DeviceInfo
+```
+
+### `getGPUInfo` *(const)*
+
+Detecteert of WebGL beschikbaar is en welke GPU het apparaat heeft.
+Markeert bepaalde oudere GPU's (bijv. Mali-400/450/470) automatisch voor een alternatieve rendermodus.
+Het resultaat wordt onthouden na de eerste aanroep.
+
+```typescript
+(): GPUInfo
+```
+
+### `getPixelRatio` *(const)*
+
+Geeft de werkelijke hardware-pixelverhouding van het scherm terug, bepaald bij opstarten via CSS media queries. Valt terug op `window.devicePixelRatio` als er geen media query overeenkomt.
+
+```typescript
+(): number
+```
+
+### `isApp` *(const)*
+
+Geeft `true` terug als de app is geïnstalleerd als native app (iOS of Android).
+
+```typescript
+(): boolean
+```
+
+### `isInFrame` *(const)*
+
+Geeft `true` terug als de pagina geladen is binnen een iframe. Het resultaat wordt onthouden na de eerste aanroep.
+
+```typescript
+(): boolean
+```
+
+### `isLocalhost` *(const)*
+
+Geeft `true` terug als de app lokaal (op localhost) wordt uitgevoerd. Het resultaat wordt onthouden na de eerste aanroep.
+
+```typescript
+(): boolean
+```
+
+### `isMobile` *(const)*
+
+Geeft `true` terug als het apparaat een telefoon of tablet is.
+Herkent ook iPads die zich als desktopbrowser voordoen en native iOS/Android-apps.
+
+```typescript
+(): boolean
+```
+
+### `isObsoleteBrowser` *(const)*
+
+Geeft `true` terug als de browser te oud is om de app goed te ondersteunen.
+Controleert minimumversies voor desktop, mobiel en tablet.
+TV-platforms gelden altijd als te oud; native apps nooit.
+
+```typescript
+(): boolean
+```
+
+### `isPlatform` *(const)*
+
+Geeft `true` terug als het apparaat draait op het opgegeven platform (bijv. `'ios'` of `'android'`).
+
+```typescript
+(_name: string): boolean
+```
+
+### `isStandaloneBrowser` *(const)*
+
+Geeft `true` terug als de app als geïnstalleerde web-app (PWA) op het startscherm wordt uitgevoerd.
+Alleen van toepassing op mobiele apparaten.
+
+```typescript
+(): boolean
+```
+
+### `isZoomed` *(const)*
+
+Geeft `true` terug als de browser momenteel is ingezoomd, door `window.devicePixelRatio` te vergelijken met de hardware-pixelverhouding die via media queries is vastgesteld.
+
+```typescript
+(): boolean
+```
+
+### `Platform` *(const)*
+
+Namen van ondersteunde platformen voor gebruik met `isPlatform()`: `IOS` en `ANDROID`.
+
+### `supportsOnlyTouch` *(const)*
+
+Geeft `true` terug als het apparaat mobiel IS en touch ondersteunt, wat betekent dat touch de enige verwachte invoermethode is. Resultaat wordt na de eerste aanroep opgeslagen via memoize.
+
+```typescript
+(): boolean
+```
+
+### `supportsTouch` *(const)*
+
+Geeft `true` terug als het apparaat touch-events ondersteunt (`ontouchstart` in window of `DocumentTouch`). Resultaat wordt na de eerste aanroep opgeslagen via memoize.
+
+```typescript
+(): boolean
+```
+
+## App
+
+### `initAppInfo` *(function)*
+
+Leest de app-informatie (versie, build, enz.) uit voor native apps.
+Heeft geen effect in een webbrowser.
+
+```typescript
+(): Promise<void>
+```
+
+### `isReloadedPage` *(function)*
+
+Geeft `true` terug als de pagina opnieuw geladen is (dus al eerder in dezelfde sessie geopend was).
+
+```typescript
+(): boolean
+```
+
+### `AppData` *(const)*
+
+De globale app-instellingen uit `window.APP`: versie, id en weergaveopties.
+
+```typescript
+AppSettings
+```
+
+### `getAppVersion` *(const)*
+
+Geeft de huidige app-versiestring terug.
+Voor native apps wordt de ingebouwde versie gebruikt; anders wordt de versie uit `window.APP` gelezen.
+Geeft `'unknown'` terug als er geen versie beschikbaar is.
+
+```typescript
+(): string
+```
+
+## Data
+
+### `ResponseError` *(interface)*
+
+Informatie over een fout bij een netwerkverzoek: het type fout, een beschrijving en de HTTP-statuscode.
+
+```typescript
+any
+```
+
+### `ResponseResult` *(interface)*
+
+Het resultaat van een netwerkverzoek: ofwel een `body` met de ontvangen gegevens, ofwel een `error` als het mislukt is.
+
+```typescript
+any
+```
+
+### `StatsEventData` *(interface)*
+
+Gegevens voor het registreren van een analytics-gebeurtenis: het subpad en een optionele waarde.
+
+```typescript
+any
+```
+
+### `StatsPageData` *(interface)*
+
+Gegevens voor het registreren van een paginabezoek: het URL-pad en de paginatitel.
+
+```typescript
+any
+```
+
+### `getAPIRequest` *(function)*
+
+Haalt gegevens op van een API-eindpunt en controleert eerst of er een internetverbinding is.
+Geeft het JSON-antwoord terug bij succes, of een fout als het mislukt.
+
+```typescript
+(_url: string, _timeout?: { response: number; deadline?: number | undefined; } | undefined): Promise<ResponseResult>
+```
+
+### `getLocalUrlContents` *(function)*
+
+Haalt de tekst op van een lokale URL (bijvoorbeeld een bestand dat in de app is meegeleverd).
+Geeft een resultaat terug met de tekst bij succes, of een fout als het mislukt.
+
+```typescript
+(_url: string): Promise<ResponseResult>
+```
+
+### `getValueFromJSON` *(function)*
+
+Probeert de tekst als JSON te lezen. Geeft het resultaat terug bij succes, anders de originele tekst.
+
+```typescript
+(source: string): unknown
+```
+
+### `objectDifferences` *(function)*
+
+Geeft een nieuw object terug met alleen de sleutel-waarde-paren uit `a` die afwijken van (of ontbreken in) `b`.
+
+```typescript
+<T>(a: Record<string | number, T>, b: Record<string | number, T>): Record<string | number, T>
+```
+
+### `postAPIRequest` *(function)*
+
+Stuurt gegevens naar een API-eindpunt en controleert eerst of er een internetverbinding is.
+Geeft het JSON-antwoord terug bij succes, of een fout als het mislukt.
+
+```typescript
+(_url: string, _body?: {} | undefined, _timeout?: { response: number; deadline?: number | undefined; } | undefined): Promise<ResponseResult>
+```
+
+### `stringSizeInKb` *(function)*
+
+Geeft de grootte van een tekst terug in kilobytes.
+
+```typescript
+(_value?: string): number
+```
+
+### `LocalStorage` *(const)*
+
+De gedeelde opslaginstantie. Gebruik `.get()`, `.set()`, `.remove()`, `.keys()`, `.clear()` en `.migrate()`.
+
+```typescript
+ConcreteStorage
+```
+
+### `ResponseErrorTypes` *(const)*
+
+Soorten fouten die kunnen optreden bij een netwerkverzoek: `DEFAULT`, `TIMEOUT`, `TERMINATED`, `NOT_FOUND` of `OFFLINE`.
+
+### `Stats` *(const)*
+
+Google Analytics-koppeling voor het bijhouden van paginabezoeken en gebeurtenissen.
+Roep `Stats.initStats(ua)` aan met een tracking-ID om tracking te activeren.
+Gebruik `Stats.registerPage()` voor paginabezoeken en `Stats.registerEvent()` voor gebeurtenissen.
+Tracking wordt automatisch uitgeschakeld in debug-modus.
+
+## Logger
+
+### `getLogger` *(function)*
+
+Geeft een logger met de opgegeven naam terug; maakt hem aan als hij nog niet bestaat.
+Loggers worden hergebruikt op naam. Gebruik `' > '` voor hiërarchische namen (bijv. `'audio > sfx'`).
+
+```typescript
+(prefix?: string): LoggerClass
+```
+
+### `initLogger` *(function)*
+
+Past het ingestelde logniveau toe op alle loggers.
+Roep dit aan na `initCoreLibrary()`.
+
+```typescript
+(): void
+```
+
+### `objectToLog` *(function)*
+
+Zet de eigenschappen van een object om naar een leesbare tekst voor in logs.
+Geef `_props` mee om alleen bepaalde eigenschappen op te nemen; anders worden alle opgenomen in alfabetische volgorde.
+Geef `multiLine = true` mee voor weergave op meerdere regels.
+
+```typescript
+<T extends object>(_obj: T | undefined, _props?: (keyof T)[], multiLine?: boolean): string
+```
+
+### `squashForLog` *(function)*
+
+Zet een waarde om naar een JSON-string voor gebruik in logs. Geeft een lege string terug als er geen waarde is.
+
+```typescript
+(_value?: {} | undefined): {}
+```
+
+### `Logger` *(const)*
+
+De standaard logger. Gebruik dit voor algemene meldingen als je geen eigen logger naam nodig hebt.
+
+```typescript
+LoggerClass
+```
+
+### `LogLevels` *(const)*
+
+De beschikbare logniveaus: van `VERBOSE` (-1) tot `ERROR` (3).
+Alleen berichten op of boven het ingestelde niveau worden getoond.
+
+## Debug
+
+### `CoreDebugSettings` *(interface)*
+
+Instellingen voor het debug-systeem. Debug-modus wordt automatisch ingeschakeld als `?debug` in de URL staat.
+Gebruik `setCoreDebugSettings()` om instellingen aan te passen.
+
+```typescript
+any
+```
+
+### `setCoreDebugSettings` *(function)*
+
+Past de debug-instellingen aan. Roep dit vroeg aan bij het starten van de app
+om standaarden zoals het logniveau of de resolutie te wijzigen.
+
+```typescript
+(_settings: CoreDebugSettings): void
+```
+
+### `CoreDebug` *(const)*
+
+Geeft toegang tot de huidige debug-instellingen tijdens het uitvoeren van de app.
+Alle methoden zijn veilig te gebruiken in productie — ze geven standaardwaarden terug als debug-modus uit staat.
+Debug-modus wordt automatisch ingeschakeld als `?debug` in de URL staat.
+
+## Utilities
+
+### `Random` *(type)*
+
+Her-export van het `Random` type uit `random-js`, dat een instantie van een willekeuriggetallengenerator met seed vertegenwoordigt.
+
+```typescript
+any
+```
+
+### `b64ToUtf8` *(function)*
+
+Decodeert een Base64-gecodeerde string terug naar een UTF-8 string, waarbij Unicode-tekens correct worden verwerkt.
+
+```typescript
+(value: string): string
+```
+
+### `calulateAgeFromDate` *(function)*
+
+Berekent de leeftijd in hele jaren op basis van een opgegeven geboortedatum of datumstring.
+Geeft `-1` terug als de geboortedatum ontbreekt of ongeldig is.
+
+```typescript
+(birthday?: string | Date | undefined): number
+```
+
+### `colorToRGB` *(function)*
+
+Zet een kleurwaarde (CSS hex string, CSS rgb/rgba string of RGB object) om naar een RGB object.
+Geeft `{r: 0, g: 0, b: 0}` terug als het parsen mislukt.
+
+```typescript
+(color: string | RGB): RGB
+```
+
+### `createRandomizer` *(function)*
+
+Maakt een nieuwe deterministische willekeuriggetallengenerator aan, geseeed met de opgegeven waarde.
+Gebruik dit wanneer reproduceerbare willekeurige reeksen nodig zijn (bijv. voor testen of replay).
+
+```typescript
+(_seed: number): Random
+```
+
+### `daysBetween` *(function)*
+
+Geeft het aantal hele dagen terug tussen twee datums (op basis van UTC-waarden).
+
+```typescript
+(start: Date, end: Date): number
+```
+
+### `defaultsDeepPreserveArrays` *(function)*
+
+Voert een diepe samenvoeging uit van de opgegeven bronobjecten, maar behoudt arrays uit bronobjecten
+in plaats van ze element voor element samen te voegen zoals lodash `defaultsDeep` zou doen.
+Latere bronnen hebben een lagere prioriteit (eerdere bronnen winnen), overeenkomstig de semantiek van lodash `defaultsDeep`.
+
+```typescript
+(...sources: any[]): any
+```
+
+### `getDateFromAPIString` *(function)*
+
+Parseert een datum/tijdstring uit een API-respons (splitst op elk niet-cijferteken) en geeft een `Date` object terug.
+
+```typescript
+(value: string): Date
+```
+
+### `getDateFromFirestoreString` *(function)*
+
+Parseert een Firestore-stijl datumstring in het formaat `"YYYY-MM-DD"` en geeft een `Date` object terug.
+Geeft `undefined` terug als de invoer ongeldig of ontbrekend is.
+
+```typescript
+(value: string): Date | undefined
+```
+
+### `getDateString` *(function)*
+
+Geeft een datum terug opgemaakt als `"YYYY-MM-DD"`. Gebruikt de huidige datum als er geen argument is opgegeven.
+
+```typescript
+(date?: Date | undefined): string
+```
+
+### `getDayDate` *(function)*
+
+Geeft een `Date` object terug dat het begin van de opgegeven dag vertegenwoordigt (middernacht UTC), standaard vandaag.
+
+```typescript
+(date?: Date | undefined): Date
+```
+
+### `getSecondsBetween` *(function)*
+
+Geeft het aantal hele seconden terug tussen twee datums (`d1 - d2`), afgerond naar het dichtstbijzijnde gehele getal.
+
+```typescript
+(d1: Date, d2: Date): number
+```
+
+### `hexToInt` *(function)*
+
+Zet een CSS hex-kleurstring (bijv. `"#ff0080"`) om naar een numerieke integerrepresentatie.
+
+```typescript
+(s: string): number
+```
+
+### `hexToRGB` *(function)*
+
+Zet een CSS hex-kleurstring (bijv. `"#fff"` of `"#ffffff"`) om naar een RGB object.
+
+```typescript
+(color: string): RGB
+```
+
+### `hexToString` *(function)*
+
+Zet een numerieke hex-kleurwaarde om naar een CSS hex-string (bijv. `0xff0080` → `"#ff0080"`).
+Voegt optioneel een alfacomponent toe wanneer `alpha` (0–1) is opgegeven.
+
+```typescript
+(hex: number, alpha?: number | undefined): string
+```
+
+### `intToHex` *(function)*
+
+Zet een geheel getal (0–255) om naar een tweekarak­ter hex-string in kleine letters, waarbij waarden buiten bereik worden begrensd.
+
+```typescript
+(value: number): string
+```
+
+### `isAfterToday` *(function)*
+
+Geeft true terug als de opgegeven datum strikt na het einde van de huidige dag valt (23:59:59 UTC).
+
+```typescript
+(after: Date): boolean
+```
+
+### `isBeforeToday` *(function)*
+
+Geeft true terug als de opgegeven datum strikt vóór de huidige dag valt (middernacht UTC).
+
+```typescript
+(before: Date): boolean
+```
+
+### `isBetweenDates` *(function)*
+
+Geeft true terug als het huidige moment valt tussen de `start`- en `end`-datums (exclusief).
+
+```typescript
+(start: Date, end: Date): boolean
+```
+
+### `isDarkColor` *(function)*
+
+Bepaalt of een kleur als donker wordt waargenomen op basis van de HSP-helderheidsformule (Highly Sensitive Poo).
+Accepteert een CSS hex/rgb string of een RGB object.
+
+```typescript
+(color: string | RGB): boolean
+```
+
+### `isLeapYear` *(function)*
+
+Geeft true terug als het opgegeven jaar een schrikkeljaar is.
+
+```typescript
+(year: number): boolean
+```
+
+### `isSameDay` *(function)*
+
+Geeft true terug als twee datums dezelfde kalenderdag in UTC vertegenwoordigen.
+
+```typescript
+(d1: Date, d2: Date): boolean
+```
+
+### `isType` *(function)*
+
+Type guard die controleert of een waarde een constructorfunctie is (d.w.z. een klasse of aanroepbare functie met `new`).
+
+```typescript
+(v: any): v is Type<any>
+```
+
+### `openUrl` *(function)*
+
+Opent een URL programmatisch door een klik te simuleren op een dynamisch aangemaakt ankerelement.
+Opent standaard in een nieuw tabblad (`target = '_blank'`).
+
+```typescript
+(url: string, target?: string): void
+```
+
+### `rgbTint` *(function)*
+
+Mengt een RGB-kleur richting wit met de gegeven `step`-factor (0 = originele kleur, 1 = wit).
+
+```typescript
+(color: RGB, step: number): RGB
+```
+
+### `rgbToHex` *(function)*
+
+Zet een RGB object om naar een CSS hex-kleurstring (bijv. `"#ff0080"`).
+
+```typescript
+(color: RGB): string
+```
+
+### `rgbToInt` *(function)*
+
+Zet een RGB object om naar een gecomprimeerd 24-bit geheel getal (bijv. voor gebruik als PIXI-tintwaarde).
+
+```typescript
+(color: RGB): number
+```
+
+### `utf8ToB64` *(function)*
+
+Codeert een UTF-8 string naar een Base64-gecodeerde string, waarbij Unicode-tekens correct worden verwerkt.
+
+```typescript
+(value: string): string
+```
+
+### `constrainNumber` *(const)*
+
+Begrenst een getal tussen een minimum- en maximumwaarde, met optionele afronding.
+Als `roundPrecision` -1 is (standaard), wordt er niet afgerond.
+
+```typescript
+(value: number, min: number, max: number, roundPrecision?: number): number
+```
+
+### `distanceBetween` *(const)*
+
+Berekent de Euclidische afstand tussen twee 2D-punten (x1, y1) en (x2, y2).
+
+```typescript
+(x1: number, x2: number, y1: number, y2: number): number
+```
+
+### `getGreatestCommonDivisor` *(const)*
+
+Berekent de grootste gemene deler van twee gehele getallen met het algoritme van Euclides.
+
+```typescript
+(a: number, b: number): number
+```
+
+### `KloekRandom` *(const)*
+
+Een globaal gedeelde, automatisch geseede Mersenne Twister willekeuriggetallengenerator-instantie.
+Gebruik dit voor algemene willekeuriggetallengeneratie door de hele applicatie.
+
+```typescript
+Random
+```
+
+### `mapNumber` *(const)*
+
+Zet een getal van het ene bereik om naar het andere, vergelijkbaar met de `map()`-functie van Processing.
+Optioneel wordt de uitvoer begrensd tot het uitvoerbereik en wordt afronding toegepast.
+
+```typescript
+(value: number, istart: number, istop: number, ostart: number, ostop: number, constrain?: boolean | undefined, roundPrecision?: number): number
+```
+
+### `MathUtil` *(const)*
+
+Handigheidsobject dat alle wiskundige hulpfuncties groepeert onder één namespace.
+Biedt verkorte toegang tot begrenzing, mapping, normalisatie, afstand, willekeurigheid en GGD-bewerkingen.
+
+### `normalizeNumber` *(const)*
+
+Normaliseert een getal naar een bereik van 0–1, gegeven een onderste en bovenste grens.
+
+```typescript
+(value: number, low: number, high: number): number
+```
+
+### `numberIsBetween` *(const)*
+
+Geeft true terug als `value` binnen het inclusieve bereik [min, max] valt.
+
+```typescript
+(value: number, min: number, max: number): boolean
+```
+
+### `randomBetween` *(const)*
+
+Geeft een willekeurig getal met drijvende komma terug tussen `min` (inclusief) en `max` (exclusief).
+
+```typescript
+(min: number, max: number): number
+```
+
+### `randomIntBetween` *(const)*
+
+Geeft een willekeurig geheel getal terug tussen `min` en `max` (beide inclusief).
+
+```typescript
+(min: number, max: number): number
+```
+
+### `replaceAll` *(const)*
+
+Vervangt alle voorkomens van `pattern` in `string` door `replacement`.
+Het patroon wordt behandeld als een letterlijke string, niet als een reguliere expressie.
+
+```typescript
+(string: string, pattern: string, replacement: string): string
+```
+
+### `slugify` *(const)*
+
+Zet een string om naar een URL-vriendelijke slug door speciale tekens te verwijderen en spaties te vervangen door koppeltekens.
+Zet het resultaat optioneel om naar kleine letters.
+
+```typescript
+(string: string, lowercase?: boolean): string
+```
+
+### `Type` *(const)*
+
+Alias voor `Function`, gebruikt als basiswaarde voor de `Type<T>` constructor interface.
+
+```typescript
+(...args: string[]): Function
+```
+
+## UI Components
+
+### `KloekSpriteDefaults` *(interface)*
+
+Standaard visuele eigenschapswaarden die worden toegepast op een `KloekSprite` bij constructie of wanneer `applyDefaults()` wordt aangeroepen.
+Alle eigenschappen zijn optioneel; alleen opgegeven eigenschappen worden toegepast.
+
+```typescript
+any
+```
+
+### `KloekHTMLText` *(type)*
+
+Type alias voor `HTMLText`, dat een tekstelement met HTML-ondersteuning vertegenwoordigt.
+
+```typescript
+any
+```
+
+### `KloekSprite` *(class)*
+
+Een PIXI `Sprite`-subklasse met geïntegreerd lifecyclebeheer, ondersteuning voor standaardeigenschappen en tween-mogelijkheden.
+Roep `prepareAfterLoad()` aan om de textuur te vullen en standaardwaarden toe te passen, en `cleanupBeforeUnload()` om resources vrij te geven.
+Gebruik `KloekSprite.create()` als statische factory voor eenvoudige constructie met asset en standaardwaarden.
+
+```typescript
+typeof KloekSprite
+```
+
+### `KloekText` *(class)*
+
+Een PIXI `Container`-subklasse die een standaard `Text` of een `HTMLText` element omhult met lifecyclebeheer.
+Ondersteunt benoemde tekststijlen geregistreerd via `KloekText.registerStyle()`, en verwerkt resolutie-bewuste weergave.
+Geef `_isHtml = true` mee om HTML-tagondersteuning in de weergegeven tekst in te schakelen.
+
+```typescript
+typeof KloekText
+```
+
+## Filters
+
+### `getColorMatrixFilter` *(function)*
+
+Maakt een kleurfilter (`ColorMatrixFilter`) aan, klaar voor gebruik met de huidige schermresolutie.
+Geef een 4×5 kleurmatrix mee om te bepalen hoe kleuren worden omgezet.
+
+```typescript
+(matrix: ColorMatrix): ColorMatrixFilter
+```
+
+## HTML
+
+### `getElement` *(function)*
+
+Zoekt een HTML-element op basis van een CSS-selectorstring, of geeft het element direct terug als het al meegegeven is.
+Geeft `null` terug als niets gevonden wordt.
+
+```typescript
+(_target: string | HTMLElement): HTMLElement | null
+```
+
+### `getElementFromTemplate` *(function)*
+
+Haalt een element op uit een HTML `<template>` op basis van een CSS-selector.
+Geeft `undefined` terug en logt een fout als het element niet gevonden wordt.
+
+```typescript
+(_id: string): HTMLElement | undefined
+```
+
+## Input
+
+### `Keyboard` *(const)*
+
+Houdt bij welke toetsen op het toetsenbord ingedrukt zijn.
+Gebruik `Keyboard.isDown(key)` om te controleren of een toets momenteel ingedrukt is.
+Bevat ook constanten voor veelgebruikte toetsnamen.

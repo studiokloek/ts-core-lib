@@ -6,10 +6,15 @@ import { SoundAsset } from '../../loaders';
 import { CoreLibraryOptions } from '../../';
 
 // const Logger = getLogger('core > sounds > library > item');
+/** Opties voor `SoundLibraryItem`. Zet `buffer: true` voor lange geluiden die via HTML5 Audio afgespeeld moeten worden. */
 export interface SoundLibraryItemOptions {
   buffer: boolean;
 }
 
+/**
+ * Beheert één geluid-asset: laden, verwijderen en delen over meerdere scènes.
+ * Het geluid wordt pas verwijderd als geen enkele scène het meer gebruikt.
+ */
 export class SoundLibraryItem {
   private asset: SoundAsset;
   private options?: SoundLibraryItemOptions;

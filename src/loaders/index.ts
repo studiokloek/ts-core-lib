@@ -16,6 +16,7 @@ const Logger = getLogger('loader');
 
 type AssetData = { [key: string]: Texture } | SoundLibraryItem[] | SpineAsset | FontAsset | undefined;
 
+/** Interface die alle individuele loaders (sprites, fonts, sounds, spine) gemeenschappelijk hebben. Wordt intern door `AssetLoader` gebruikt. */
 export interface AssetLoaderInterface {
   load(): Promise<unknown | void>;
   unload(): void;
@@ -24,6 +25,7 @@ export interface AssetLoaderInterface {
   isLoaded: boolean;
 }
 
+/** De mogelijke asset-types: `SPRITES`, `FONT`, `SOUNDS` en `SPINE`. */
 export const LoaderAssetTypes = {
   SPRITES: 'sprites',
   FONT: 'font',
@@ -31,8 +33,10 @@ export const LoaderAssetTypes = {
   SPINE: 'spine',
 };
 
+/** Alle asset-beschrijvingstypes die `AssetLoader.addAsset()` accepteert. */
 export type AssetLoaderInfo = SpriteAssetInfo | SoundsAssetInfo | SpineAssetInfo | FontAssetInfo;
 
+/** De te laden assets, gegroepeerd per type. Elke eigenschap is een array of een functie die een array teruggeeft. */
 export interface LoaderAssets {
   sprites?: SpriteAssetInfo[] | (() => SpriteAssetInfo[]);
   fonts?: FontAssetInfo[] | (() => FontAssetInfo[]);
@@ -47,6 +51,7 @@ const DefaultLoaderAssets: LoaderAssets = {
   spine: [],
 };
 
+/** Instellingen voor `AssetLoader`: maximaal aantal gelijktijdige laadacties en een optionele naam. */
 export interface LoaderOptions {
   maxConcurrent?: number;
   id?: string;
@@ -62,6 +67,11 @@ export * from './sounds-loader';
 export * from './spine-loader';
 export * from './sprites-loader';
 
+/**
+ * Laadt meerdere asset-typen (sprites, fonts, sounds, spine) gelijktijdig.
+ * Verstuurt `progressed` (0–100) en `loaded` events tijdens en na het laden.
+ * Ondersteunt het dynamisch toevoegen van assets en `unload()` om geheugen vrij te geven.
+ */
 export class AssetLoader {
   protected assets: LoaderAssets;
   private numberLoaded = 0;

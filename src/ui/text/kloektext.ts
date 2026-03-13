@@ -6,8 +6,16 @@ import { HTMLText, HTMLTextStyle } from './html-text';
 import { getTextStyle, registerTextStyle } from './textstyles';
 import { HTMLFontLoadInfo, loadFontsInHTMLText, registerFontsForHTMLText } from './html-text/fonts';
 
+/**
+ * Type alias voor `HTMLText`, dat een tekstelement met HTML-ondersteuning vertegenwoordigt.
+ */
 export type KloekHTMLText = HTMLText;
 
+/**
+ * Een PIXI `Container`-subklasse die een standaard `Text` of een `HTMLText` element omhult met lifecyclebeheer.
+ * Ondersteunt benoemde tekststijlen geregistreerd via `KloekText.registerStyle()`, en verwerkt resolutie-bewuste weergave.
+ * Geef `_isHtml = true` mee om HTML-tagondersteuning in de weergegeven tekst in te schakelen.
+ */
 export class KloekText extends Container implements PrepareCleanupInterface {
   protected isPrepared = false;
   protected target: Container | undefined;

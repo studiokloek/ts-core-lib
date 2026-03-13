@@ -4,6 +4,10 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 
 const Logger = getLogger('device > chrome');
 
+/**
+ * Stelt de statusbalk van het apparaat in (lichte stijl, verborgen) voor native iOS/Android-apps.
+ * Heeft geen effect in een webbrowser.
+ */
 export async function initDeviceChrome(): Promise<void> {
   if (Capacitor.isPluginAvailable('StatusBar')) {
     try {

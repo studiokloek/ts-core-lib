@@ -4,6 +4,10 @@ import { assign } from 'lodash';
 // als er een get parameter ?debug aanwezig is, zetten we debug aan
 const parameters = new URLSearchParams(location.search);
 
+/**
+ * Instellingen voor het debug-systeem. Debug-modus wordt automatisch ingeschakeld als `?debug` in de URL staat.
+ * Gebruik `setCoreDebugSettings()` om instellingen aan te passen.
+ */
 export interface CoreDebugSettings {
   isEnabled?: boolean;
   minLogLevel: number;
@@ -22,10 +26,19 @@ const values = {
   skipMediaTrigger: false,
 };
 
+/**
+ * Past de debug-instellingen aan. Roep dit vroeg aan bij het starten van de app
+ * om standaarden zoals het logniveau of de resolutie te wijzigen.
+ */
 export function setCoreDebugSettings(_settings: CoreDebugSettings): void {
   assign(values, _settings);
 }
 
+/**
+ * Geeft toegang tot de huidige debug-instellingen tijdens het uitvoeren van de app.
+ * Alle methoden zijn veilig te gebruiken in productie — ze geven standaardwaarden terug als debug-modus uit staat.
+ * Debug-modus wordt automatisch ingeschakeld als `?debug` in de URL staat.
+ */
 export const CoreDebug = {
   isEnabled(): boolean {
     return values.isEnabled;

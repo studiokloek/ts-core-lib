@@ -6,6 +6,12 @@ import { getLogger } from '../logger';
 
 const Logger = getLogger('ticker');
 
+/**
+ * Callback-signatuur voor ticker-updatefuncties. De callback ontvangt drie argumenten
+ * bij elke frame-aanroep: de geaccumuleerde tijd voor deze specifieke callback (in seconden),
+ * de framevertraging ten opzichte van 60 fps, en de totale verstreken tijd van de ticker (in seconden).
+ * De eigenschap `__tickerid__` wordt intern door `ConcreteTicker` toegewezen om registratie bij te houden.
+ */
 export interface TickerCallback extends Function {
   __tickerid__?: number;
 }
@@ -19,6 +25,13 @@ interface TickerItem {
 const DELAY_FACTOR = round(1000 / 60, 5);
 let TICKER_UUID = 0;
 
+/**
+ * Benoemde animatie-ticker die per-frame callbacks aanstuurt via de GSAP-ticker. Elke instantie
+ * heeft zijn eigen `timeScale` en neemt deel aan een gedeelde `globalTimeScale`. Callbacks worden toegevoegd
+ * met `add()` en verwijderd met `remove()`. De ticker kan worden gepauzeerd (`sleep`) en hervat
+ * (`wake`), en ondersteunt een auto-sleep-modus waarbij hij automatisch stopt wanneer er geen callbacks
+ * geregistreerd zijn. Haal instanties op via `getTicker()` in plaats van rechtstreeks aan te maken.
+ */
 export class ConcreteTicker {
   private _name: string;
   private items: TickerItem[] = [];

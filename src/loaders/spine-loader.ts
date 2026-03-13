@@ -8,11 +8,13 @@ import { SkeletonData } from 'pixi-spine';
 
 const Logger = getLogger('loader > spine');
 
+/** Vertegenwoordigt een geladen Spine-skelet, met een `id` en de geparseerde `SkeletonData`. */
 export interface SpineAsset {
   id: string;
   skeleton: SkeletonData;
 }
 
+/** Asset-descriptor voor een Spine-animatie. Wordt doorgegeven aan `createSpineLoader()` of opgenomen in `LoaderAssets.spine`. */
 export interface SpineAssetInfo {
   id: string;
   fileName: string;
@@ -20,10 +22,12 @@ export interface SpineAssetInfo {
   numberOfParts: number;
 }
 
+/** Controlefunctie: geeft `true` terug als `_info` een `SpineAsset` is. */
 export function isSpineAsset(_info: SpineAsset): _info is SpineAsset {
   return _info && (_info as SpineAsset).skeleton !== undefined;
 }
 
+/** Interne instellingen voor `SpineLoader`: asset-pad, naam, map en aantal onderdelen. */
 export interface SpineLoaderOptions {
   assetId?: string;
   assetName?: string;
@@ -31,6 +35,10 @@ export interface SpineLoaderOptions {
   numberOfParts?: number;
 }
 
+/**
+ * Laadt een Spine-animatie (JSON-skelet + texturatlas).
+ * Kiest automatisch `@2x`-texturen op retina-schermen. Maak aan via `createSpineLoader()`.
+ */
 export class SpineLoader implements AssetLoaderInterface {
   private options: SpineLoaderOptions;
   private loader: Loader;
@@ -170,6 +178,7 @@ export class SpineLoader implements AssetLoaderInterface {
   }
 }
 
+/** Maakt een `SpineLoader`-instantie aan voor de opgegeven `SpineAssetInfo`, waarbij het asset-pad wordt opgelost vanuit `CoreLibraryOptions.ASSET_BASE_PATH`. Wordt intern door `AssetLoader` gebruikt. */
 export function createSpineLoader(asset: SpineAssetInfo): SpineLoader {
   const loader = new SpineLoader({
     assetId: asset.id,

@@ -6,6 +6,10 @@ interface RGB {
   b: number;
 }
 
+/**
+ * Bepaalt of een kleur als donker wordt waargenomen op basis van de HSP-helderheidsformule (Highly Sensitive Poo).
+ * Accepteert een CSS hex/rgb string of een RGB object.
+ */
 export function isDarkColor(color: string | RGB): boolean {
   const rgb = colorToRGB(color);
 
@@ -16,6 +20,10 @@ export function isDarkColor(color: string | RGB): boolean {
   return hsp > 127.5 ? false : true;
 }
 
+/**
+ * Zet een kleurwaarde (CSS hex string, CSS rgb/rgba string of RGB object) om naar een RGB object.
+ * Geeft `{r: 0, g: 0, b: 0}` terug als het parsen mislukt.
+ */
 export function colorToRGB(color: string | RGB): RGB {
   if (typeof color !== 'string') {
     return color;
@@ -39,6 +47,9 @@ export function colorToRGB(color: string | RGB): RGB {
   }
 }
 
+/**
+ * Zet een CSS hex-kleurstring (bijv. `"#fff"` of `"#ffffff"`) om naar een RGB object.
+ */
 export function hexToRGB(color: string): RGB {
   const colorValue = color.length < 5 ? +`0x${color.slice(1).replace(/./g, '$&$&')}` : +`0x${color.slice(1)}`;
   return {
@@ -48,14 +59,24 @@ export function hexToRGB(color: string): RGB {
   };
 }
 
+/**
+ * Zet een geheel getal (0–255) om naar een tweekarak­ter hex-string in kleine letters, waarbij waarden buiten bereik worden begrensd.
+ */
 export function intToHex(value: number): string {
   return padStart(Math.min(Math.max(Math.round(value), 0), 255).toString(16), 2, '0');
 }
 
+/**
+ * Zet een RGB object om naar een CSS hex-kleurstring (bijv. `"#ff0080"`).
+ */
 export function rgbToHex(color: RGB): string {
   return `#${intToHex(color.r)}${intToHex(color.g)}${intToHex(color.b)}`;
 }
 
+/**
+ * Zet een numerieke hex-kleurwaarde om naar een CSS hex-string (bijv. `0xff0080` → `"#ff0080"`).
+ * Voegt optioneel een alfacomponent toe wanneer `alpha` (0–1) is opgegeven.
+ */
 export function hexToString(hex: number, alpha?: number): string {
   let hexString = hex.toString(16);
   hexString = '000000'.slice(0, Math.max(0, 6 - hexString.length)) + hexString;
@@ -68,6 +89,9 @@ export function hexToString(hex: number, alpha?: number): string {
   return `${hexString}${intToHex(Math.floor(alpha * 255))}`;
 }
 
+/**
+ * Mengt een RGB-kleur richting wit met de gegeven `step`-factor (0 = originele kleur, 1 = wit).
+ */
 export function rgbTint(color: RGB, step: number): RGB {
   return {
     r: color.r + (255 - color.r) * step,
@@ -76,10 +100,16 @@ export function rgbTint(color: RGB, step: number): RGB {
   };
 }
 
+/**
+ * Zet een CSS hex-kleurstring (bijv. `"#ff0080"`) om naar een numerieke integerrepresentatie.
+ */
 export function hexToInt(s: string): number {
   return (Number.parseInt(s.slice(1), 16) << 8) / 256;
 }
 
+/**
+ * Zet een RGB object om naar een gecomprimeerd 24-bit geheel getal (bijv. voor gebruik als PIXI-tintwaarde).
+ */
 export function rgbToInt(color: RGB): number {
   return (color.r << 16) | (color.g << 8) | color.b;
 }

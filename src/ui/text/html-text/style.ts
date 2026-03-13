@@ -14,7 +14,7 @@ import type {
 } from '@pixi/text';
 
 /**
- * HTMLText support more white-space options.
+ * HTMLText ondersteunt meer white-space opties.
  * @memberof PIXI
  * @since 7.2.0
  * @see PIXI.IHTMLTextStyle
@@ -22,7 +22,7 @@ import type {
 export type HTMLTextStyleWhiteSpace = 'normal' | 'pre' | 'pre-line' | 'nowrap' | 'pre-wrap';
 
 /**
- * FontFace display options.
+ * FontFace weergaveopties.
  * @memberof PIXI
  * @since 7.3.0
  */
@@ -39,127 +39,127 @@ type ITextStyleIgnore = 'whiteSpace'
     | 'lineJoin';
 
 /**
- * Modifed versions from ITextStyle.
+ * Aangepaste versies van ITextStyle.
  * @memberof PIXI
  * @extends PIXI.ITextStyle
  * @since 7.2.0
  */
 export interface IHTMLTextStyle extends Omit<ITextStyle, ITextStyleIgnore> {
-    /** White-space with expanded options. */
+    /** White-space met uitgebreide opties. */
     whiteSpace: HTMLTextStyleWhiteSpace;
 }
 
 export interface IHTMLTextFontOptions extends Pick<IHTMLFont, 'weight' | 'style' | 'family'> {
-    /** font-display property */
+    /** font-display eigenschap */
     display: FontDisplay;
 }
 
 /**
- * Font information for HTMLText
+ * Fontinformatie voor HTMLText.
  * @memberof PIXI
  * @since 7.2.0
  */
 export interface IHTMLFont {
-    /** User-supplied URL request */
+    /** Door de gebruiker opgegeven URL-verzoek */
     originalUrl: string;
-    /** Base64 string for font */
+    /** Base64-string voor het lettertype */
     dataSrc: string;
-    /** FontFace installed in the document */
+    /** FontFace geïnstalleerd in het document */
     fontFace: FontFace | null;
-    /** Blob-based URL for font */
+    /** Blob-gebaseerde URL voor het lettertype */
     src: string;
-    /** Family name of font */
+    /** Familienaam van het lettertype */
     family: string;
-    /** Weight of the font */
+    /** Gewicht van het lettertype */
     weight: TextStyleFontWeight;
-    /** Style of the font */
+    /** Stijl van het lettertype */
     style: TextStyleFontStyle;
-    /** Display property of the font */
+    /** Weergave-eigenschap van het lettertype */
     display: FontDisplay;
-    /** Reference counter */
+    /** Referentieteller */
     refs: number;
 }
 
 /**
- * Used internally to restrict text style usage and convert easily to CSS.
+ * Intern gebruikt om tekststijlgebruik te beperken en eenvoudig te converteren naar CSS.
  * @class
  * @memberof PIXI
- * @param {PIXI.ITextStyle|PIXI.IHTMLTextStyle} [style] - Style to copy.
+ * @param {PIXI.ITextStyle|PIXI.IHTMLTextStyle} [style] - Te kopiëren stijl.
  * @since 7.2.0
  */
 export class HTMLTextStyle extends TextStyle {
-    /** The collection of installed fonts */
+    /** De verzameling van geïnstalleerde lettertypen */
     public static availableFonts: Record<string, IHTMLFont> = {};
 
     /**
-     * List of default options, these are largely the same as TextStyle,
-     * with the exception of whiteSpace, which is set to 'normal' by default.
+     * Lijst met standaardopties, grotendeels gelijk aan TextStyle,
+     * met uitzondering van whiteSpace, dat standaard op 'normal' staat.
      */
     public static readonly defaultOptions: IHTMLTextStyle = {
-        /** Align */
+        /** Uitlijning */
         align: 'left',
-        /** Break words */
+        /** Woorden afbreken */
         breakWords: false,
-        /** Drop shadow */
+        /** Slagschaduw */
         dropShadow: false,
-        /** Drop shadow alpha */
+        /** Slagschaduw-alfa */
         dropShadowAlpha: 1,
         /**
-         * Drop shadow angle
+         * Slagschaduwhoek
          * @type {number}
          * @default Math.PI / 6
          */
         dropShadowAngle: Math.PI / 6,
-        /** Drop shadow blur */
+        /** Slagschaduw-vervaging */
         dropShadowBlur: 0,
-        /** Drop shadow color */
+        /** Slagschaduwkleur */
         dropShadowColor: 'black',
-        /** Drop shadow distance */
+        /** Slagschaduwafstand */
         dropShadowDistance: 5,
-        /** Fill */
+        /** Vulkleur */
         fill: 'black',
-        /** Font family */
+        /** Lettertype-familie */
         fontFamily: 'Arial',
-        /** Font size */
+        /** Lettergrootte */
         fontSize: 26,
-        /** Font style */
+        /** Lettertypestijl */
         fontStyle: 'normal',
-        /** Font variant */
+        /** Lettertypevariant */
         fontVariant: 'normal',
-        /** Font weight */
+        /** Lettertypegewicht */
         fontWeight: 'normal',
-        /** Letter spacing */
+        /** Letterafstand */
         letterSpacing: 0,
-        /** Line height */
+        /** Regelafstand */
         lineHeight: 0,
-        /** Padding */
+        /** Opvulling */
         padding: 0,
-        /** Stroke */
+        /** Omtreklijn */
         stroke: 'black',
-        /** Stroke thickness */
+        /** Omtreklijndikte */
         strokeThickness: 0,
-        /** White space */
+        /** Witruimte */
         whiteSpace: 'normal',
-        /** Word wrap */
+        /** Woordafbreking */
         wordWrap: false,
-        /** Word wrap width */
+        /** Breedte voor woordafbreking */
         wordWrapWidth: 100,
     };
 
-    /** For using custom fonts */
+    /** Voor het gebruik van aangepaste lettertypen */
     private _fonts: IHTMLFont[] = [];
 
-    /** List of internal style rules */
+    /** Lijst met interne stijlregels */
     private _overrides: string[] = [];
 
-    /** Global rules or stylesheet, useful for creating rules for rendering */
+    /** Globale regels of stylesheet, handig voor het aanmaken van renderregels */
     private _stylesheet = '';
 
-    /** Track font changes internally */
+    /** Lettertypewijzigingen intern bijhouden */
     private fontsDirty = false;
 
     /**
-     * Convert a TextStyle to HTMLTextStyle
+     * Converteert een TextStyle naar HTMLTextStyle.
      * @param originalStyle
      * @example
      * import {TextStyle } from 'pixi.js';
@@ -173,7 +173,7 @@ export class HTMLTextStyle extends TextStyle {
         );
     }
 
-    /** Clear the current font */
+    /** Verwijdert de huidige lettertypen */
     public cleanFonts(): void {
         if (this._fonts.length > 0) {
             this._fonts.forEach((font) => {
@@ -194,7 +194,7 @@ export class HTMLTextStyle extends TextStyle {
     }
 
     /**
-     * Because of how HTMLText renders, fonts need to be imported
+     * Vanwege de manier waarop HTMLText rendert, moeten lettertypen worden geïmporteerd.
      * @param url
      * @param options
      */
@@ -260,11 +260,11 @@ export class HTMLTextStyle extends TextStyle {
     }
 
     /**
-     * Add a style override, this can be any CSS property
-     * it will override any built-in style. This is the
-     * property and the value as a string (e.g., `color: red`).
-     * This will override any other internal style.
-     * @param {string} value - CSS style(s) to add.
+     * Voegt een stijloverschrijving toe; dit kan elke CSS-eigenschap zijn
+     * en overschrijft alle ingebouwde stijlen. Dit is de eigenschap en de
+     * waarde als een string (bijv. `color: red`).
+     * Dit overschrijft elke andere interne stijl.
+     * @param {string} value - CSS-stijl(en) om toe te voegen.
      * @example
      * style.addOverride('background-color: red');
      */
@@ -278,8 +278,8 @@ export class HTMLTextStyle extends TextStyle {
     }
 
     /**
-     * Remove any overrides that match the value.
-     * @param {string} value - CSS style to remove.
+     * Verwijdert alle overschrijvingen die overeenkomen met de waarde.
+     * @param {string} value - CSS-stijl om te verwijderen.
      * @example
      * style.removeOverride('background-color: red');
      */
@@ -293,9 +293,9 @@ export class HTMLTextStyle extends TextStyle {
     }
 
     /**
-     * Internally converts all of the style properties into CSS equivalents.
+     * Converteert intern alle stijleigenschappen naar CSS-equivalenten.
      * @param scale
-     * @returns The CSS style string, for setting `style` property of root HTMLElement.
+     * @returns De CSS-stijlstring, voor het instellen van de `style`-eigenschap van het root-HTMLElement.
      */
     public toCSS(scale: number): string {
         return [
@@ -329,7 +329,7 @@ export class HTMLTextStyle extends TextStyle {
         ].join(';');
     }
 
-    /** Get the font CSS styles from the loaded font, If available. */
+    /** Geeft de CSS @font-face regels terug voor de geladen lettertypen, indien beschikbaar. */
     public toGlobalCSS(): string {
         return this._fonts.reduce((result, font) => (
             `${result}
@@ -343,7 +343,7 @@ export class HTMLTextStyle extends TextStyle {
         ), this._stylesheet);
     }
 
-    /** Internal stylesheet contents, useful for creating rules for rendering */
+    /** Interne inhoud van het stylesheet, handig voor het aanmaken van renderregels */
     public get stylesheet(): string {
         return this._stylesheet;
     }
@@ -355,7 +355,7 @@ export class HTMLTextStyle extends TextStyle {
     }
 
     /**
-     * Convert numerical colors into hex-strings
+     * Converteert numerieke kleuren naar hex-strings.
      * @param color
      */
     private normalizeColor(color: any): string {
@@ -370,7 +370,7 @@ export class HTMLTextStyle extends TextStyle {
         return color;
     }
 
-    /** Convert the internal drop-shadow settings to CSS text-shadow */
+    /** Converteert de interne slagschaduw-instellingen naar CSS text-shadow */
     private dropShadowToCSS(): string {
         let color = this.normalizeColor(this.dropShadowColor);
         const alpha = this.dropShadowAlpha;
@@ -391,14 +391,14 @@ export class HTMLTextStyle extends TextStyle {
         return `text-shadow: ${position} ${color}`;
     }
 
-    /** Resets all properties to the defaults specified in TextStyle.prototype._default */
+    /** Stelt alle eigenschappen terug op de standaardwaarden gespecificeerd in TextStyle.prototype._default */
     public reset(): void {
         Object.assign(this, HTMLTextStyle.defaultOptions);
     }
 
     /**
-     * Called after the image is loaded but before drawing to the canvas.
-     * Mostly used to handle Safari's font loading bug.
+     * Wordt aangeroepen nadat de afbeelding is geladen maar vóór het tekenen op het canvas.
+     * Voornamelijk gebruikt om Safari's fontlaad-bug op te vangen.
      * @ignore
      */
     public onBeforeDraw() {
@@ -418,7 +418,7 @@ export class HTMLTextStyle extends TextStyle {
     }
 
     /**
-     * Proving that Safari is the new IE
+     * Bewijs dat Safari het nieuwe IE is
      * @ignore
      */
     private get isSafari(): boolean {

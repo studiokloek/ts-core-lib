@@ -9,6 +9,10 @@ ConcretePubSubJS.immediateExceptions = parameters.has('debug');
 
 const Logger = getLogger('events > pubsub');
 
+/**
+ * Het type van een luisterfunctie die reageert op `PubSub`-berichten.
+ * De functie ontvangt de verstuurde gegevens als enig argument.
+ */
 export type PubSubCallback = (data: any) => void;
 
 const table = new Map();
@@ -116,6 +120,11 @@ function publishSync(message: string, data?: any, report = false): boolean {
 
 // MIXIN
 
+/**
+ * Voegt berichtluisteren en -sturen toe aan een klasse via `PubSub`.
+ * Alle actieve luisteraars kunnen in één keer verwijderd worden met `unsubscribeAll()`.
+ * Voeg toe via `Mixin(BaseClass, PubSubMixin)`.
+ */
 export class PubSubMixin {
   private __pubsubSubscriptions: { [key: string]: string } = {};
   protected subscribe(message: string, callback: PubSubCallback): void {
@@ -160,6 +169,16 @@ export class PubSubMixin {
   }
 }
 
+/**
+ * Globale berichtenbus om berichten te versturen en te ontvangen in de app:
+ *
+ * - `subscribe(message, callback)` — luister naar een bericht; geeft een id terug.
+ * - `subscribeOnce(message, callback)` — luister precies één keer naar een bericht.
+ * - `unsubscribe(callbackOrId)` — stop met luisteren via callback of id.
+ *   Geef `_async = true` mee om dit naar de volgende stap uit te stellen.
+ * - `publish(message, data?)` — verstuur een bericht (asynchroon).
+ * - `publishSync(message, data?)` — verstuur een bericht (direct).
+ */
 export const PubSub = {
   subscribe,
   subscribeOnce,

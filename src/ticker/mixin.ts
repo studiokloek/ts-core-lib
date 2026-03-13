@@ -7,6 +7,13 @@ const Logger = getLogger('ticker > mixin');
 
 // MIXIN
 let MIXIN_UUID = 0;
+/**
+ * Mixin die per-frame ticker-callback-beheer aan een klasse toevoegt. Elke instantie
+ * krijgt zijn eigen auto-sleep `ConcreteTicker` (vernoemd naar de `name` of `id` van de instantie).
+ * Gebruik `addTicker(callback)` om een frame-updatefunctie te registreren en `removeTicker` /
+ * `removeTickers` om de registratie ongedaan te maken. `pauseTickers` / `resumeTickers` pauzeren en hervatten
+ * de onderliggende ticker. Gebruik via `Mixin(BaseClass, TickerMixin)` vanuit ts-mixer.
+ */
 export class TickerMixin {
   private __ticker?: ConcreteTicker;
 

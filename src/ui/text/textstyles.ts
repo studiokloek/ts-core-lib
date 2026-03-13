@@ -5,6 +5,11 @@ import { HTMLTextStyle } from './html-text';
 
 const StylesRegister: Record<string, TextStyle> = {};
 
+/**
+ * Registreert een benoemde tekststijl in het globale stijlregister voor latere opvraging op naam.
+ * Geef een `TextStyle` object of een eenvoudig `ITextStyle` optiesobject mee als `_baseOrStyle`, of geef een bestaande
+ * geregistreerde stijlnaam mee als `_baseOrStyle` met overschrijvingen in `_style` om een afgeleide stijl te maken.
+ */
 export function registerTextStyle(_name: string, _baseOrStyle: string | TextStyle | Partial<ITextStyle>, _style?: Partial<ITextStyle>): void {
   if (typeof _baseOrStyle === 'string' && _style) {
     const baseStyle = StylesRegister[_baseOrStyle];
@@ -27,6 +32,9 @@ export function registerTextStyle(_name: string, _baseOrStyle: string | TextStyl
   StylesRegister[_name] = isPlainObject(_baseOrStyle) ? new TextStyle(_baseOrStyle as Partial<ITextStyle>) : (_baseOrStyle as TextStyle);
 }
 
+/**
+ * Kloont een `TextStyle` en past de opgegeven eigenschapsoverschrijvingen toe, en geeft de gewijzigde kloon terug.
+ */
 export function overwriteTextStyle(_base: TextStyle, _overwrite: Partial<ITextStyle>): TextStyle {
   const style = _base.clone();
 
@@ -37,6 +45,11 @@ export function overwriteTextStyle(_base: TextStyle, _overwrite: Partial<ITextSt
   return style;
 }
 
+/**
+ * Haalt een `TextStyle` (of `HTMLTextStyle`) op of construeert deze vanuit een stijlnaam, een eenvoudig optiesobject of een bestaande instantie.
+ * Past optioneel eigenschapsoverschrijvingen toe en converteert naar `HTMLTextStyle` wanneer `_html` true is.
+ * Geeft `undefined` terug als er geen basisstijl is opgegeven.
+ */
 export function getTextStyle(_base?: TextStyle | Partial<ITextStyle> | string, _overwrite?: Partial<ITextStyle>, _html = false): TextStyle | HTMLTextStyle | undefined {
   if (!_base) {
     return;

@@ -4,8 +4,10 @@ import { memoize } from 'lodash';
 import { isApp, isPlatform, Platform } from './device';
 import { supportsTouch } from './interaction';
 
+/** Een browserdetectie-instantie gebaseerd op de gebruikersagent van de huidige browser. */
 export const browserInfoParser = Bowser.getParser(navigator.userAgent);
 
+/** Geeft `true` terug als de huidige browser aan de opgegeven conditie voldoet. */
 export const browserSatisfies = (info: Parser.checkTree): boolean => {
   return browserInfoParser.satisfies(info) === true;
 };
@@ -16,6 +18,10 @@ const osInfo = browserInfoParser.getOS();
 
 // console.log(platformInfo, osInfo, browserInfo);
 
+/**
+ * Geeft `true` terug als het apparaat een telefoon of tablet is.
+ * Herkent ook iPads die zich als desktopbrowser voordoen en native iOS/Android-apps.
+ */
 export const isMobile = (): boolean => {
   // browser user agent check
   if (platformInfo.type === 'mobile' || platformInfo.type === 'tablet') {
@@ -35,6 +41,11 @@ export const isMobile = (): boolean => {
   return false;
 };
 
+/**
+ * Geeft `true` terug als de gebruiker eerst iets moet aantikken of klikken voordat audio of video kan starten.
+ * Native apps hebben dit nooit nodig; mobiele en moderne desktopbrowsers wel.
+ * Het resultaat wordt onthouden na de eerste aanroep.
+ */
 export const deviceNeedsMediaTrigger = memoize((): boolean => {
   // app heeft geen media trigger nodig
   if (isApp()) {
@@ -64,6 +75,11 @@ export const deviceNeedsMediaTrigger = memoize((): boolean => {
   return false;
 });
 
+/**
+ * Geeft `true` terug als de browser te oud is om de app goed te ondersteunen.
+ * Controleert minimumversies voor desktop, mobiel en tablet.
+ * TV-platforms gelden altijd als te oud; native apps nooit.
+ */
 export const isObsoleteBrowser = (): boolean => {
   // app is altijd goed!
   if (isApp()) {
@@ -110,6 +126,10 @@ export const isObsoleteBrowser = (): boolean => {
   return false;
 };
 
+/**
+ * Geeft `true` terug als de app als geïnstalleerde web-app (PWA) op het startscherm wordt uitgevoerd.
+ * Alleen van toepassing op mobiele apparaten.
+ */
 export const isStandaloneBrowser = (): boolean => {
   if (isApp() || !isMobile()) {
     return false;

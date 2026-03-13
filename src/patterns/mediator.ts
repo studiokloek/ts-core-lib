@@ -11,6 +11,10 @@ import { OtherViewOptions, ViewInterface, ViewOptions } from './view';
 
 const Logger = getLogger('mediator');
 
+/**
+ * Lifecycle-interface voor niet-visuele coördinatorklassen. Definieert de asynchrone `init`-methode
+ * en de prepare/cleanup- en activate/deactivate-lifecycle-hooks die elke mediator moet implementeren.
+ */
 export interface MediatorInterface {
   prepareAfterLoad(): void;
   cleanupBeforeUnload(): void;
@@ -19,6 +23,15 @@ export interface MediatorInterface {
   deactivate(): void;
 }
 
+/**
+ * Basisklasse voor niet-visuele coördinatorobjecten die views en kind-mediatoren aansturen.
+ * Mixt `PubSubMixin`, `TickerMixin` en `DelayedMixin` in, zodat subklassen applicatie-events kunnen
+ * abonneren, per-frame ticker-callbacks kunnen registreren en vertraagde aanroepen kunnen inplannen.
+ * Overschrijf de asynchrone `init()`-methode voor de opzet; lifecycle-methoden worden automatisch
+ * doorgegeven aan alle geregistreerde kind-mediatoren en views.
+ *
+ * Gebruik via `Mixin(BaseClass, Mediator)` vanuit ts-mixer bij het combineren met andere mixins.
+ */
 export class Mediator extends Mixin(PubSubMixin, TickerMixin, DelayedMixin) implements MediatorInterface {
   protected isActive = false;
   protected isPrepared = false;

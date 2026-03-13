@@ -2,6 +2,17 @@ import { gsap } from "gsap";
 import { getTweenVars, setReducedMotion } from "./tween-vars";
 import type { KloekReducedTweenVars, KloekTween, KloekTweenTarget, KloekTweenVars } from "./types";
 
+/**
+ * GSAP-gebaseerde tween-facade voor het aanmaken en beheren van animaties in de applicatie.
+ * Verwerkt PIXI.js display-objecteigenschappen automatisch (door ze in `pixi: {}` te wikkelen en
+ * rotatie van radialen naar graden om te zetten) en past reduced-motion-vervangingen toe wanneer
+ * ingeschakeld via `setReduceMotion(true)`.
+ *
+ * - `to` / `from`: animeer een doel naar of vanuit de opgegeven eigenschappen.
+ * - `set`: pas eigenschappen direct toe zonder animatie.
+ * - `killTweensOf`: stop alle actieve tweens op een doel.
+ * - `setReduceMotion`: schakel reduced-motion-gedrag globaal in of uit.
+ */
 export const Tween = {
   to: (
     target: KloekTweenTarget,

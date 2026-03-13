@@ -8,6 +8,11 @@ import { getScreenSize } from './viewport';
 
 const Logger = getLogger('device > resolution');
 
+/**
+ * Bepaalt de geschikte scherm- en textuurresolutiemodi op basis van de apparaat-pixelverhouding, het platform en de viewport-grootte.
+ * Geeft afzonderlijke `screen`- en `texture`-`ResolutionMode`-waarden terug, zodat de textuurkwaliteit onafhankelijk van de rendererresolutie kan worden verhoogd.
+ * Resultaat wordt na de eerste aanroep opgeslagen via memoize.
+ */
 export const determineResolution = memoize((): { screen: ResolutionMode; texture: ResolutionMode } => {
   const pixelRatio = getPixelRatio(),
     viewportSize = Math.floor(getScreenSize() * pixelRatio);

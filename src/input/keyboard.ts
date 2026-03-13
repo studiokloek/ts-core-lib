@@ -58,6 +58,11 @@ window.addEventListener('blur', () => {
   }
 });
 
+/**
+ * Houdt bij welke toetsen op het toetsenbord ingedrukt zijn.
+ * Gebruik `Keyboard.isDown(key)` om te controleren of een toets momenteel ingedrukt is.
+ * Bevat ook constanten voor veelgebruikte toetsnamen.
+ */
 export const Keyboard = {
   isDown: (key: string) => currentKeys[key] === true,
 

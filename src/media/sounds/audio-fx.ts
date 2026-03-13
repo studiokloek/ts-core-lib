@@ -11,6 +11,7 @@ import { SoundLibrary } from './library';
 // we regelen zelf suspend
 Howler.autoSuspend = false;
 
+/** Opties voor `AudioFX.play()`: herhaling, snelheid, fade-effect, startpositie en ruimtelijke audio. */
 export interface AudioFXOptions {
   loop?: boolean;
   rate?: number;
@@ -26,6 +27,11 @@ export interface AudioFXOptions {
   spatialPanner?: Partial<PannerAttributes>; // extra fine-tuning
 }
 
+/**
+ * Audio-controller voor het afspelen van geluiden. Ondersteunt afspelen, stoppen, pauzeren, hervatten en faden van individuele geluiden of alle geluiden tegelijk.
+ * De afspeelsnelheid volgt automatisch de animatiesnelheid. Ondersteunt ook ruimtelijke audio.
+ * Gebruik via de gedeelde `AudioFX`-instantie.
+ */
 class ConcreteSoundsPlayer {
   private volumeFader = {
     value: 1,
@@ -227,7 +233,7 @@ class ConcreteSoundsPlayer {
     }
   }
 
-  resume(asset: SoundAsset, id: number, options?: AudioFXOptions): void {
+  resume(asset: SoundAsset, id?: number, options?: AudioFXOptions): void {
     const item = SoundLibrary.getItemByAsset(asset);
 
     if (!item) {
@@ -241,9 +247,15 @@ class ConcreteSoundsPlayer {
     }
 
     if (options && options.fade && options.fade > 0) {
-      const volume = player.volume(id) as number;
-      player.volume(0, id);
-      player.fade(volume, 0, options.fade * 1000, id);
+      if (id === undefined) {
+        const volume = player.volume() as number;
+        player.volume(0);
+        player.fade(volume, 0, options.fade * 1000);
+      } else {
+        const volume = player.volume(id) as number;
+        player.volume(0, id);
+        player.fade(volume, 0, options.fade * 1000, id);
+      }
     }
 
     player.play(id);
@@ -422,4 +434,9 @@ class ConcreteSoundsPlayer {
 
 }
 
+/**
+ * De gedeelde audio-instantie voor het afspelen van geluiden in de app.
+ * Gebruik `AudioFX.play(asset)`, `.stop()`, `.pause()`, `.resume()`,
+ * `.fadeTo()`, `.pauseAll()`, `.resumeAll()`, `.suspendContext()` en `.resumeContext()`.
+ */
 export const AudioFX = new ConcreteSoundsPlayer();

@@ -34,6 +34,11 @@ function reportStatus(status: ConnectionStatus): void {
 
 let inited = false;
 
+/**
+ * Begint te luisteren naar veranderingen in de internetverbinding.
+ * Stuurt `AppEvent.NETWORK_ONLINE` of `AppEvent.NETWORK_OFFLINE` wanneer de verbinding wijzigt.
+ * Kan meerdere keren aangeroepen worden zonder problemen.
+ */
 export async function initNetworkStatusDetection(): Promise<void> {
   if (inited) {
     return;
@@ -45,6 +50,7 @@ export async function initNetworkStatusDetection(): Promise<void> {
   reportStatus(status);
 }
 
+/** Geeft `true` terug als er momenteel een internetverbinding is. */
 export function isOnline(): boolean {
   return currentStatus.connected;
 }

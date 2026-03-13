@@ -13,10 +13,18 @@ import { isPrepareCleanup } from './preparecleanup';
 
 const Logger = getLogger('mediator > view');
 
+/**
+ * Basisopties voor het aanmaken van een `View`. De optionele `target`-container geeft aan
+ * aan welke PIXI `Container` deze view als kind wordt toegevoegd.
+ */
 export interface ViewOptions {
   target?: Container;
 }
 
+/**
+ * Uitgebreide view-opties die willekeurige aanvullende sleutel-waardeparen toestaan.
+ * Gebruik dit type wanneer de constructor van een view aangepaste configuratie accepteert naast de basis `ViewOptions`.
+ */
 export interface OtherViewOptions extends ViewOptions {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
@@ -29,6 +37,12 @@ interface AddTextOptions {
   isHtml?: boolean;
 }
 
+/**
+ * Lifecycle-interface voor alle PIXI-gebaseerde view-componenten. Definieert de zes lifecycle-hooks
+ * die elke view moet implementeren: `init` voor de initiële opzet, `prepareAfterLoad` / `cleanupBeforeUnload`
+ * voor het beheer van de asset-lifecycle, `activate` / `deactivate` voor het pauzeren en hervatten van de
+ * interactieve toestand, en `setTarget` voor het toewijzen van de bovenliggende container.
+ */
 export interface ViewInterface extends Container {
   init(): void;
   prepareAfterLoad(): void;
@@ -38,6 +52,15 @@ export interface ViewInterface extends Container {
   setTarget(_target?: Container): void;
 }
 
+/**
+ * Basisklasse voor alle visuele PIXI-display-objecten met een volledige lifecycle. Breidt PIXI `Container`
+ * uit en mixt `TickerMixin`, `TweenMixin` en `DelayedMixin` in, zodat subklassen beschikken over geïntegreerde
+ * per-frame updates, tween-beheer en vertraagde callbacks. Overschrijf `init()` voor de opzet van
+ * kind-display-objecten; de prepare/cleanup- en activate/deactivate-paren worden automatisch
+ * doorgegeven aan geregistreerde kind-views, sprites en teksten.
+ *
+ * Gebruik via `Mixin(BaseClass, View)` vanuit ts-mixer bij het combineren met andere mixins.
+ */
 export class View extends Mixin(Container, TickerMixin, TweenMixin, DelayedMixin) implements ViewInterface, PrepareCleanupInterface {
   protected options: ViewOptions;
   protected views: ViewInterface[] = [];

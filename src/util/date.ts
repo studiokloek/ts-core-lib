@@ -1,10 +1,16 @@
 import { floor, isDate, padStart, toNumber, map } from 'lodash';
 
+/**
+ * Geeft een datum terug opgemaakt als `"YYYY-MM-DD"`. Gebruikt de huidige datum als er geen argument is opgegeven.
+ */
 export function getDateString(date?: Date): string {
   const d = date || new Date();
   return `${d.getFullYear()}-${padStart(`${d.getMonth() + 1}`, 2, '0')}-${padStart(`${d.getDate()}`, 2, '0')}`;
 }
 
+/**
+ * Geeft true terug als het opgegeven jaar een schrikkeljaar is.
+ */
 export function isLeapYear(year: number): boolean {
   if (!year) {
     return false;
@@ -15,6 +21,10 @@ export function isLeapYear(year: number): boolean {
   return d.getMonth() === 1;
 }
 
+/**
+ * Parseert een Firestore-stijl datumstring in het formaat `"YYYY-MM-DD"` en geeft een `Date` object terug.
+ * Geeft `undefined` terug als de invoer ongeldig of ontbrekend is.
+ */
 // wordt gebruikt voor date string uit firestore
 export function getDateFromFirestoreString(value: string): Date | undefined {
   if (!value) {
@@ -30,11 +40,18 @@ export function getDateFromFirestoreString(value: string): Date | undefined {
   return new Date(parts[0], --parts[1], parts[2]);
 }
 
+/**
+ * Parseert een datum/tijdstring uit een API-respons (splitst op elk niet-cijferteken) en geeft een `Date` object terug.
+ */
 export function getDateFromAPIString(value: string): Date {
   const parts = map(`${value}`.split(/\D/), (v) => toNumber(v));
   return new Date(parts[0], --parts[1], parts[2], parts[3], parts[4], parts[5]);
 }
 
+/**
+ * Berekent de leeftijd in hele jaren op basis van een opgegeven geboortedatum of datumstring.
+ * Geeft `-1` terug als de geboortedatum ontbreekt of ongeldig is.
+ */
 export function calulateAgeFromDate(birthday?: Date | string): number {
   if (!birthday) {
     return -1;
@@ -55,10 +72,16 @@ export function calulateAgeFromDate(birthday?: Date | string): number {
   return floor(years + days / (isLeapYear(now.getFullYear()) ? 366 : 365));
 }
 
+/**
+ * Geeft true terug als twee datums dezelfde kalenderdag in UTC vertegenwoordigen.
+ */
 export function isSameDay(d1: Date, d2: Date): boolean {
   return d1 && d2 && d1.getUTCFullYear() == d2.getUTCFullYear() && d1.getUTCMonth() == d2.getUTCMonth() && d1.getUTCDate() == d2.getUTCDate();
 }
 
+/**
+ * Geeft een `Date` object terug dat het begin van de opgegeven dag vertegenwoordigt (middernacht UTC), standaard vandaag.
+ */
 export function getDayDate(date?: Date): Date {
   if (!isDate(date)) {
     date = new Date();
@@ -67,6 +90,9 @@ export function getDayDate(date?: Date): Date {
   return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
 }
 
+/**
+ * Geeft true terug als de opgegeven datum strikt vóór de huidige dag valt (middernacht UTC).
+ */
 export function isBeforeToday(before: Date): boolean {
   if (!isDate(before)) {
     return false;
@@ -86,6 +112,9 @@ export function isBeforeToday(before: Date): boolean {
   return false;
 }
 
+/**
+ * Geeft true terug als de opgegeven datum strikt na het einde van de huidige dag valt (23:59:59 UTC).
+ */
 export function isAfterToday(after: Date): boolean {
   if (!isDate(after)) {
     return false;
@@ -106,6 +135,9 @@ export function isAfterToday(after: Date): boolean {
   return false;
 }
 
+/**
+ * Geeft true terug als het huidige moment valt tussen de `start`- en `end`-datums (exclusief).
+ */
 export function isBetweenDates(start: Date, end: Date): boolean {
   if (!isDate(start) || !isDate(end)) {
     return false;
@@ -120,6 +152,9 @@ export function isBetweenDates(start: Date, end: Date): boolean {
   return false;
 }
 
+/**
+ * Geeft het aantal hele dagen terug tussen twee datums (op basis van UTC-waarden).
+ */
 export function daysBetween(start: Date, end: Date): number {
   const oneDay = 1000 * 60 * 60 * 24,
     startDay = Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate()),
@@ -128,6 +163,9 @@ export function daysBetween(start: Date, end: Date): number {
   return (startDay - endDay) / oneDay;
 }
 
+/**
+ * Geeft het aantal hele seconden terug tussen twee datums (`d1 - d2`), afgerond naar het dichtstbijzijnde gehele getal.
+ */
 export function getSecondsBetween(d1: Date, d2: Date): number {
   return Math.round((d1.getTime() - d2.getTime()) * 0.001);
 }

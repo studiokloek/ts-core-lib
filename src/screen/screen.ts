@@ -4,6 +4,11 @@ import { AsyncEvent } from 'ts-events';
 import { OrientationMode, ResolutionMode } from './constants';
 import { determineResolution } from './resolution';
 
+/**
+ * Beheert de browserviewport-afmetingen, oriëntatie en schermresolutie.
+ * Vuurt `resized`- en `orientationChanged`-async-events wanneer de window wordt vergroot of verkleind.
+ * Gebruik de `Screen` singleton in plaats van direct te instantiëren.
+ */
 class ConcreteScreen {
   private _width = 0;
   private _height = 0;
@@ -106,4 +111,5 @@ class ConcreteScreen {
   }
 }
 
+/** Singleton-instantie van `ConcreteScreen`. Houdt de huidige viewport-`width`, `height`, `orientation` en `resolution` bij. Roep `Screen.init()` (of `initScreen()`) aan voor gebruik. */
 export const Screen = new ConcreteScreen();

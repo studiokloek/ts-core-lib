@@ -5,6 +5,13 @@ import { Delayed } from './delay';
 
 const Logger = getLogger('delay > mixin');
 
+/**
+ * Voegt beheer van vertraagde acties toe aan een klasse.
+ * Bijgehouden acties kunnen allemaal tegelijk gestopt worden met `killDelays`,
+ * of tijdelijk gestopt/hervat met `pauseDelays` / `resumeDelays`.
+ * Individuele acties stoppen kan met `killDelay(callback)`.
+ * Voeg toe via `Mixin(BaseClass, DelayedMixin)`.
+ */
 export class DelayedMixin {
   private __delayed: gsap.core.Tween[] = [];
 

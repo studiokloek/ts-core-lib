@@ -1,5 +1,9 @@
 import { Logger } from '../logger';
 
+/**
+ * Haalt een element op uit een HTML `<template>` op basis van een CSS-selector.
+ * Geeft `undefined` terug en logt een fout als het element niet gevonden wordt.
+ */
 export function getElementFromTemplate(_id: string): HTMLElement | undefined {
   const template = document.querySelector(_id) as HTMLElement;
 

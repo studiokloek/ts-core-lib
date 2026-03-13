@@ -4,15 +4,18 @@ import { getLogger, squashForLog } from '../logger';
 
 const Logger = getLogger('loader > font');
 
+/** Vertegenwoordigt een succesvol geladen font, met de font-familienaam en een optionele variant. */
 export interface FontAsset {
   family: string;
   variant?: FontFaceObserver.FontVariant;
 }
 
+/** Controlefunctie: geeft `true` terug als `_info` een `FontAsset` is. */
 export function isFontAsset(_info: FontAsset): _info is FontAsset {
   return _info && (_info as FontAsset).family !== undefined;
 }
 
+/** Asset-descriptor voor een webfont. Wordt doorgegeven aan `createFontLoader()` of opgenomen in `LoaderAssets.fonts`. */
 export interface FontAssetInfo {
   fontFamilyName: string;
   variant?: FontFaceObserver.FontVariant;
@@ -24,6 +27,10 @@ interface FontLoaderOptions {
   variant?: FontFaceObserver.FontVariant;
 }
 
+/**
+ * Laadt een webfont en wacht tot het beschikbaar is in de browser.
+ * Maak aan via `createFontLoader()`.
+ */
 export class FontLoader implements AssetLoaderInterface {
   private _data?: FontAsset;
   private options: FontLoaderOptions;
@@ -94,6 +101,7 @@ export class FontLoader implements AssetLoaderInterface {
   }
 }
 
+/** Maakt een `FontLoader` aan voor het opgegeven font. */
 export function createFontLoader(asset: FontAssetInfo): FontLoader {
   const loader = new FontLoader({
     fontFamilyName: asset.fontFamilyName,

@@ -5,6 +5,11 @@ import { SoundLibraryItem } from './library-item';
 
 // const Logger = getLogger('core > sounds > library');
 
+/**
+ * Register van alle geladen geluiden. Beheert het laden en verwijderen van geluiden
+ * en houdt bij welke geluiden door meerdere scènes worden gedeeld, zodat ze niet te vroeg worden verwijderd.
+ * Gebruik via de gedeelde `SoundLibrary`-instantie.
+ */
 class ConcreteSoundsLibrary {
   private items: SoundLibraryItem[] = [];
 
@@ -54,4 +59,5 @@ class ConcreteSoundsLibrary {
   }
 }
 
+/** De gedeelde geluidsbibliotheek. Gebruik `SoundLibrary.load()` en `.unload()` om geluiden te beheren; `getItemByAsset()` en `getZoneSounds()` voor opzoekingen. */
 export const SoundLibrary = new ConcreteSoundsLibrary();

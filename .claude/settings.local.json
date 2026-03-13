@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node scripts/generate-llms.mjs)",
+      "Bash(yarn types/check)"
+    ]
+  }
+}

@@ -9,6 +9,10 @@ import { TweenMixin } from '../tween';
 
 const Logger = getLogger('ui > kloeksprite');
 
+/**
+ * Standaard visuele eigenschapswaarden die worden toegepast op een `KloekSprite` bij constructie of wanneer `applyDefaults()` wordt aangeroepen.
+ * Alle eigenschappen zijn optioneel; alleen opgegeven eigenschappen worden toegepast.
+ */
 export interface KloekSpriteDefaults {
   x?: number;
   y?: number;
@@ -21,6 +25,11 @@ export interface KloekSpriteDefaults {
   zIndex?: number;
 }
 
+/**
+ * Een PIXI `Sprite`-subklasse met geïntegreerd lifecyclebeheer, ondersteuning voor standaardeigenschappen en tween-mogelijkheden.
+ * Roep `prepareAfterLoad()` aan om de textuur te vullen en standaardwaarden toe te passen, en `cleanupBeforeUnload()` om resources vrij te geven.
+ * Gebruik `KloekSprite.create()` als statische factory voor eenvoudige constructie met asset en standaardwaarden.
+ */
 export class KloekSprite extends Mixin(Sprite, TweenMixin) implements PrepareCleanupInterface {
   protected _isFilled = false;
   protected isPrepared = false;

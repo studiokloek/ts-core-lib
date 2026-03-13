@@ -1,3 +1,4 @@
+/** Zet een waarde om naar een JSON-string voor gebruik in logs. Geeft een lege string terug als er geen waarde is. */
 export function squashForLog(_value?: {}): {} {
   if (_value) {
     return JSON.stringify(_value);
@@ -7,6 +8,11 @@ export function squashForLog(_value?: {}): {} {
 }
 
 
+/**
+ * Zet de eigenschappen van een object om naar een leesbare tekst voor in logs.
+ * Geef `_props` mee om alleen bepaalde eigenschappen op te nemen; anders worden alle opgenomen in alfabetische volgorde.
+ * Geef `multiLine = true` mee voor weergave op meerdere regels.
+ */
 export function objectToLog<T extends object>(_obj: T | undefined, _props: (keyof T)[] = [], multiLine = false): string {
 
   if (_obj === undefined) {

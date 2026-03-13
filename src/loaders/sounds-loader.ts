@@ -6,20 +6,24 @@ import { SoundLibrary, SoundLibraryItem } from '../media';
 
 const Logger = getLogger('loader > sounds ');
 
+/** Beschrijft een enkel geluidsbestand met het asset-`id` (gebruikt voor het opbouwen van de bestands-URL), `duration` in seconden en weergave-`name`. */
 export interface SoundAsset {
   id: string;
   duration: number;
   name: string;
 }
 
+/** Recursieve map van geluid-assets. Bladwaarden zijn `SoundAsset`-objecten; groepen zijn geneste maps. Gebruikt in `SoundsAssetInfo.assets`. */
 export interface SoundAssetList {
   [key: string]: SoundAsset | { [key: string]: SoundAsset | SoundAssetList };
 }
 
+/** Controlefunctie: geeft `true` terug als `_info` een `SoundAsset` is. */
 export function isSoundAsset(_info: SoundAsset): _info is SoundAsset {
   return _info && (_info as SoundAsset).duration !== undefined && (_info as SoundAsset).id !== undefined;
 }
 
+/** Asset-descriptor voor een groep geluiden gekoppeld aan een benoemde asset-bundel. Wordt doorgegeven aan `createSoundsLoader()` of opgenomen in `LoaderAssets.sounds`. */
 export interface SoundsAssetInfo {
   assets: SoundAssetList;
   assetName: string;
@@ -33,6 +37,10 @@ interface SoundsLoaderOptions {
   numberOfSounds: number;
 }
 
+/**
+ * Laadt een verzameling geluid-assets in `SoundLibrary`, maximaal 8 tegelijk.
+ * Maak aan via `createSoundsLoader()`.
+ */
 export class SoundsLoader implements AssetLoaderInterface {
   private options: SoundsLoaderOptions;
 
@@ -174,6 +182,7 @@ export class SoundsLoader implements AssetLoaderInterface {
   }
 }
 
+/** Maakt een `SoundsLoader`-instantie aan voor de opgegeven `SoundsAssetInfo`. Wordt intern door `AssetLoader` gebruikt bij het verwerken van geluid-assets. */
 export function createSoundsLoader(assetInfo: SoundsAssetInfo): SoundsLoader {
   const loader = new SoundsLoader({
     assets: assetInfo.assets,

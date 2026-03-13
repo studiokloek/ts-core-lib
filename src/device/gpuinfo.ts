@@ -1,5 +1,9 @@
 import { includes, memoize, some } from 'lodash';
 
+/**
+ * Informatie over de grafische mogelijkheden van het apparaat (WebGL-ondersteuning, GPU-naam).
+ * Wordt gebruikt om te bepalen welke rendermethode het best werkt op dit apparaat.
+ */
 export interface GPUInfo {
   isWebGLSupported: boolean;
   useLegacyWebGL: boolean;
@@ -8,15 +12,20 @@ export interface GPUInfo {
   renderer: string;
 }
 
+/**
+ * Detecteert of WebGL beschikbaar is en welke GPU het apparaat heeft.
+ * Markeert bepaalde oudere GPU's (bijv. Mali-400/450/470) automatisch voor een alternatieve rendermodus.
+ * Het resultaat wordt onthouden na de eerste aanroep.
+ */
 export const getGPUInfo = memoize(
   (): GPUInfo => {
     const info: GPUInfo = {
-        isWebGLSupported: false,
-        useLegacyWebGL: false,
-        preserveDrawingBuffer: false,
-        vendor: 'unknown',
-        renderer: 'unknown',
-      },
+      isWebGLSupported: false,
+      useLegacyWebGL: false,
+      preserveDrawingBuffer: false,
+      vendor: 'unknown',
+      renderer: 'unknown',
+    },
       contextOptions = { stencil: true, failIfMajorPerformanceCaveat: true };
 
     try {
